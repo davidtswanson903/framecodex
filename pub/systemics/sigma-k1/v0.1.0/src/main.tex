@@ -1,0 +1,88 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{geometry}
+\geometry{margin=1in}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{hyperref}
+\usepackage{enumitem}
+\usepackage{microtype}
+
+\title{Systemics Σ — Minimal Specification (K1)}
+\author{}
+\date{}
+
+\begin{document}
+\maketitle
+
+\section*{References}
+\begin{itemize}
+\item GraphFrame K0 (GF0) (spec://\_kernel/gf/gf0-k1)
+\item SpecFrame K1 (spec://\_kernel/spec/specframe-k1)
+\item Σ Composition (separate spec) (spec://domains/systemics/sigma-composition-k1)
+\end{itemize}
+
+\section{Charter}
+\subsection*{Charter}
+Σ specifies a contract-shaped kernel that produces decisions from posted evidence under benign variation, with replayable records, without making domain assumptions.
+
+\section{Alphabet (Objects \& Maps)}
+\subsection*{Alphabet}
+\begin{itemize}
+  \item U: universe of artifacts
+  \item V: valuation space (any measurable space; commonly R\textasciicircum{}k × B\textasciicircum{}m)
+  \item 2: decision space 2 := \{0,1\}
+  \item Π: frames / benign contexts
+  \item P\_n: probes / benign perturbations
+  \item Θ: floors/thresholds (partially ordered set)
+  \item β: invariance budgets (tolerances in a poset/lattice)
+  \item C: capacity budgets (bits/time/energy constraints)
+  \item Γ: envelope/meta (versions, seeds, numeric modes, commits)
+  \item R: records (canonical map → bytes; hash/ledger optional)
+\end{itemize}
+
+\section{Definition: Systemic Kernel}
+\subsection*{Systemic Kernel}
+A systemic kernel is the tuple: K\textasciicircum{}Σ\_μ := (v, χ, Π, P\_n, Θ, β, C, Γ), where v: U → V and χ: V × Θ × β → 2.
+
+\section{Metrics \& Order}
+\subsection*{Wobble and orderings}
+Σ assumes a divergence ("wobble") w: V × V → R\_\{≥0\} on decision-relevant coordinates. Orders: θ ⪯ θ' means tightening floors; β' ⪯ β means tightening budgets; C' ⪯ C means shrinking capacity.
+
+\section{Axioms (Minimal Core)}
+\subsection*{Σ-A1 Well-typedness}
+All maps are measurable/continuous as needed; χ is total on V × Θ × β.
+\subsection*{Σ-A2 Posting / Records-only}
+For any run on u ∈ U, the record κ ∈ R contains (v(u), Θ, β, C, Π, P\_n, Γ), and the decision equals χ*(u; κ) = χ(v(u), Θ, β), with no dependence on unposted data.
+\subsection*{Σ-A3 Benign invariance}
+Let (π,p) ∈ Π × P\_n act on the measurement/evaluation pathway to yield v\_\{π,p\}(u). Define W(u) := sup\_\{(π,p)\} w(v\_\{π,p\}(u), v\_\{π0,p0\}(u)). If W(u) ⪯ β then for all benign (π,p), χ(v\_\{π,p\}(u), Θ, β) = χ(v\_\{π0,p0\}(u), Θ, β).
+\subsection*{Σ-A4 Minimal sufficiency under capacity}
+Among valuations preserving decisions under posted (Θ, β), v is minimal w.r.t. capacity cost subject to C: for all v', (χ ∘ v' = χ ∘ v) ⇒ cost(v') ⪰ cost(v), subject to C.
+\subsection*{Σ-A5 Reflexive reproducibility}
+There exists an admissible, independently realized v' (different numeric/route) such that χ(v(u), Θ, β) = χ(v'(u), Θ, β), with both posted in κ (self-warrant).
+\subsection*{Σ-A6 Determinism \& idempotence}
+For fixed (v(u), Θ, β), the decision χ is unique and idempotent under re-evaluation.
+\subsection*{Σ-A7 Monotonicity}
+Tightening floors or budgets cannot rescue a failure by hidden dependence. For θ ⪯ θ' and β' ⪯ β, χ(v, θ, β) = 1 implies χ(v, θ', β') ∈ \{0,1\} with no hidden rescue: tightening must not create a pass whose justification depends on data not posted in the record.
+\subsection*{Σ-A8 Isomorphism invariance}
+If a frame π induces a structure-preserving isomorphism on representation, decisions are invariant.
+
+\section{Conformance (Lawful Record)}
+\subsection*{Σ-lawful record checklist}
+A record κ ∈ R is Σ-lawful iff it includes: (1) contract (Θ, β, C, Π, P\_n, Γ and guards), (2) valuation v(u) (decision-relevant coords), (3) decision χ(v(u), Θ, β) with reasons, (4) invariance evidence (wobble metrics + worst-case (π,p)), (5) reflexive warrant (v'(u) and agreement), (6) canonicalization: canonical bytes, digest d, and optional chain root.
+
+\section{Morphisms of Systemics}
+\subsection*{Morphism preservation}
+A morphism preserves valuation and decision structure by satisfying: v' ∘ φ\_U = φ\_V ∘ v, χ' ∘ (φ\_V × id) = χ. It also maps contract parameters monotonically and preserves Σ-A1..Σ-A7.
+\subsection*{Morphism F: Σ → Σ'}
+A morphism F: Σ → Σ' is a pair (φ\_U, φ\_V) such that the following commutation laws hold: v' ∘ φ\_U = φ\_V ∘ v, and χ' ∘ (φ\_V × id) = χ. A morphism also maps contracts monotonically so that Σ axioms remain satisfied.
+
+\section{Instantiation Recipe (Domain-Agnostic)}
+\subsection*{Recipe}
+Choose U,V,v,χ; post Θ,β,C,Π,P\_n,Γ and wobble metric w; establish Σ-A1..Σ-A7 by construction/tests; emit lawful κ and optionally chain pages into books.
+
+\section{Notes}
+\subsection*{Notes}
+This specification does not fix what v measures, what χ decides, or how w is computed. It only requires posting, invariance under benign variation, minimal sufficiency under capacity, and reflexive reproducibility. Evidence Systemics is one instantiation where v encodes evidence gauges; other instances (Control, Protocol, Risk, Learning, etc.) keep the same Σ contract while choosing different v, Θ, β.
+
+\end{document}
