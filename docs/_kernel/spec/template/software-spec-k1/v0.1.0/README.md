@@ -51,7 +51,7 @@ TODO: Describe the primary dataflow and controlflow. Include invariants at bound
 
 **api-contract** _(normative)_
 
-TODO: Define your public API/protocols. Link to property.api_surface.
+TODO: Define your public API/protocols. Link to `property.api_surface`.
 
 **api\_surface** _(normative)_
 

@@ -20,27 +20,47 @@ nodes:
   - id: "def.lawdoc"
     kind: "definition"
     label: "LawDoc"
-    text: "A GF0 graph whose root node has id==graph_id, kind='law', profile='lawframe-k1'."
+    text: |
+      A GF0 graph whose root node has `id == graph_id`, `kind == law`, `profile == lawframe-k1`.
+    attrs:
+      - key: "text.format"
+        value: "md-inline"
 
   - id: "def.lawprofile"
     kind: "definition"
     label: "LawProfile"
-    text: "A GF0 graph whose root node has id==graph_id, kind='law_profile', profile='lawprofile-k1'."
+    text: |
+      A GF0 graph whose root node has `id == graph_id`, `kind == law_profile`, `profile == lawprofile-k1`.
+    attrs:
+      - key: "text.format"
+        value: "md-inline"
 
   - id: "def.rule"
     kind: "definition"
     label: "Rule"
-    text: "A normative statement with a modal (MUST/MUST_NOT/SHOULD/SHOULD_NOT/MAY) and text."
+    text: |
+      A normative statement with a `modal` (**MUST**/**MUST_NOT**/**SHOULD**/**SHOULD_NOT**/**MAY**) and `text`.
+    attrs:
+      - key: "text.format"
+        value: "md-inline"
 
   - id: "def.modal"
     kind: "definition"
     label: "Modal"
-    text: "A fixed enum controlling normative force: MUST, MUST_NOT, SHOULD, SHOULD_NOT, MAY."
+    text: |
+      A fixed enum controlling normative force: `MUST`, `MUST_NOT`, `SHOULD`, `SHOULD_NOT`, `MAY`.
+    attrs:
+      - key: "text.format"
+        value: "md-inline"
 
   - id: "def.location"
     kind: "definition"
     label: "Location"
-    text: "A pointer into a law graph: graph_id, optional node_id, optional edge_key, optional meta_path."
+    text: |
+      A pointer into a law graph: `graph_id`, optional `node_id`, optional `edge_key`, optional `meta_path`.
+    attrs:
+      - key: "text.format"
+        value: "md-inline"
 
   # --- Structured properties (deterministic lists) --------------------------
   - id: "prop.allowed_node_kinds"
@@ -81,72 +101,99 @@ nodes:
     kind: "rule"
     modal: "MUST"
     label: "Root law node"
-    text: >
-      A LawDoc MUST contain exactly one root node where id==graph_id, kind=='law', profile=='lawframe-k1'.
+    text: |
+      A `LawDoc` **MUST** contain exactly one root node where `id == graph_id`, `kind == law`, `profile == lawframe-k1`.
+    attrs:
+      - key: "text.format"
+        value: "md-inline"
 
   - id: "rule.gf0_conformance"
     kind: "rule"
     modal: "MUST"
     label: "GF0 conformance"
-    text: >
-      Every LawDoc MUST be a valid GraphFrameK0: fields {graph_id, version, attrs, nodes, edges, meta}
-      MUST be present and empty lists encoded as [].
+    text: |
+      Every `LawDoc` **MUST** be a valid `GraphFrameK0`: fields `{graph_id, version, attrs, nodes, edges, meta}`
+      **MUST** be present and empty lists encoded as `[]`.
+    attrs:
+      - key: "text.format"
+        value: "md-inline"
 
   - id: "rule.kind_restriction"
     kind: "rule"
     modal: "MUST"
     label: "Node kind restriction"
-    text: >
-      Node kinds within a LawDoc MUST be limited to prop.allowed_node_kinds unless an extension
-      mechanism is explicitly invoked (see rule.extensions).
+    text: |
+      Node kinds within a `LawDoc` **MUST** be limited to `prop.allowed_node_kinds` unless an extension
+      mechanism is explicitly invoked (see `rule.extensions`).
+    attrs:
+      - key: "text.format"
+        value: "md-inline"
 
   - id: "rule.edge_restriction"
     kind: "rule"
     modal: "MUST"
     label: "Edge type restriction"
-    text: >
-      Edge types within a LawDoc MUST be limited to prop.allowed_edge_types unless an extension
-      mechanism is explicitly invoked (see rule.extensions).
+    text: |
+      Edge types within a `LawDoc` **MUST** be limited to `prop.allowed_edge_types` unless an extension
+      mechanism is explicitly invoked (see `rule.extensions`).
+    attrs:
+      - key: "text.format"
+        value: "md-inline"
 
   - id: "rule.contains_tree"
     kind: "rule"
     modal: "MUST"
     label: "Structural containment"
-    text: >
-      'contains' edges MUST be acyclic and define the primary structural tree rooted at the law root.
-      Multiple 'contains' parents for the same node are forbidden.
+    text: |
+      `contains` edges **MUST** be acyclic and define the primary structural tree rooted at the law root.
+      Multiple `contains` parents for the same node are forbidden.
+    attrs:
+      - key: "text.format"
+        value: "md-inline"
 
   - id: "rule.rule_fields"
     kind: "rule"
     modal: "MUST"
     label: "Rule required fields"
-    text: >
-      A node with kind=='rule' MUST have: label (string), modal (Modal), text (string).
-      It MAY have: scope, applies_to, params, and references.
+    text: |
+      A node with `kind == rule` **MUST** have: `label` (string), `modal` (`Modal`), `text` (string).
+      It **MAY** have: `scope`, `applies_to`, `params`, and `references`.
+    attrs:
+      - key: "text.format"
+        value: "md-inline"
 
   - id: "rule.deterministic_order"
     kind: "rule"
     modal: "MUST"
     label: "Deterministic ordering"
-    text: >
-      Where ordering is required, implementations MUST order by explicit integer 'order' if present;
+    text: |
+      Where ordering is required, implementations **MUST** order by explicit integer `order` if present;
       otherwise by lexicographic ordering of node IDs; otherwise by lexicographic ordering of edge keys.
+    attrs:
+      - key: "text.format"
+        value: "md-inline"
 
   - id: "rule.supersession"
     kind: "rule"
     modal: "MUST"
     label: "Supersession is explicit"
-    text: >
-      Supersession MUST be expressed explicitly via 'supersedes' edges (or 'amends' for partial changes).
+    text: |
+      Supersession **MUST** be expressed explicitly via `supersedes` edges (or `amends` for partial changes).
       Implicit supersession by timestamps or filenames is forbidden.
+    attrs:
+      - key: "text.format"
+        value: "md-inline"
 
   - id: "rule.meta_usage"
     kind: "rule"
     modal: "SHOULD"
     label: "Meta usage"
-    text: >
-      Non-authoritative overlays (commentary, provenance, index, CI receipts) SHOULD be carried in GF0 meta
-      as MetaGraphs, which are structurally independent from the parent graph.
+    text: |
+      Non-authoritative overlays (commentary, provenance, index, CI receipts) **SHOULD** be carried in `GF0.meta`
+      as `MetaGraph`s, which are structurally independent from the parent graph.
+    attrs:
+      - key: "text.format"
+        value: "md-inline"
 
   - id: "rule.extensions"
     kind: "rule"
