@@ -47,42 +47,62 @@ where $v:U\\to \\mathbb{V}$ is a valuation map and $\\chi:\\mathbb{V}\\times\\Th
 
 **Σ-A1 Well-typedness** _(normative)_
 
-**(Well-typedness).** All maps are measurable/continuous as needed; $\\chi$ is total.
+\\textbf{(Well-typedness).} All maps are measurable/continuous as needed; $\\chi$ is total.
 
 **Σ-A2 Posting / Records-only** _(normative)_
 
-**(Posting / Records-only).** For any run on $u\\in U$, the record $\\kappa\\in\\mathcal{R}$ contains $(v(u),\\Theta,\\beta,C,\\Pi,P_n,\\Gamma)$, and the decision equals \\begin{equation} \\chi^\\ast(u;\\kappa) \\;=\\; \\chi\\big(v(u),\\Theta,\\beta\\big), \\end{equation} with no dependence on unposted data.
+\\textbf{(Posting / Records-only).} For any run on $u\\in U$, the record $\\kappa\\in\\mathcal{R}$ contains $(v(u),\\Theta,\\beta,C,\\Pi,P_n,\\Gamma)$, and the decision equals
+\\begin{equation}
+  \\chi^\\ast(u;\\kappa) \\;=\\; \\chi\\big(v(u),\\Theta,\\beta\\big),
+\\end{equation}
+with no dependence on unposted data.
 
 **Σ-A3 Benign invariance** _(normative)_
 
-**(Benign invariance).** Let $(\\pi,p)\\in \\Pi\\times P_n$ act on the measurement/evaluation pathway to yield $v_{\\pi,p}(u)$. Define \\begin{equation} W(u)\\;:=\\;\\sup*{(\\pi,p)}\\; w\\!\\big(v*{\\pi,p}(u),\\,v*{\\pi*0,p*0}(u)\\big). \\end{equation} If $W(u)\\preceq \\beta$ then $\\chi\\big(v*{\\pi,p}(u),\\Theta,\\beta\\big)=\\chi\\big(v*{\\pi*0,p_0}(u),\\Theta,\\beta\\big)$.
+\\textbf{(Benign invariance).} Let $(\\pi,p)\\in \\Pi\\times P_n$ act on the measurement/evaluation pathway to yield $v_{\\pi,p}(u)$. Define
+\\begin{equation}
+  W(u)\\;:=\\;\\sup_{(\\pi,p)}\\; w\\!\\big(v_{\\pi,p}(u),\\,v_{\\pi_0,p_0}(u)\\big).
+\\end{equation}
+If $W(u)\\preceq \\beta$ then $\\chi\\big(v_{\\pi,p}(u),\\Theta,\\beta\\big)=\\chi\\big(v_{\\pi_0,p_0}(u),\\Theta,\\beta\\big)$.
 
 **Σ-A4 Minimal sufficiency under capacity** _(normative)_
 
-**(Minimal sufficiency under capacity).** Among valuations preserving decisions under posted $(\\Theta,\\beta)$, $v$ is minimal w.r.t.\\ $C$: \\begin{equation} \\forall v'\\; \\big(\\chi\\!\\circ v'=\\chi\\!\\circ v\\big)\\ \\Rightarrow\\ \\mathrm{cost}(v')\\ \\succeq\\ \\mathrm{cost}(v)\\quad\\text{subject to }C. \\end{equation}
+\\textbf{(Minimal sufficiency under capacity).} Among valuations preserving decisions under posted $(\\Theta,\\beta)$, $v$ is minimal w.r.t.\\ $C$:
+\\begin{equation}
+  \\forall v'\\; \\big(\\chi\\!\\circ v'=\\chi\\!\\circ v\\big)\\ \\Rightarrow\\ \\mathrm{cost}(v')\\ \\succeq\\ \\mathrm{cost}(v)\\quad\\text{subject to }C.
+\\end{equation}
 
 **Σ-A5 Reflexive reproducibility** _(normative)_
 
-**(Reflexive reproducibility).** There exists an admissible, independently realized $v'$ (different numeric/route) such that \\begin{equation} \\chi\\big(v(u),\\Theta,\\beta\\big)\\;=\\;\\chi\\big(v'(u),\\Theta,\\beta\\big), \\end{equation} with both posted in $\\kappa$ (self-warrant).
+\\textbf{(Reflexive reproducibility).} There exists an admissible, independently realized $v'$ (different numeric/route) such that
+\\begin{equation}
+  \\chi\\big(v(u),\\Theta,\\beta\\big)\\;=\\;\\chi\\big(v'(u),\\Theta,\\beta\\big),
+\\end{equation}
+with both posted in $\\kappa$ (self-warrant).
 
 **Σ-A6 Determinism & idempotence** _(normative)_
 
-**(Determinism & idempotence).** For fixed $\\big(v(u),\\Theta,\\beta\\big)$, the decision $\\chi$ is unique and idempotent.
+\\textbf{(Determinism & idempotence).} For fixed $\\big(v(u),\\Theta,\\beta\\big)$, the decision $\\chi$ is unique and idempotent.
 
 **Σ-A7 Monotonicity** _(normative)_
 
-**(Monotonicity).** Tightening floors or budgets cannot rescue a failure by hidden dependence: \\begin{equation} \\theta\\preceq \\theta',\\ \\beta'\\preceq \\beta\\;\\Rightarrow\\ \\chi(v,\\theta,\\beta)=1 \\ \\Rightarrow\\ \\chi(v,\\theta',\\beta')\\in\\{0,1\\}\\ \\text{with no hidden rescue.} \\end{equation}
+\\textbf{(Monotonicity).} Tightening floors or budgets cannot rescue a failure by hidden dependence:
+\\begin{equation}
+  \\theta\\preceq \\theta',\\ \\beta'\\preceq \\beta\\;\\Rightarrow\\
+  \\chi(v,\\theta,\\beta)=1 \\ \\Rightarrow\\ \\chi(v,\\theta',\\beta')\\in\\{0,1\\}\\ \\text{with no hidden rescue.}
+\\end{equation}
 
 **Σ-A8 Isomorphism invariance** _(normative)_
 
-**(Isomorphism invariance).** If a frame $\\pi$ induces a structure-preserving isomorphism on representation, decisions are invariant.
+\\textbf{(Isomorphism invariance).} If a frame $\\pi$ induces a structure-preserving isomorphism on representation, decisions are invariant.
 
 ## Conformance (Lawful Record)
 <a id="section-6-conformance-4e35257c"></a>
 
 **Σ-lawful record checklist** _(normative)_
 
-A record $\\kappa \\in \\mathcal{R}$ is *$\\Sigma$-lawful* iff it includes: 1. **Contract:** $\\Theta,\\beta,C,\\Pi,P_n,\\Gamma$ (with any guards like $\\epsilon$). 2. **Valuation:** $v(u)$ (decision-relevant coordinates posted). 3. **Decision:** $\\chi\\big(v(u),\\Theta,\\beta\\big)$ and a reason enumerating passed/failed predicates. 4. **Invariance evidence:** wobble metrics and the realizing worst-case $(\\pi,p)$. 5. **Reflexive warrant:** independent $v'(u)$ and agreement of $\\chi$. 6. **Canonicalization:** canonical bytes, digest $d$, and optional chain root for append-only books.
+A record $\\kappa \\in \\mathcal{R}$ is \\emph{$\\Sigma$-lawful} iff it includes:
+1. \\textbf{Contract:} $\\Theta,\\beta,C,\\Pi,P_n,\\Gamma$ (with any guards like $\\epsilon$). 2. \\textbf{Valuation:} $v(u)$ (decision-relevant coordinates posted). 3. \\textbf{Decision:} $\\chi\\big(v(u),\\Theta,\\beta\\big)$ and a reason enumerating passed/failed predicates. 4. \\textbf{Invariance evidence:} wobble metrics and the realizing worst-case $(\\pi,p)$. 5. \\textbf{Reflexive warrant:} independent $v'(u)$ and agreement of $\\chi$. 6. \\textbf{Canonicalization:} canonical bytes, digest $d$, and optional chain root for append-only books.
 
 ## Morphisms of Systemics
 <a id="section-7-morphisms-6f87b55c"></a>

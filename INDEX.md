@@ -9,7 +9,7 @@ Human-readable entry points into the `framecodex` corpus.
   - PDF (Pages): https://davidtswanson903.github.io/framecodex/pub/systemics/sigma-composition-k1/v0.1.0/out/sigma-composition-k1-v0.1.0.pdf
   - Bundle path: `pub/systemics/sigma-composition-k1/v0.1.0`
 
-- **Systemics Σ — Minimal Specification (K1)**
+- **Systemics $\Sigma$ --- Minimal Specification**
   - Frame: [spec://domains/systemics/sigma-k1](frames/domains/spec/systemics/sigma-k1/v0.1.0/frame.yml)
   - PDF (Pages): https://davidtswanson903.github.io/framecodex/pub/systemics/sigma-k1/v0.1.0/out/sigma-k1-v0.1.0.pdf
   - Bundle path: `pub/systemics/sigma-k1/v0.1.0`
