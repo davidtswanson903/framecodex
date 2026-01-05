@@ -295,3 +295,37 @@ nodes:
       def f(x: int) -> int:
           return x + 1
       ```
+
+# Add explicit contains edges so the DocIR renderer can traverse a proper document spine.
+edges:
+  # Root contains
+  - { from: "law://repo/text/inline-markup-k1", to: "title.0", type: "contains" }
+  - { from: "law://repo/text/inline-markup-k1", to: "ref.gf0-k1", type: "contains" }
+  - { from: "law://repo/text/inline-markup-k1", to: "ref.lawframe-k1", type: "contains" }
+  - { from: "law://repo/text/inline-markup-k1", to: "ref.frameurl-k1", type: "contains" }
+  - { from: "law://repo/text/inline-markup-k1", to: "ref.repo-law-k1", type: "contains" }
+  - { from: "law://repo/text/inline-markup-k1", to: "ref.validator", type: "contains" }
+  - { from: "law://repo/text/inline-markup-k1", to: "ref.docir", type: "contains" }
+  - { from: "law://repo/text/inline-markup-k1", to: "ref.render-md-doc", type: "contains" }
+  - { from: "law://repo/text/inline-markup-k1", to: "ref.render-tex-doc", type: "contains" }
+
+  - { from: "law://repo/text/inline-markup-k1", to: "section.1.charter", type: "contains" }
+  - { from: "law://repo/text/inline-markup-k1", to: "section.2.modes", type: "contains" }
+  - { from: "law://repo/text/inline-markup-k1", to: "section.3.allowed", type: "contains" }
+  - { from: "law://repo/text/inline-markup-k1", to: "section.3.1.examples", type: "contains" }
+  - { from: "law://repo/text/inline-markup-k1", to: "section.4.disallowed", type: "contains" }
+  - { from: "law://repo/text/inline-markup-k1", to: "section.5.validation", type: "contains" }
+  - { from: "law://repo/text/inline-markup-k1", to: "section.6.rendering", type: "contains" }
+  - { from: "law://repo/text/inline-markup-k1", to: "section.7.integration", type: "contains" }
+  - { from: "law://repo/text/inline-markup-k1", to: "section.8.changelog", type: "contains" }
+
+  # Section contents
+  - { from: "section.1.charter", to: "charter.1", type: "contains" }
+  - { from: "section.2.modes", to: "modes.1", type: "contains" }
+  - { from: "section.3.allowed", to: "allowed.1", type: "contains" }
+  - { from: "section.3.1.examples", to: "examples.1", type: "contains" }
+  - { from: "section.4.disallowed", to: "disallowed.1", type: "contains" }
+  - { from: "section.5.validation", to: "validation.1", type: "contains" }
+  - { from: "section.6.rendering", to: "rendering.1", type: "contains" }
+  - { from: "section.7.integration", to: "integration.1", type: "contains" }
+  - { from: "section.8.changelog", to: "changelog.1", type: "contains" }

@@ -1,29 +1,32 @@
 # InlineMarkup-K1 — Deterministic Inline/Block Markup for Freeform Text
 <a id="law-repo-text-inline-markup-k1-6221b519"></a>
 
-## section
-<a id="kind-section-0776698d"></a>
+## Charter
+<a id="section-1-charter-6790fc7e"></a>
 
-> **unhandled-node**: section section.1.charter
+## Text Format Modes
+<a id="section-2-modes-0d54ca89"></a>
 
-> **unhandled-node**: section section.2.modes
+## Allowed Constructs (v0.1)
+<a id="section-3-allowed-c2fad31a"></a>
 
-> **unhandled-node**: section section.3.allowed
+## Disallowed Constructs
+<a id="section-4-disallowed-fda64806"></a>
 
-> **unhandled-node**: section section.4.disallowed
+## Validation Requirements
+<a id="section-5-validation-ae9a4b61"></a>
 
-> **unhandled-node**: section section.5.validation
+## Deterministic Rendering Requirements
+<a id="section-6-rendering-7b891664"></a>
 
-> **unhandled-node**: section section.6.rendering
+## Repo Integration
+<a id="section-7-integration-114f38a5"></a>
 
-> **unhandled-node**: section section.7.integration
+## Changelog
+<a id="section-8-changelog-4986b171"></a>
 
-> **unhandled-node**: section section.8.changelog
-
-> **unhandled-node**: section section.3.1.examples
-
-## clause
-<a id="kind-clause-32b93685"></a>
+## Examples
+<a id="section-3-1-examples-3446b206"></a>
 
 **Example: InlineMarkup-K1** _(normative)_
 
@@ -37,46 +40,3 @@ Block code fence:
 def f(x: int) -> int:
     return x + 1
 ```
-
-## paragraph
-<a id="kind-paragraph-8cba1452"></a>
-
-> **unhandled-node**: paragraph allowed.1
-
-> **unhandled-node**: paragraph changelog.1
-
-> **unhandled-node**: paragraph charter.1
-
-> **unhandled-node**: paragraph disallowed.1
-
-> **unhandled-node**: paragraph integration.1
-
-> **unhandled-node**: paragraph modes.1
-
-> **unhandled-node**: paragraph rendering.1
-
-> **unhandled-node**: paragraph validation.1
-
-## reference
-<a id="kind-reference-56a855d3"></a>
-
-> **unhandled-node**: reference ref.docir
-
-> **unhandled-node**: reference ref.frameurl-k1
-
-> **unhandled-node**: reference ref.gf0-k1
-
-> **unhandled-node**: reference ref.lawframe-k1
-
-> **unhandled-node**: reference ref.render-md-doc
-
-> **unhandled-node**: reference ref.render-tex-doc
-
-> **unhandled-node**: reference ref.repo-law-k1
-
-> **unhandled-node**: reference ref.validator
-
-## title
-<a id="kind-title-8dd9c344"></a>
-
-> **unhandled-node**: title title.0
