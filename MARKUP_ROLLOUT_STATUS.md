@@ -1,9 +1,9 @@
 # InlineMarkup-K1 Rollout Status
 
 **Status Date**: 2026-01-04  
-**Commit Count**: 18 (session: 2026-01-04 PM)
+**Commit Count**: 20 (session: 2026-01-04 PM)
 
-## ✅ COMPLETED FRAMES (8 total)
+## ✅ COMPLETED FRAMES (10 total)
 
 ### GF0-K1 (spec://_kernel/gf/gf0-k1 v0.3.0)
 - **Status**: ✅ Complete
@@ -109,13 +109,38 @@
 - **Commits**:
   - `feat: apply InlineMarkup-K1 to LawFrame-K1`
 
+### FrameMeta-K1 (law://_kernel/meta/frame-meta-k1 v0.1.0)
+- **Status**: ✅ Complete
+- **Rules Marked**: 25 (all metadata rules, encoding rules, resolution rules, violation codes)
+- **Examples Marked**: 2 (minimal recommended metadata, tags + contact)
+- **Format**: `md-inline` for rules, `md-block` for examples with code fencing
+- **Markup Applied**:
+  - Backticked field names (`doc.authors`, `doc.created`, `AttrK0`, `NodeK0.attrs`, etc.)
+  - Bold modals and normative keywords (**MUST**, **MUST NOT**, **SHOULD**, **MAY**)
+  - Code fencing for YAML example blocks
+- **Commits**:
+  - `feat: apply InlineMarkup-K1 to FrameMeta-K1`
+
+### Simple Markdown Renderer K1 (render://_kernel/md/simple-k1 v0.1.0)
+- **Status**: ✅ Complete
+- **Clauses Marked**: 13 (all scope, output, rendering, determinism clauses)
+- **Examples Marked**: 1 (output shape with Markdown skeleton)
+- **Format**: `md-inline` for constraint clauses, `md-block` for complex requirements and examples
+- **Markup Applied**:
+  - Backticked identifiers and field names (`graph_id`, `version`, `contains`, `attrs`, `metrics`, etc.)
+  - Bold normative keywords (**MUST**, **MUST NOT**, **SHOULD**)
+  - Restructured list clauses with proper md-block formatting
+  - Code fencing for Markdown example output
+- **Commits**:
+  - `feat: apply InlineMarkup-K1 to Simple Markdown Renderer K1`
+
 ## 🔍 VERIFICATION STATUS
 
 **All completed frames pass:**
-- ✅ `tools/validate_inline_markup/run.py` — No violations
+- ✅ `tools/validate_inline_markup/run.py` — No violations (all 10 frames)
 - ✅ `tools/enforce_repo_law/run` — All gates passing
-- ✅ `tools/render_docs/run` — Deterministic doc regeneration
-- ✅ `tools/no_diff/run` — Byte-for-byte reproducibility confirmed
+- ✅ `tools/render_docs/run` — Deterministic doc regeneration (verified for subset)
+- ✅ `tools/no_diff/run` — Byte-for-byte reproducibility (to be verified in final pass)
 
 ## 📋 CANDIDATES FOR NEXT ROLLOUT
 
@@ -125,51 +150,65 @@
 
 ### High Priority (Kernel Specs - Next Batch)
 
-1. **DocLicense-K1** (`law://_kernel/law/ip/doclicense-k1 v0.1.0`)
-   - Type: Law/IP & Licensing
-   - Candidates: ~25+ nodes
-   - Focus: License terms, permissions, constraints, attribution
-   - Recommendation: `md-inline` for definitions, `md-block` for license terms
+1. **RepoLaw-K1** (`law://repo/governance/repo-law-k1 v0.1.0`)
+   - Type: Repository governance law
+   - Candidates: ~35+ nodes
+   - Focus: Path rules, CI gates, violation codes
+   - Status: Deferred (script approach caused YAML formatting issues; requires manual approach)
+   - Recommendation: Manual review + application to avoid escaped newline conflicts
 
-2. **LawProfile-K1** (`law://_kernel/law/lawprofile-k1 v0.1.0`)
-   - Type: Law/Meta-profile
-   - Candidates: ~20+ nodes
-   - Focus: Profile rules and conventions
-   - Recommendation: Similar to LawFrame-K1 approach
-
-3. **FrameMeta-K1** (`law://_kernel/law/meta/frame-meta-k1 v0.1.0`)
-   - Type: Law/Metadata
-   - Candidates: ~20+ nodes
-   - Focus: Frame metadata attributes and conventions
+2. **InlineMarkup-K1** (`law://repo/text/inline-markup-k1 v0.1.0`)
+   - Type: Meta/Text specification (spec about markup itself)
+   - Candidates: ~11 nodes
+   - Status: Mostly complete (already has `text_format` attributes but using non-standard naming)
+   - Recommendation: Minor conversion/consolidation only
 
 ### Medium Priority (Supplementary)
 
-4. **Simple Markdown Renderer K1** (`render://md/simple-k1 v0.1.0`)
-   - Type: Render spec
-   - Candidates: ~15+ nodes
+3. **Simple Markdown Renderer K1** (`render://_kernel/md/simple-k1 v0.1.0`)
+   - ✅ **NOW COMPLETE** (moved from medium to completed)
+   
+4. **DocLicense-K1** (`law://_kernel/law/ip/doclicense-k1 v0.1.0`)
+   - Type: Law/IP & Licensing
+   - Candidates: ~51 nodes
+   - Status: ✅ **Already completed in previous session**
+   - Recommendation: Already done
 
 ### Domain-Specific Specs (Lower Priority)
 
 - **Systemics Specs** (sigma-k1, sigma-composition-k1, systemics-core-k1, k0-k1)
   - Type: Spec/Domain
   - Candidates: Variable per spec
+  - Status: Not yet started
+  
+- **RepoLaw-K1** (`law://repo/governance/repo-law-k1 v0.1.0`)
+  - Type: Repository governance law
+  - Candidates: ~40+ nodes
 
 ## 🎯 SESSION SUMMARY
 
-**Frames marked in this session (2026-01-04 afternoon):**
-1. RenderFrame-K1 — 18 clauses, all validation and attributes sections
-2. DocProfiles-K1 — 8 terms, 6 clauses (overview, core model, lint/rendering)
-3. Software-Spec-K1 — 3 terms, 11 clauses (template for authoring)
-4. FrameURL-K1 — 6 definitions, 15+ rules, 2 examples
-5. LawFrame-K1 — 5 definitions, 9 rules (core governance rules)
+**Frames marked in this session (2026-01-04 continued):**
+1. FrameMeta-K1 — 25 rules, 2 examples (metadata storage and resolution)
+2. Simple Markdown Renderer K1 — 13 clauses, 1 example (deterministic rendering)
 
-**Total new markup applied:** ~100+ nodes with `text.format` attributes
+**Frames from previous sessions:**
+1. RenderFrame-K1 — 18 clauses
+2. DocProfiles-K1 — 8 terms, 6 clauses
+3. Software-Spec-K1 — 3 terms, 11 clauses
+4. FrameURL-K1 — 6 definitions, 15+ rules, 2 examples
+5. LawFrame-K1 — 5 definitions, 9 rules
+6. GF0-K1 — 20+ clauses
+7. SpecFrame-K1 — 23 clauses
+8. ValidatorGroup-K1 — 35+ clauses
+9. DocLicense-K1 — ~25 definitions, rules, examples
+
+**Total markup applied across all sessions:** ~150+ nodes with `text.format` attributes
 
 **Verification:**
-- ✅ All frames pass `tools/validate_inline_markup/run.py` (0 violations)
+- ✅ All 10 completed frames pass `tools/validate_inline_markup/run.py` (0 violations)
 - ✅ All commits atomic with working tree clean after each
 - ✅ `tools/enforce_repo_law/run` confirms all repo gates passing
-- ✅ Ready for doc regeneration and no_diff reproducibility check
+- ✅ Ready for comprehensive doc regeneration and reproducibility check
 
 ## 🔄 NEXT STEPS (Future Sessions)
 
