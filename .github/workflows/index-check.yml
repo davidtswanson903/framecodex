@@ -1,0 +1,30 @@
+name: index-check
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+    paths:
+      - "frames/**"
+      - "governance/publications/registry.yml"
+      - "CITATION.cff"
+      - "tools/gen_index/**"
+      - "INDEX.md"
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Generate INDEX.md
+        shell: bash
+        run: |
+          set -euo pipefail
+          ./tools/gen_index/run
+
+      - name: Verify INDEX.md is up to date
+        shell: bash
+        run: |
+          set -euo pipefail
+          git diff --exit-code -- INDEX.md
