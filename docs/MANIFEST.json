@@ -41,6 +41,11 @@
       "version": "0.1.0"
     },
     {
+      "graph_id": "law://repo/text/inline-markup-k1",
+      "path": "frames/repo/law/text/inline-markup-k1/v0.1.0/frame.yml",
+      "version": "0.1.0"
+    },
+    {
       "graph_id": "render://_kernel/md/simple-k1",
       "path": "frames/_kernel/render/md/simple-k1/v0.1.0/frame.yml",
       "version": "0.1.0"
@@ -126,6 +131,11 @@
     {
       "graph_id": "law://repo/governance/repo-law-k1",
       "path": "docs/repo/law/governance/repo-law-k1/v0.1.0/README.md",
+      "version": "0.1.0"
+    },
+    {
+      "graph_id": "law://repo/text/inline-markup-k1",
+      "path": "docs/repo/law/text/inline-markup-k1/v0.1.0/README.md",
       "version": "0.1.0"
     },
     {

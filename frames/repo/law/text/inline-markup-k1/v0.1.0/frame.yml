@@ -1,0 +1,297 @@
+graph_id: "law://repo/text/inline-markup-k1"
+version: "0.1.0"
+
+attrs:
+  - { key: "domain", value: "repo" }
+  - { key: "depends_on", value: "spec.gf0-k1" }
+  - { key: "depends_on", value: "law.lawframe-k1" }
+  - { key: "depends_on", value: "law://_kernel/id/frameurl-k1" }
+  - { key: "depends_on", value: "law://repo/governance/repo-law-k1" }
+
+nodes:
+  # ---------------------------------------------------------------------------
+  # Root
+  # ---------------------------------------------------------------------------
+  - id: "law://repo/text/inline-markup-k1"
+    kind: "law"
+    profile: "lawframe-k1"
+    status: "normative"
+    title: "InlineMarkup-K1 — Deterministic Inline/Block Markup for Freeform Text"
+    summary: >
+      Defines InlineMarkup-K1: a deterministic, safe, normative markup subset for GF0 freeform
+      text fields. Specifies allowed/disallowed constructs, validation requirements, and
+      deterministic projections to Markdown/LaTeX via DocIR.
+
+    law_id: "inline-markup-k1"
+    law_version: "0.1.0"
+
+  # ---------------------------------------------------------------------------
+  # References
+  # ---------------------------------------------------------------------------
+  - id: "ref.gf0-k1"
+    kind: "reference"
+    status: "informative"
+    label: "GF0 K1"
+    target: "spec://_kernel/gf/gf0-k1"
+
+  - id: "ref.lawframe-k1"
+    kind: "reference"
+    status: "informative"
+    label: "LawFrame K1"
+    target: "law://_kernel/law/lawframe-k1"
+
+  - id: "ref.frameurl-k1"
+    kind: "reference"
+    status: "informative"
+    label: "FrameURL K1"
+    target: "law://_kernel/id/frameurl-k1"
+
+  - id: "ref.repo-law-k1"
+    kind: "reference"
+    status: "informative"
+    label: "RepoLaw K1"
+    target: "law://repo/governance/repo-law-k1"
+
+  - id: "ref.validator"
+    kind: "reference"
+    status: "informative"
+    label: "InlineMarkup-K1 validator"
+    target: "tools/validate_inline_markup"
+
+  - id: "ref.docir"
+    kind: "reference"
+    status: "informative"
+    label: "DocIR render pipeline"
+    target: "tools/render_docir"
+
+  - id: "ref.render-md-doc"
+    kind: "reference"
+    status: "informative"
+    label: "DocIR → Markdown renderer"
+    target: "tools/render_md_doc"
+
+  - id: "ref.render-tex-doc"
+    kind: "reference"
+    status: "informative"
+    label: "DocIR → LaTeX renderer"
+    target: "tools/render_tex_doc"
+
+  # ---------------------------------------------------------------------------
+  # Titles/Sections
+  # ---------------------------------------------------------------------------
+  - id: "title.0"
+    kind: "title"
+    status: "normative"
+    text: "InlineMarkup-K1"
+
+  - id: "section.1.charter"
+    kind: "section"
+    status: "normative"
+    title: "Charter"
+    order: 1
+
+  - id: "section.2.modes"
+    kind: "section"
+    status: "normative"
+    title: "Text Format Modes"
+    order: 2
+
+  - id: "section.3.allowed"
+    kind: "section"
+    status: "normative"
+    title: "Allowed Constructs (v0.1)"
+    order: 3
+
+  - id: "section.4.disallowed"
+    kind: "section"
+    status: "normative"
+    title: "Disallowed Constructs"
+    order: 4
+
+  - id: "section.5.validation"
+    kind: "section"
+    status: "normative"
+    title: "Validation Requirements"
+    order: 5
+
+  - id: "section.6.rendering"
+    kind: "section"
+    status: "normative"
+    title: "Deterministic Rendering Requirements"
+    order: 6
+
+  - id: "section.7.integration"
+    kind: "section"
+    status: "normative"
+    title: "Repo Integration"
+    order: 7
+
+  - id: "section.8.changelog"
+    kind: "section"
+    status: "normative"
+    title: "Changelog"
+    order: 8
+
+  - id: "section.3.1.examples"
+    kind: "section"
+    status: "normative"
+    title: "Examples"
+    order: 31
+
+  # ---------------------------------------------------------------------------
+  # Content
+  # ---------------------------------------------------------------------------
+  - id: "charter.1"
+    kind: "paragraph"
+    status: "normative"
+    section: "section.1.charter"
+    text_format: "md-block"
+    text: |
+      InlineMarkup-K1 is a **deterministic** and **constrained** markup subset for GF0 freeform
+      text fields.
+
+      It is designed to:
+
+      ```
+      - eliminate ambiguous CommonMark behaviors
+      - guarantee deterministic rendering across Markdown and LaTeX
+      - prevent unsafe raw-HTML injection in documentation outputs
+      ```
+
+      InlineMarkup-K1 is intentionally small; authors MUST prefer frame structure (sections,
+      paragraphs, lists as structure where available) over rich Markdown syntax.
+
+  - id: "modes.1"
+    kind: "paragraph"
+    status: "normative"
+    section: "section.2.modes"
+    text_format: "md-block"
+    text: |
+      A freeform text field that participates in InlineMarkup-K1 MUST declare a `text.format`
+      mode:
+
+      ```
+      - plain: treat as raw text (no markup parsing)
+      - md-inline: parse as a single paragraph with inline constructs
+      - md-block: parse paragraphs and fenced code blocks; inline constructs allowed inside paragraphs
+      ```
+
+  - id: "allowed.1"
+    kind: "paragraph"
+    status: "normative"
+    section: "section.3.allowed"
+    text_format: "md-block"
+    text: |
+      Inline constructs (v0.1):
+
+      ```
+      - strong: **x**
+      - emphasis: *x* or _x_
+      - inline code: `x`
+      - inline math: $x$
+      - links: [label](url)
+      ```
+
+      Block constructs (md-block only):
+
+      ```
+      - fenced code blocks: ```lang\n...\n```
+      - paragraphs separated by blank lines
+      ```
+
+  - id: "disallowed.1"
+    kind: "paragraph"
+    status: "normative"
+    section: "section.4.disallowed"
+    text_format: "md-block"
+    text: |
+      The following are disallowed under this law:
+
+      ```
+      - raw HTML tags (validator MUST reject HTML-tag-like sequences)
+      - headings, tables, and other rich Markdown block constructs
+      ```
+
+      Note: Angle brackets used for grammar/metasyntax (e.g., `<scheme>`) are not intrinsically
+      disallowed; only HTML-tag-like sequences are rejected.
+
+  - id: "validation.1"
+    kind: "paragraph"
+    status: "normative"
+    section: "section.5.validation"
+    text_format: "md-block"
+    text: |
+      The repository MUST validate InlineMarkup-K1 wherever it is enabled.
+
+      Minimum required violation codes (stable identifiers):
+
+      ```
+      - TEXT.E.HTML_DISALLOWED
+      - TEXT.E.BAD_TEXT_FORMAT
+      - TEXT.E.BAD_CODEFENCE
+      ```
+
+      Validation MUST be deterministic and MUST NOT depend on locale, time, network, or unstable
+      parser behaviors.
+
+  - id: "rendering.1"
+    kind: "paragraph"
+    status: "normative"
+    section: "section.6.rendering"
+    text_format: "md-block"
+    text: |
+      Render projections MUST be derived from a structured MarkupIR AST (not raw Markdown).
+
+      ```
+      - DocIR projection MUST include the MarkupIR structure for InlineMarkup-K1 fields
+      - Markdown rendering MUST be deterministic from MarkupIR
+      - LaTeX rendering MUST be deterministic from MarkupIR
+      ```
+
+  - id: "integration.1"
+    kind: "paragraph"
+    status: "normative"
+    section: "section.7.integration"
+    text_format: "md-block"
+    text: |
+      Repo enforcement MUST run InlineMarkup-K1 validation as part of repo law gates.
+
+      This law is intended to be applied under RepoLaw K1 (see: `law://repo/governance/repo-law-k1`).
+
+      Specifically:
+
+      ```
+      - tools/enforce_repo_law/run MUST execute tools/validate_inline_markup/run.py
+      - CI MUST fail if InlineMarkup-K1 validation fails
+      ```
+
+  - id: "changelog.1"
+    kind: "paragraph"
+    status: "normative"
+    section: "section.8.changelog"
+    text_format: "md-block"
+    text: |
+      - v0.1.0 (2026-01-04): initial normative definition and enforcement requirements.
+
+  - id: "examples.1"
+    kind: "clause"
+    status: "normative"
+    section: "section.3.1.examples"
+    label: "Example: InlineMarkup-K1"
+    text_format: "md-block"
+    text: |
+      This clause demonstrates InlineMarkup-K1 rendering across targets.
+
+      Inline:
+      - strong: **bold**
+      - emphasis: *emph*
+      - code: `x := 1`
+      - math: $E=mc^2$
+      - link: [FrameURL K1](law://_kernel/id/frameurl-k1)
+
+      Block code fence:
+
+      ```python
+      def f(x: int) -> int:
+          return x + 1
+      ```
