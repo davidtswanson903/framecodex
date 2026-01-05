@@ -56,10 +56,12 @@ jobs:
           export PAGER=cat
           export GIT_TERMINAL_PROMPT=0
 
+          mkdir -p out/tag-release/logs
+
           # Keep tag builds deterministic and non-hanging.
-          ./tools/run_with_timeout/run --seconds 600 -- ./tools/enforce_repo_law/run
-          ./tools/run_with_timeout/run --seconds 600 -- ./tools/validate_group/run
-          ./tools/run_with_timeout/run --seconds 600 -- ./tools/validate_references/run
+          ./tools/run_with_timeout/run --seconds 600 --out out/tag-release/logs/enforce_repo_law.txt -- ./tools/enforce_repo_law/run
+          ./tools/run_with_timeout/run --seconds 600 --out out/tag-release/logs/validate_group.txt -- ./tools/validate_group/run
+          ./tools/run_with_timeout/run --seconds 600 --out out/tag-release/logs/validate_references.txt -- ./tools/validate_references/run
 
       - name: Build publication artifacts (LaTeX + PDF + MANIFEST)
         shell: bash
