@@ -76,58 +76,79 @@ nodes:
     kind: "term"
     status: "normative"
     label: "doc_profile"
-    text: >
+    text: |
       A secondary profile selector used by tooling to apply conventions for a
       particular document type while remaining a valid SpecFrame K1 graph.
+    attrs:
+      - key: "text.format"
+        value: "md-inline"
 
   - id: "term.profile_rule"
     kind: "term"
     status: "normative"
     label: "ProfileRule"
-    text: >
-      A conventional rule attached to a doc_profile, typically expressed as
+    text: |
+      A conventional rule attached to a `doc_profile`, typically expressed as
       required sections, required properties, lint expectations, and rendering hints.
+    attrs:
+      - key: "text.format"
+        value: "md-inline"
 
   - id: "term.profile_id"
     kind: "term"
     status: "normative"
     label: "ProfileId"
-    text: >
-      A stable identifier string for a doc_profile (e.g. 'software_spec-k1').
+    text: |
+      A stable identifier string for a `doc_profile` (e.g., `software_spec-k1`).
+    attrs:
+      - key: "text.format"
+        value: "md-inline"
 
   # --- Clauses: Overview / Core Model ---------------------------------------
   - id: "clause.overview.intent"
     kind: "clause"
     status: "normative"
     label: "intent"
-    text: >
-      DocProfiles are conventions layered on SpecFrame K1 to support consistent
+    text: |
+      `DocProfile`s are conventions layered on SpecFrame K1 to support consistent
       authoring, deterministic rendering, and automated linting across many document types.
+    attrs:
+      - key: "text.format"
+        value: "md-inline"
 
   - id: "clause.core_model.profile_location"
     kind: "clause"
     status: "normative"
     label: "profile-location"
-    text: >
-      A document selects a DocProfile by providing 'doc_profile' as an attribute on
-      the root 'spec' node (id == graph_id). Tooling MAY ignore unknown doc_profile values.
+    text: |
+      A document selects a `DocProfile` by providing `doc_profile` as an attribute on
+      the root `spec` node (`id == graph_id`). Tooling **MAY** ignore unknown `doc_profile` values.
+    attrs:
+      - key: "text.format"
+        value: "md-inline"
 
   - id: "clause.core_model.profile_semantics"
     kind: "clause"
     status: "normative"
     label: "profile-semantics"
-    text: >
-      A doc_profile MUST NOT change the underlying SpecFrame K1 validity rules.
+    text: |
+      A `doc_profile` **MUST NOT** change the underlying SpecFrame K1 validity rules.
       It only adds conventions (required/recommended content and lint/render expectations).
+    attrs:
+      - key: "text.format"
+        value: "md-inline"
 
   - id: "clause.core_model.frame_metadata"
     kind: "clause"
     status: "informative"
     label: "frame-metadata"
-    text: >
-      Frame-level tags such as 'domain', 'depends_on', and publishing hints SHOULD be stored
-      in GraphFrameK0.attrs. MetaGraphs are reserved for auxiliary structural subgraphs
+    text: |
+      Frame-level tags such as `domain`, `depends_on`, and publishing hints **SHOULD** be stored
+      in `GraphFrameK0.attrs`. `MetaGraph`s are reserved for auxiliary structural subgraphs
       (indexes/layout/nav) per GF0.
+    attrs:
+      - key: "text.format"
+        value: "md-inline"
 
   # --- Profile Terms + Constraint Properties --------------------------------
 
@@ -135,7 +156,11 @@ nodes:
     kind: "term"
     status: "normative"
     label: "standard-k1"
-    text: "Normative standards and laws: MUST/SHOULD language, conformance and compliance focus."
+    text: |
+      Normative standards and laws: **MUST**/**SHOULD** language, conformance and compliance focus.
+    attrs:
+      - key: "text.format"
+        value: "md-inline"
 
   - id: "property.profile.standard-k1.required_sections"
     kind: "property"
@@ -162,7 +187,11 @@ nodes:
     kind: "term"
     status: "normative"
     label: "software_spec-k1"
-    text: "Software framework/module specs: APIs, data model, invariants, compatibility, tests."
+    text: |
+      Software framework/module specs: APIs, data model, invariants, compatibility, tests.
+    attrs:
+      - key: "text.format"
+        value: "md-inline"
 
   - id: "property.profile.software_spec-k1.required_sections"
     kind: "property"
@@ -193,7 +222,11 @@ nodes:
     kind: "term"
     status: "normative"
     label: "hardware_spec-k1"
-    text: "Hardware specs: interfaces/pinout, electrical/mechanical constraints, tolerances, tests."
+    text: |
+      Hardware specs: interfaces/pinout, electrical/mechanical constraints, tolerances, tests.
+    attrs:
+      - key: "text.format"
+        value: "md-inline"
 
   - id: "property.profile.hardware_spec-k1.required_sections"
     kind: "property"
@@ -211,7 +244,11 @@ nodes:
     kind: "term"
     status: "normative"
     label: "math_theory-k1"
-    text: "Math/theory docs: definitions, axioms, theorems, proofs, corollaries, examples."
+    text: |
+      Math/theory docs: definitions, axioms, theorems, proofs, corollaries, examples.
+    attrs:
+      - key: "text.format"
+        value: "md-inline"
 
   - id: "property.profile.math_theory-k1.conventions"
     kind: "property"
@@ -230,7 +267,11 @@ nodes:
     kind: "term"
     status: "normative"
     label: "guide-k1"
-    text: "How-to guides: prerequisites, steps, pitfalls, verification."
+    text: |
+      How-to guides: prerequisites, steps, pitfalls, verification.
+    attrs:
+      - key: "text.format"
+        value: "md-inline"
 
   - id: "property.profile.guide-k1.required_properties"
     kind: "property"
@@ -246,24 +287,36 @@ nodes:
     kind: "term"
     status: "normative"
     label: "playbook-k1"
-    text: "Operational playbooks: triggers, runbook steps, rollback, metrics, comms."
+    text: |
+      Operational playbooks: triggers, runbook steps, rollback, metrics, comms.
+    attrs:
+      - key: "text.format"
+        value: "md-inline"
 
   # --- Lint + Rendering rule placeholders -----------------------------------
   - id: "clause.lint.baseline"
     kind: "clause"
     status: "informative"
     label: "lint-baseline"
-    text: >
-      Tooling SHOULD lint for: (1) all normative nodes reachable from the spec root via 'contains',
-      (2) stable ordering (section.order then lexical fallback), (3) valid edge types and node kinds.
+    text: |
+      Tooling **SHOULD** lint for:
+        1. all normative nodes reachable from the spec root via `contains`
+        2. stable ordering (`section.order` then lexical fallback)
+        3. valid edge types and node kinds
+    attrs:
+      - key: "text.format"
+        value: "md-block"
 
   - id: "clause.rendering.baseline"
     kind: "clause"
     status: "informative"
     label: "render-baseline"
-    text: >
-      Rendering is implementation-defined but SHOULD be deterministic: same input graph -> same output files.
-      Common render products: per-spec README, per-section pages, glossary from term nodes, and backlinks from refs.
+    text: |
+      Rendering is implementation-defined but **SHOULD** be deterministic: same input graph → same output files.
+      Common render products: per-spec README, per-section pages, glossary from `term` nodes, and backlinks from refs.
+    attrs:
+      - key: "text.format"
+        value: "md-inline"
 
 edges:
   # Root structure

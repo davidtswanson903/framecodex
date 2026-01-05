@@ -86,71 +86,89 @@ nodes:
     kind: "term"
     status: "normative"
     label: "RenderFrameK1"
-    text: >
-      A RenderFrame is a GF0 graph intended to live as a MetaGraph under a source graph's
-      meta list. Its root node has kind='render_plan' and profile='renderframe-k1'.
+    text: |
+      A RenderFrame is a GF0 graph intended to live as a `MetaGraph` under a source graph's
+      `meta` list. Its root node has `kind == render_plan` and `profile == renderframe-k1`.
+    attrs:
+      - { key: "text.format", value: "md-inline" }
 
   - id: "term.render_plan"
     kind: "term"
     status: "normative"
     label: "RenderPlan"
-    text: >
+    text: |
       The root node of a RenderFrame. A plan declares selection scope, rule resolution,
       and one or more render products.
+    attrs:
+      - { key: "text.format", value: "md-inline" }
 
   - id: "term.render_product"
     kind: "term"
     status: "normative"
     label: "RenderProduct"
-    text: >
-      A named output unit produced by a plan (e.g. one file, one string, one stream).
+    text: |
+      A named output unit produced by a plan (e.g., one file, one string, one stream).
       Products are made of ordered rules.
+    attrs:
+      - { key: "text.format", value: "md-inline" }
 
   - id: "term.render_rule"
     kind: "term"
     status: "normative"
     label: "RenderRule"
-    text: >
-      A rule binds a selector to an emitter. During traversal, applicable rules determine
+    text: |
+      A rule binds a `selector` to an `emitter`. During traversal, applicable rules determine
       how a source node is rendered to text.
+    attrs:
+      - { key: "text.format", value: "md-inline" }
 
   - id: "term.selector"
     kind: "term"
     status: "normative"
     label: "Selector"
-    text: >
+    text: |
       A predicate object that matches source nodes (and optionally local edge context).
       Selectors are intentionally simple and deterministic.
+    attrs:
+      - { key: "text.format", value: "md-inline" }
 
   - id: "term.emitter"
     kind: "term"
     status: "normative"
     label: "Emitter"
-    text: >
-      An emitter produces text by applying a template and optional transforms.
+    text: |
+      An emitter produces text by applying a `template` and optional `transform`s.
+    attrs:
+      - { key: "text.format", value: "md-inline" }
 
   - id: "term.template"
     kind: "term"
     status: "normative"
     label: "Template"
-    text: >
+    text: |
       A text template with placeholders. Placeholder semantics are deterministic but
-      implementation-defined; missing fields MUST be handled by an explicit policy.
+      implementation-defined; missing fields **MUST** be handled by an explicit policy.
+    attrs:
+      - { key: "text.format", value: "md-inline" }
 
   - id: "term.transform"
     kind: "term"
     status: "normative"
     label: "Transform"
-    text: >
+    text: |
       A pure text-to-text transform (escape, indent, wrap, join, etc.) referenced by emitters.
+    attrs:
+      - { key: "text.format", value: "md-inline" }
 
   - id: "term.render_predicate"
     kind: "term"
     status: "normative"
     label: "RenderPredicate"
-    text: >
+    text: |
       A single match condition inside a selector, expressed as a short string DSL or a
       structured list (implementation-defined, but must be deterministic).
+    attrs:
+      - { key: "text.format", value: "md-inline" }
 
   # --- Properties: allowed kinds/edges in RenderFrames -----------------------
   - id: "property.renderframe.node_kinds"
@@ -192,224 +210,289 @@ nodes:
     kind: "clause"
     status: "normative"
     label: "Intent"
-    text: >
+    text: |
       RenderFrame K1 specifies a portable, deterministic plan for rendering graphs into text.
-      The plan MAY tag outputs with a 'format' string (e.g. 'markdown', 'latex'), but the core
+      The plan **MAY** tag outputs with a `format` string (e.g., `markdown`, `latex`), but the core
       semantics are purely text-based.
+    attrs:
+      - { key: "text.format", value: "md-inline" }
 
   - id: "clause.overview.meta_usage"
     kind: "clause"
     status: "normative"
     label: "RenderFrames are MetaGraphs"
-    text: >
-      A RenderFrame is intended to be carried as a GF0 MetaGraph under the 'meta' list of a
+    text: |
+      A RenderFrame is intended to be carried as a GF0 `MetaGraph` under the `meta` list of a
       source graph. This follows GF0's intent for meta: attach auxiliary views, layouts, and
       indexes without changing the primary frame.
+    attrs:
+      - { key: "text.format", value: "md-inline" }
 
   # --- Clauses: Model --------------------------------------------------------
   - id: "clause.model.definition"
     kind: "clause"
     status: "normative"
     label: "Definition"
-    text: >
+    text: |
       A RenderFrame is any GF0 graph that satisfies:
-        (1) It is a valid GraphFrameK0 (graph_id/version/attrs/nodes/edges/meta present in canonical form);
-        (2) It contains exactly one root node with id==graph_id, kind=='render_plan';
-        (3) That root node has profile=='renderframe-k1'.
+        (1) It is a valid `GraphFrameK0` (`graph_id`/`version`/`attrs`/`nodes`/`edges`/`meta` present in canonical form);
+        (2) It contains exactly one root node with `id == graph_id`, `kind == render_plan`;
+        (3) That root node has `profile == renderframe-k1`.
+    attrs:
+      - { key: "text.format", value: "md-block" }
 
   - id: "clause.model.scoping"
     kind: "clause"
     status: "normative"
     label: "Scoping into parent graphs"
-    text: >
+    text: |
       RenderFrames are structurally independent from their parent graphs. Any references from a
-      RenderFrame into the source graph MUST be expressed via attributes (e.g. parent_graph_id,
-      parent_node_id, source_root_id) or via explicit edge types with documented semantics.
+      RenderFrame into the source graph **MUST** be expressed via attributes (e.g., `parent_graph_id`,
+      `parent_node_id`, `source_root_id`) or via explicit edge types with documented semantics.
+    attrs:
+      - { key: "text.format", value: "md-inline" }
 
   - id: "clause.model.determinism"
     kind: "clause"
     status: "normative"
     label: "Determinism"
-    text: >
-      For the same canonical source graph + the same canonical RenderFrame, an implementation MUST
-      produce identical text outputs. Where ordering is required, it MUST be derived from explicit
-      integer 'order' attributes when present, otherwise from stable lexical ordering of node IDs.
+    text: |
+      For the same canonical source graph + the same canonical RenderFrame, an implementation **MUST**
+      produce identical text outputs. Where ordering is required, it **MUST** be derived from explicit
+      integer `order` attributes when present, otherwise from stable lexical ordering of node IDs.
+    attrs:
+      - { key: "text.format", value: "md-inline" }
 
   - id: "clause.model.rule_resolution"
     kind: "clause"
     status: "normative"
     label: "Rule resolution"
-    text: >
-      Within a RenderProduct, rules are evaluated in deterministic order. For a given source node,
-      the first matching rule (by rule order) MUST be applied unless the product declares a different
-      explicit resolution mode (e.g. 'merge').
+    text: |
+      Within a `RenderProduct`, rules are evaluated in deterministic order. For a given source node,
+      the first matching rule (by rule order) **MUST** be applied unless the product declares a different
+      explicit resolution mode (e.g., `merge`).
+    attrs:
+      - { key: "text.format", value: "md-inline" }
 
   # --- Clauses: Node kind validation ----------------------------------------
   - id: "clause.node_kinds.allowed"
     kind: "clause"
     status: "normative"
     label: "Allowed node kinds"
-    text: >
-      Within a RenderFrame, NodeK0.kind MUST be one of the values in property.renderframe.node_kinds.
-      Unknown or misspelled kinds MUST be treated as hard validation failures.
+    text: |
+      Within a RenderFrame, `NodeK0.kind` **MUST** be one of the values in `property.renderframe.node_kinds`.
+      Unknown or misspelled kinds **MUST** be treated as hard validation failures.
+    attrs:
+      - key: "text.format"
+        value: "md-inline"
 
   # --- Clauses: Edge type validation ----------------------------------------
   - id: "clause.edge_types.allowed"
     kind: "clause"
     status: "normative"
     label: "Allowed edge types"
-    text: >
-      Within a RenderFrame, EdgeK0.type MUST be one of the values in property.renderframe.edge_types.
-      Unknown edge types MUST be treated as hard validation failures.
+    text: |
+      Within a RenderFrame, `EdgeK0.type` **MUST** be one of the values in `property.renderframe.edge_types`.
+      Unknown edge types **MUST** be treated as hard validation failures.
+    attrs:
+      - key: "text.format"
+        value: "md-inline"
 
   # --- Clauses: Required attributes per kind --------------------------------
   - id: "clause.attrs.required"
     kind: "clause"
     status: "normative"
     label: "Required attributes per node kind"
-    text: >
-      A RenderFrame validator MUST treat missing required attributes as a hard validation error.
+    text: |
+      A RenderFrame validator **MUST** treat missing required attributes as a hard validation error.
       Required attributes per kind are:
-        - render_plan    : title, status, summary, profile
-        - render_product : label, status
-        - render_rule    : label, status
-        - selector       : label, status
-        - emitter        : label, status
-        - template       : label, status, body
-        - transform      : label, status, op
+        - `render_plan`: `title`, `status`, `summary`, `profile`
+        - `render_product`: `label`, `status`
+        - `render_rule`: `label`, `status`
+        - `selector`: `label`, `status`
+        - `emitter`: `label`, `status`
+        - `template`: `label`, `status`, `body`
+        - `transform`: `label`, `status`, `op`
+    attrs:
+      - key: "text.format"
+        value: "md-block"
 
   - id: "clause.attrs.plan"
     kind: "clause"
     status: "normative"
     label: "Attributes for render_plan nodes"
-    text: >
-      A node with kind=='render_plan' MUST provide:
-        - title   : short plan title,
-        - status  : RenderStatus,
-        - summary : short description,
-        - profile : 'renderframe-k1'.
-      It MAY also provide:
-        - format_hint : string tag (e.g. 'markdown', 'latex', 'text'),
-        - applies_to_doc_profile : string tag used by tooling,
-        - on_missing_field : 'empty' | 'error' (default: 'empty').
+    text: |
+      A node with `kind == render_plan` **MUST** provide:
+        - `title`: short plan title
+        - `status`: RenderStatus
+        - `summary`: short description
+        - `profile`: `renderframe-k1`
+      
+      It **MAY** also provide:
+        - `format_hint`: string tag (e.g., `markdown`, `latex`, `text`)
+        - `applies_to_doc_profile`: string tag used by tooling
+        - `on_missing_field`: `empty` or `error` (default: `empty`)
+    attrs:
+      - key: "text.format"
+        value: "md-block"
 
   - id: "clause.attrs.product"
     kind: "clause"
     status: "normative"
     label: "Attributes for render_product nodes"
-    text: >
-      A node with kind=='render_product' MUST provide:
-        - label  : short product name,
-        - status : RenderStatus.
-      It MAY provide:
-        - output_kind : 'file' | 'string' (default: 'string'),
-        - output_path : string (required if output_kind=='file'),
-        - source_root_id : string (parent graph node id) selecting a render root,
-        - resolution_mode : 'first_match' | 'merge' (default: 'first_match').
+    text: |
+      A node with `kind == render_product` **MUST** provide:
+        - `label`: short product name
+        - `status`: RenderStatus
+      
+      It **MAY** provide:
+        - `output_kind`: `file` or `string` (default: `string`)
+        - `output_path`: string (required if `output_kind == file`)
+        - `source_root_id`: string (parent graph node id) selecting a render root
+        - `resolution_mode`: `first_match` or `merge` (default: `first_match`)
+    attrs:
+      - key: "text.format"
+        value: "md-block"
 
   - id: "clause.attrs.selector"
     kind: "clause"
     status: "normative"
     label: "Attributes for selector nodes"
-    text: >
-      A node with kind=='selector' MUST provide:
-        - label  : short selector name,
-        - status : RenderStatus.
-      It SHOULD provide:
-        - predicates : ordered list of RenderPredicate strings.
-      Selector predicate syntax is implementation-defined but MUST be deterministic.
+    text: |
+      A node with `kind == selector` **MUST** provide:
+        - `label`: short selector name
+        - `status`: RenderStatus
+      
+      It **SHOULD** provide:
+        - `predicates`: ordered list of RenderPredicate strings
+      
+      Selector predicate syntax is implementation-defined but **MUST** be deterministic.
+    attrs:
+      - key: "text.format"
+        value: "md-block"
 
   - id: "clause.attrs.emitter"
     kind: "clause"
     status: "normative"
     label: "Attributes for emitter nodes"
-    text: >
-      A node with kind=='emitter' MUST provide:
-        - label  : short emitter name,
-        - status : RenderStatus.
-      It SHOULD provide:
-        - template_id : node id of a template node in the same RenderFrame.
-      It MAY provide:
-        - pipeline : ordered list of transform node ids to apply to the emitted text.
+    text: |
+      A node with `kind == emitter` **MUST** provide:
+        - `label`: short emitter name
+        - `status`: RenderStatus
+      
+      It **SHOULD** provide:
+        - `template_id`: node id of a template node in the same RenderFrame
+      
+      It **MAY** provide:
+        - `pipeline`: ordered list of transform node ids to apply to the emitted text
+    attrs:
+      - key: "text.format"
+        value: "md-block"
 
   - id: "clause.attrs.template"
     kind: "clause"
     status: "normative"
     label: "Attributes for template nodes"
-    text: >
-      A node with kind=='template' MUST provide:
-        - label  : short template name,
-        - status : RenderStatus,
-        - body   : template text.
-      Templates MAY contain placeholders. Placeholder syntax is implementation-defined, but MUST be
-      deterministic and MUST define behavior for missing fields (see render_plan.on_missing_field).
+    text: |
+      A node with `kind == template` **MUST** provide:
+        - `label`: short template name
+        - `status`: RenderStatus
+        - `body`: template text
+      
+      Templates **MAY** contain placeholders. Placeholder syntax is implementation-defined, but **MUST** be
+      deterministic and **MUST** define behavior for missing fields (see `render_plan.on_missing_field`).
+    attrs:
+      - key: "text.format"
+        value: "md-block"
 
   - id: "clause.attrs.transform"
     kind: "clause"
     status: "normative"
     label: "Attributes for transform nodes"
-    text: >
-      A node with kind=='transform' MUST provide:
-        - label  : short transform name,
-        - status : RenderStatus,
-        - op     : string naming a pure text transform operation.
-      It MAY provide:
-        - args : ordered list of string args (interpretation is op-specific).
+    text: |
+      A node with `kind == transform` **MUST** provide:
+        - `label`: short transform name
+        - `status`: RenderStatus
+        - `op`: string naming a pure text transform operation
+      
+      It **MAY** provide:
+        - `args`: ordered list of string args (interpretation is `op`-specific)
+    attrs:
+      - key: "text.format"
+        value: "md-block"
 
   # --- Clauses: Validation invariants ---------------------------------------
   - id: "clause.validation.root"
     kind: "clause"
     status: "normative"
     label: "Root plan node"
-    text: >
-      Each RenderFrame MUST contain exactly one node with:
-        - id == graph_id,
-        - kind == 'render_plan',
-        - profile == 'renderframe-k1'.
+    text: |
+      Each RenderFrame **MUST** contain exactly one node with:
+        - `id == graph_id`
+        - `kind == render_plan`
+        - `profile == renderframe-k1`
+    attrs:
+      - key: "text.format"
+        value: "md-inline"
 
   - id: "clause.validation.contains_tree"
     kind: "clause"
     status: "normative"
     label: "Contains edges form a tree"
-    text: >
-      'contains' edges in a RenderFrame MUST form an acyclic tree (or forest) rooted at the
-      render_plan node. Cycles or multiple parents via 'contains' are hard validation failures.
+    text: |
+      `contains` edges in a RenderFrame **MUST** form an acyclic tree (or forest) rooted at the
+      `render_plan` node. Cycles or multiple parents via `contains` are hard validation failures.
+    attrs:
+      - key: "text.format"
+        value: "md-inline"
 
   - id: "clause.validation.edge_integrity"
     kind: "clause"
     status: "normative"
     label: "Edge integrity"
-    text: >
-      All edges MUST reference existing node IDs (EdgeK0.from/to integrity). Missing endpoints are
+    text: |
+      All edges **MUST** reference existing node IDs (`EdgeK0.from`/`to` integrity). Missing endpoints are
       hard validation failures.
+    attrs:
+      - key: "text.format"
+        value: "md-inline"
 
   - id: "clause.validation.reference_targets"
     kind: "clause"
     status: "normative"
     label: "Reference targets"
-    text: >
-      For every 'selects' edge, the destination node MUST have kind=='selector'.
-      For every 'emits' edge, the destination node MUST have kind=='emitter'.
-      For every emitter.template_id, the referenced node MUST exist and have kind=='template'.
-      For every transform listed in an emitter pipeline, the referenced node MUST exist and have kind=='transform'.
+    text: |
+      For every `selects` edge, the destination node **MUST** have `kind == selector`.
+      For every `emits` edge, the destination node **MUST** have `kind == emitter`.
+      For every `emitter.template_id`, the referenced node **MUST** exist and have `kind == template`.
+      For every transform listed in an emitter pipeline, the referenced node **MUST** exist and have `kind == transform`.
+    attrs:
+      - key: "text.format"
+        value: "md-inline"
 
   # --- Clauses: Integration --------------------------------------------------
   - id: "clause.integration.attach"
     kind: "clause"
     status: "informative"
     label: "Attaching RenderFrames"
-    text: >
-      RenderFrames SHOULD be attached to a source graph via GF0.meta (as a MetaGraph). Implementations
-      MAY also store RenderFrames as standalone GF0 files and attach them at build time.
+    text: |
+      RenderFrames **SHOULD** be attached to a source graph via `GF0.meta` (as a `MetaGraph`). Implementations
+      **MAY** also store RenderFrames as standalone GF0 files and attach them at build time.
+    attrs:
+      - key: "text.format"
+        value: "md-inline"
 
   - id: "clause.integration.precedence"
     kind: "clause"
     status: "informative"
     label: "Precedence and overrides"
-    text: >
-      If multiple RenderFrames apply, precedence SHOULD be deterministic: later MetaGraphs in the
-      source graph's meta list win, or explicit 'overrides' edges define precedence. If both exist,
-      explicit overrides SHOULD take precedence.
+    text: |
+      If multiple RenderFrames apply, precedence **SHOULD** be deterministic: later `MetaGraph`s in the
+      source graph's `meta` list win, or explicit `overrides` edges define precedence. If both exist,
+      explicit overrides **SHOULD** take precedence.
+    attrs:
+      - key: "text.format"
+        value: "md-inline"
 
   # --- Example ---------------------------------------------------------------
   - id: "example.minimal_renderframe"

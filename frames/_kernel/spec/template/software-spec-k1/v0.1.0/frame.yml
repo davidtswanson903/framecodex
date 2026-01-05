@@ -110,97 +110,142 @@ nodes:
     kind: "term"
     status: "normative"
     label: "Module"
-    text: "TODO: define what counts as a module in this system."
+    text: |
+      TODO: define what counts as a module in this system.
+    attrs:
+      - key: "text.format"
+        value: "md-inline"
 
   - id: "term.kernel"
     kind: "term"
     status: "normative"
     label: "Kernel"
-    text: "TODO: define kernel: pure transform or constrained component, per your framework."
+    text: |
+      TODO: define kernel: pure transform or constrained component, per your framework.
+    attrs:
+      - key: "text.format"
+        value: "md-inline"
 
   - id: "term.interface"
     kind: "term"
     status: "normative"
     label: "Interface"
-    text: "TODO: define interface: API surface, protocol, or boundary contract."
+    text: |
+      TODO: define interface: API surface, protocol, or boundary contract.
+    attrs:
+      - key: "text.format"
+        value: "md-inline"
 
   # --- Clauses ---------------------------------------------------------------
   - id: "clause.overview.problem"
     kind: "clause"
     status: "normative"
     label: "problem"
-    text: >
+    text: |
       TODO: What problem does this framework solve? What constraints matter?
+    attrs:
+      - key: "text.format"
+        value: "md-inline"
 
   - id: "clause.overview.scope"
     kind: "clause"
     status: "normative"
     label: "scope"
-    text: >
+    text: |
       TODO: Define scope boundaries. Explicitly list out-of-scope items.
+    attrs:
+      - key: "text.format"
+        value: "md-inline"
 
   - id: "clause.goals.goals"
     kind: "clause"
     status: "normative"
     label: "goals"
-    text: >
+    text: |
       TODO: List goals as bullet points.
+    attrs:
+      - key: "text.format"
+        value: "md-block"
 
   - id: "clause.goals.nongoals"
     kind: "clause"
     status: "normative"
     label: "non-goals"
-    text: >
+    text: |
       TODO: List non-goals (things intentionally not supported).
+    attrs:
+      - key: "text.format"
+        value: "md-block"
 
   - id: "clause.architecture.components"
     kind: "clause"
     status: "normative"
     label: "components"
-    text: >
+    text: |
       TODO: Describe components and responsibilities. Prefer deterministic pipelines.
+    attrs:
+      - key: "text.format"
+        value: "md-block"
 
   - id: "clause.architecture.dataflow"
     kind: "clause"
     status: "normative"
     label: "dataflow"
-    text: >
+    text: |
       TODO: Describe the primary dataflow and controlflow. Include invariants at boundaries.
+    attrs:
+      - key: "text.format"
+        value: "md-block"
 
   - id: "clause.interfaces.api_contract"
     kind: "clause"
     status: "normative"
     label: "api-contract"
-    text: >
-      TODO: Define your public API/protocols. Link to property.api_surface.
+    text: |
+      TODO: Define your public API/protocols. Link to `property.api_surface`.
+    attrs:
+      - key: "text.format"
+        value: "md-inline"
 
   - id: "clause.data_model.schemas"
     kind: "clause"
     status: "normative"
     label: "schemas"
-    text: >
+    text: |
       TODO: Define data structures and serialization rules.
+    attrs:
+      - key: "text.format"
+        value: "md-block"
 
   - id: "clause.invariants.list"
     kind: "clause"
     status: "normative"
     label: "invariants"
-    text: >
+    text: |
       TODO: List invariants. Each invariant should be testable.
+    attrs:
+      - key: "text.format"
+        value: "md-block"
 
   - id: "clause.testing.strategy"
     kind: "clause"
     status: "normative"
     label: "testing-strategy"
-    text: >
+    text: |
       TODO: Define unit, integration, property-based tests, and golden fixtures.
+    attrs:
+      - key: "text.format"
+        value: "md-block"
 
   - id: "clause.versioning.policy"
     kind: "clause"
     status: "normative"
     label: "versioning"
-    text: >
+    text: |
       TODO: Define versioning scheme, compatibility guarantees, and deprecation policy.
+    attrs:
+      - key: "text.format"
+        value: "md-block"
 
   # --- Properties (tooling-facing structured payloads) -----------------------
   - id: "property.api_surface"
