@@ -73,23 +73,25 @@ nodes:
     kind: "definition"
     status: "normative"
     label: "FrameURL"
-    text: >
-      A canonical, URL-like identifier used as GF0 graph_id. FrameURL K1 uses a strict grammar:
-      <scheme>://<scope>/<segment>/<segment>/.../<name>. FrameURL is versionless.
+    text: "A canonical, URL-like identifier used as GF0 `graph_id`. FrameURL K1 uses a strict grammar: `<scheme>://<scope>/<segment>/<segment>/.../<name>`. FrameURL is versionless."
+    attrs:
+      - { key: "text.format", value: "md-inline" }
 
   - id: "def.scheme"
     kind: "definition"
     status: "normative"
     label: "Scheme"
-    text: >
-      The FrameURL scheme indicates the frame class. Schemes are an enum defined by prop.scheme_enum.
+    text: "The FrameURL scheme indicates the frame class. Schemes are an enum defined by `prop.scheme_enum`."
+    attrs:
+      - { key: "text.format", value: "md-inline" }
 
   - id: "def.scope"
     kind: "definition"
     status: "normative"
     label: "Scope"
-    text: >
-      The first path segment after '://'. Scope is used as the top-level shard for filesystem layout.
+    text: "The first path segment after `://`. Scope is used as the top-level shard for filesystem layout."
+    attrs:
+      - { key: "text.format", value: "md-inline" }
 
   - id: "def.segment"
     kind: "definition"
@@ -173,16 +175,18 @@ nodes:
     status: "normative"
     modal: "MUST"
     label: "graph_id is canonical FrameURL"
-    text: >
-      A frame claiming conformance to FrameURL K1 MUST use a canonical FrameURL as graph_id.
+    text: "A frame claiming conformance to FrameURL K1 **MUST** use a canonical FrameURL as `graph_id`."
+    attrs:
+      - { key: "text.format", value: "md-inline" }
 
   - id: "rule.charter.version_is_separate"
     kind: "rule"
     status: "normative"
     modal: "MUST"
     label: "Version is separate from FrameURL"
-    text: >
-      FrameURL is versionless. Version MUST be expressed only via GF0.version, not embedded into graph_id.
+    text: "FrameURL is versionless. Version **MUST** be expressed only via `GF0.version`, not embedded into `graph_id`."
+    attrs:
+      - { key: "text.format", value: "md-inline" }
 
   - id: "rule.charter.root_node_id"
     kind: "rule"
