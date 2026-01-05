@@ -1,7 +1,7 @@
 # InlineMarkup-K1 Rollout Status
 
 **Status Date**: 2026-01-04  
-**Commit Count**: 14 (since session start)
+**Commit Count**: 15+ (since session start)
 
 ## ✅ COMPLETED FRAMES
 
@@ -46,58 +46,111 @@
   - `feat: complete InlineMarkup-K1 for validatorgroup-k1 frame`
   - `chore: regenerate validatorgroup-k1 README with complete markup` (2 commits)
 
+### RenderFrame-K1 (spec://_kernel/render/renderframe-k1 v0.1.0)
+- **Status**: ✅ Complete
+- **Clauses Marked**: 18 (all remaining clauses completed)
+- **Sections**: Overview, Model, Node Kinds, Edge Types, Attributes, Validation, Integration, Examples
+- **Format**: `md-inline` for simple constraints, `md-block` for attribute lists and structural rules
+- **Markup Applied**:
+  - Backticked field names (`render_plan`, `render_product`, `selector`, `emitter`, `template`, `transform`)
+  - Bold for MUST/MAY/SHOULD/MUST NOT keywords
+  - Backticked values and enum literals (`renderframe-k1`, `first_match`, `merge`, etc.)
+  - Proper formatting of node kind/edge type lists
+- **Commits**:
+  - `Apply InlineMarkup-K1 markup to RenderFrame-K1...` (combined commit)
+
+### DocProfiles-K1 (spec://_kernel/docs/docprofiles-k1 v0.1.0)
+- **Status**: ✅ Complete
+- **Terms Marked**: 8 (doc_profile, ProfileRule, ProfileId, plus 5 specific profiles)
+- **Clauses Marked**: 6 (intent, profile-location, profile-semantics, frame-metadata, lint-baseline, render-baseline)
+- **Format**: `md-inline` for all terms and simple clauses, `md-block` for list-based rules
+- **Markup Applied**:
+  - Profile identifiers backticked (`doc_profile`, `software_spec-k1`, `hardware_spec-k1`, etc.)
+  - Normative keywords bolded
+  - Arrow notation for determinism (`→` for input-output)
+  - Proper list formatting for render products
+- **Commits**:
+  - `Apply InlineMarkup-K1 markup to RenderFrame-K1, DocProfiles-K1, and Software-Spec-K1...`
+
+### Software-Spec-K1 (spec://_kernel/template/software-spec-k1 v0.1.0)
+- **Status**: ✅ Complete
+- **Terms Marked**: 3 (Module, Kernel, Interface)
+- **Clauses Marked**: 11 (all template clauses updated)
+- **Format**: `md-inline` for simple definitions and TODOs, `md-block` for structured sections
+- **Markup Applied**:
+  - Property references backticked (`property.api_surface`)
+  - Framework/module terminology consistent with naming
+  - TODOs preserved as instructional scaffolding
+- **Commits**:
+  - `Apply InlineMarkup-K1 markup to RenderFrame-K1, DocProfiles-K1, and Software-Spec-K1...`
+
+## 🔍 VERIFICATION STATUS
+
+**All completed frames pass:**
+- ✅ `tools/validate_inline_markup/run.py` — No violations
+- ✅ `tools/enforce_repo_law/run` — All gates passing
+- ✅ `tools/render_docs/run` — Deterministic doc regeneration
+- ✅ `tools/no_diff/run` — Byte-for-byte reproducibility confirmed
+
 ## 📋 CANDIDATES FOR NEXT ROLLOUT
 
 ### High Priority (Kernel Specs)
 
-1. **FrameURL-K1** (`law://_kernel/id/frameurl-k1 v0.1.0`)
+1. **FrameURL-K1** (`law://_kernel/id/frameurl-k1 v0.1.0`) — **NEXT TARGET**
    - Type: Law/Identity specification
    - Candidates: ~50+ nodes with markup opportunities
    - Focus: Definitions (6), Rules (15+), Examples (2)
    - Patterns: URLs, filesystem paths, grammar patterns
    - Recommendation: `md-inline` for most, `md-block` for grammar/examples
+   - Status: Ready to apply
 
-2. **RenderFrame-K1** (`spec://_kernel/render/renderframe-k1 v0.1.0`)
-   - Type: Spec/Rendering framework
-   - Candidates: ~40+ nodes
-   - Focus: Node kinds, edge types, render rules
-   - Patterns: Backticks for identifiers, lists of requirements
-   - Recommendation: Similar to SpecFrame-K1 approach
-
-3. **LawFrame-K1** (`law://_kernel/law/lawframe-k1 v0.1.0`)
+2. **LawFrame-K1** (`law://_kernel/law/lawframe-k1 v0.1.0`)
    - Type: Law/Metaspec
    - Candidates: ~35+ nodes
    - Focus: Law node kinds, attributes, profiles
    - Recommendation: `md-inline` for definitions, `md-block` for clauses
 
-4. **DocProfiles-K1** (`spec://_kernel/spec/docs/docprofiles-k1 v0.1.0`)
-   - Type: Spec/Documentation profiles
-   - Candidates: ~30+ nodes
-   - Focus: Profile definitions, rendering rules
-   - Recommendation: Mixed `md-inline`/`md-block`
-
-### Medium Priority (Supplementary)
-
-5. **DocLicense-K1** (`law://_kernel/law/ip/doclicense-k1 v0.1.0`)
+3. **DocLicense-K1** (`law://_kernel/law/ip/doclicense-k1 v0.1.0`)
    - Type: Law/IP
    - Candidates: ~25+ nodes
    - Focus: License terms, permissions, constraints
-   
-6. **FrameMeta-K1** (`law://_kernel/law/meta/frame-meta-k1 v0.1.0`)
+
+### Medium Priority (Supplementary)
+
+4. **FrameMeta-K1** (`law://_kernel/law/meta/frame-meta-k1 v0.1.0`)
    - Type: Law/Metadata
    - Candidates: ~20+ nodes
    
-7. **SoftwareSpec-K1** (`spec://_kernel/spec/template/software-spec-k1 v0.1.0`)
-   - Type: Spec/Template
-   - Candidates: ~25+ nodes
-
-8. **Simple Markdown Renderer K1** (`render://md/simple-k1 v0.1.0`)
+5. **Simple Markdown Renderer K1** (`render://md/simple-k1 v0.1.0`)
    - Type: Render spec
    - Candidates: ~15+ nodes
 
 ### Domain-Specific Specs (Lower Priority)
 
 - **Systemics Specs** (sigma-k1, sigma-composition-k1, systemics-core-k1, k0-k1)
+  - Type: Spec/Domain
+  - Candidates: Variable per spec
+
+## 🎯 NEXT STEPS
+
+1. Apply markup to **FrameURL-K1** (high-value, many opportunities)
+   - All 6 definitions
+   - All 15+ rules 
+   - Both examples
+   - Properties and codes
+
+2. Continue with **LawFrame-K1** and **DocLicense-K1** to complete law/IP specs
+
+3. Run comprehensive validation:
+   - `tools/validate_inline_markup/run.py`
+   - `tools/semantic_invariants/run.py` (before/after spot checks)
+   - `tools/enforce_repo_law/run` (full gate)
+   - `tools/render_docs/run` (docs regeneration)
+   - `tools/no_diff/run` (determinism check)
+
+4. Batch remaining frames systematically
+
+5. Final git log and verification
   - Type: Domain specs
   - Total candidates: ~100+
 
