@@ -38,6 +38,9 @@ fi
 # InlineMarkup-K1 validation (deterministic, policy-driven).
 ./tools/validate_inline_markup/run
 
+# PubTeX Inline IR validation (deterministic, policy-driven).
+./tools/validate_pub_tex/run
+
 # Copilot instruction file (strict autogen; must match generator output)
 "$repo_root/tools/gen_copilot_instructions/run"
 if git -C "$repo_root" diff --exit-code -- .github/copilot-instructions.md >/dev/null; then

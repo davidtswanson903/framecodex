@@ -369,13 +369,14 @@ def render_markdown(report: Dict[str, Any], *, max_chars: int) -> Tuple[str, Dic
     return md, budget_meta
 
 
-def main() -> None:
+def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--out", default=str(REPO_ROOT / ".github" / "copilot-instructions.md"))
-    ap.add_argument("--max-chars", type=int, default=120000)
+    ap.add_argument("--max-chars", type=int, default=180_000)
     args = ap.parse_args()
 
     out_path = Path(args.out)
+    out_path.parent.mkdir(parents=True, exist_ok=True)
 
     laws: Dict[str, Dict[str, str]] = {}
 
@@ -463,16 +464,13 @@ def main() -> None:
 
     md, budget_meta = render_markdown(report, max_chars=int(args.max_chars))
 
-    out_path.parent.mkdir(parents=True, exist_ok=True)
-    out_path.write_text(md, encoding="utf-8", newline="\n")
+    content = "".join(md)
+    if len(content) > args.max_chars:
+        content = content[: args.max_chars].rstrip() + "\n"
 
-    receipt_dir = REPO_ROOT / "out" / "gen_copilot_instructions"
-    receipt_dir.mkdir(parents=True, exist_ok=True)
-    (receipt_dir / "report.json").write_text(
-        json.dumps({**report, "budget": budget_meta, "sha256": sha256_text(md)}, indent=2, sort_keys=True) + "\n",
-        encoding="utf-8",
-    )
+    out_path.write_text(content, encoding="utf-8", newline="\n")
+    return 0
 
 
 if __name__ == "__main__":
-    main()
+    raise SystemExit(main())

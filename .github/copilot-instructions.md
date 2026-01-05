@@ -39,6 +39,7 @@ Generated documentation and publication artifacts MUST be reproducible.
 - `semantic_invariants`: `tools/semantic_invariants/run`
 - `validate_group`: `tools/validate_group/run`
 - `validate_inline_markup`: `tools/validate_inline_markup/run`
+- `validate_pub_tex`: `tools/validate_pub_tex/run`
 - `validate_references`: `tools/validate_references/run`
 
 ## CI workflows
@@ -575,6 +576,9 @@ fi
 
 # InlineMarkup-K1 validation (deterministic, policy-driven).
 ./tools/validate_inline_markup/run
+
+# PubTeX Inline IR validation (deterministic, policy-driven).
+./tools/validate_pub_tex/run
 
 # Copilot instruction file (strict autogen; must match generator output)
 "$repo_root/tools/gen_copilot_instructions/run"
@@ -1163,6 +1167,13 @@ try:
 except Exception:  # pragma: no cover
     parse_inline_markup = None  # type: ignore
 
+# PubTeX authoring shortcut (tex-inline-v0 -> pub-tex-inline-v0 IR)
+try:
+    from tools.markup.pub_tex_inline_v0 import parse_tex_inline_v0, to_ir as pub_tex_to_ir  # type: ignore
+except Exception:  # pragma: no cover
+    parse_tex_inline_v0 = None  # type: ignore
+    pub_tex_to_ir = None  # type: ignore
+
 
 def sha256_bytes(b: bytes) -> str:
     return hashlib.sha256(b).hexdigest()
@@ -1195,13 +1206,6 @@ def stable_anchor(node_id: str) -> str:
     base = slugify(node_id)
     h = hashlib.sha256(node_id.encode("utf-8")).hexdigest()[:8]
     return f"{base}-{h}"
-
-
-def find_attr(attrs: Any, key: str) -> Optional[str]:
-    if not isinstance(attrs, list):
-        return None
-    for a in attrs:
-        if isinstance(a, dict) and a.get("key") == key:
 ```
 
 #### tools/render_docs
@@ -1523,10 +1527,18 @@ def tex_escape(s: str) -> str:
 # (This is intentionally conservative; expand only with policy.)
 _FORBIDDEN_TEX_RE = re.compile(r"\\(input|include|write|openout|read|usepackage|catcode|def|edef|gdef)\b")
 
+# Extra-conservative for code spans: disallow any backslash control sequence.
+_FORBIDDEN_CODE_RE = re.compile(r"\\[A-Za-z@]+")
+
 
 def validate_math_tex(s: str) -> None:
     if _FORBIDDEN_TEX_RE.search(s or ""):
         raise ValueError("PubTeXIR: forbidden control sequence in math segment")
+
+
+def validate_code_tex(s: str) -> None:
+    if _FORBIDDEN_CODE_RE.search(s or ""):
+        raise ValueError("PubTeXIR: forbidden control sequence in code segment")
 
 
 def read_json(path: Path) -> Dict[str, Any]:
@@ -1538,14 +1550,6 @@ def render_tex_inline(nodes: List[Dict[str, Any]]) -> str:
 
     out: List[str] = []
     for n in nodes:
-        if not isinstance(n, dict):
-            continue
-        t = n.get("t")
-        if t == "text":
-            out.append(tex_escape(str(n.get("s", ""))))
-        elif t == "math":
-            s = str(n.get("s", ""))
-            validate_math_tex(s)
 ```
 
 #### tools/render_simple_md
@@ -2016,6 +2020,92 @@ def validate_frame(path: Path) -> Tuple[List[Dict[str, Any]], List[Dict[str, Any
             v = n.get(field)
             if not is_str(v):
                 continue
+```
+
+#### tools/validate_pub_tex
+Source: `tools/validate_pub_tex/run.py`
+
+```
+#!/usr/bin/env python3
+"""Validate publication TeX inline IR (PubTeX Inline IR).
+
+This gate enforces deterministic, safe publication inline TeX usage.
+
+Inputs:
+- frames/**/v*/frame.yml
+
+Validates:
+- JSON IR attrs: pub.tex.{text,summary,body} where vtype=json and kind=pub-tex-inline-v0
+- Authoring shortcut: pub.tex.<field>.format == tex-inline-v0 with pub.tex.<field> as a string
+
+Policy (v0):
+- Parsing errors are violations.
+- Math segments forbid obvious raw-TeX injection control sequences.
+- Code segments forbid backslash control sequences (conservative).
+
+Writes:
+- out/validate_pub_tex/report.json
+
+Exit codes:
+- 0 if ok
+- 1 if any violations
+"""
+
+from __future__ import annotations
+
+import json
+import re
+import sys
+from pathlib import Path
+from typing import Any, Dict, List, Optional, Tuple
+
+import yaml
+
+# Ensure repo root is on sys.path so we can import tools/* as modules.
+REPO_ROOT = Path(__file__).resolve().parents[2]
+if str(REPO_ROOT) not in sys.path:
+    sys.path.insert(0, str(REPO_ROOT))
+
+from tools.markup.pub_tex_inline_v0 import parse_tex_inline_v0, to_ir  # type: ignore
+
+
+_FORBIDDEN_TEX_RE = re.compile(r"\\(input|include|write|openout|read|usepackage|catcode|def|edef|gdef)\b")
+# Extra-conservative for code spans: disallow any backslash control sequence.
+_FORBIDDEN_CODE_RE = re.compile(r"\\[A-Za-z@]+")
+
+
+def _is_str(x: Any) -> bool:
+    return isinstance(x, str)
+
+
+def _find_attr(raw_attrs: Any, key: str) -> Optional[Dict[str, Any]]:
+    if not isinstance(raw_attrs, list):
+        return None
+    for a in raw_attrs:
+        if isinstance(a, dict) and a.get("key") == key:
+            return a
+    return None
+
+
+def _find_attr_value(raw_attrs: Any, key: str) -> Optional[str]:
+    a = _find_attr(raw_attrs, key)
+    if not isinstance(a, dict):
+        return None
+    v = a.get("value")
+    return v if isinstance(v, str) else None
+
+
+def _find_attr_json_value(raw_attrs: Any, key: str) -> Optional[Any]:
+    a = _find_attr(raw_attrs, key)
+    if not isinstance(a, dict):
+        return None
+    v = a.get("value")
+    if not isinstance(v, str):
+        return None
+    try:
+        return json.loads(v)
+    except Exception:
+        return None
 ```
 
 #### tools/validate_references

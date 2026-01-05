@@ -39,6 +39,13 @@ try:
 except Exception:  # pragma: no cover
     parse_inline_markup = None  # type: ignore
 
+# PubTeX authoring shortcut (tex-inline-v0 -> pub-tex-inline-v0 IR)
+try:
+    from tools.markup.pub_tex_inline_v0 import parse_tex_inline_v0, to_ir as pub_tex_to_ir  # type: ignore
+except Exception:  # pragma: no cover
+    parse_tex_inline_v0 = None  # type: ignore
+    pub_tex_to_ir = None  # type: ignore
+
 
 def sha256_bytes(b: bytes) -> str:
     return hashlib.sha256(b).hexdigest()
@@ -231,20 +238,50 @@ def to_markup(value: str, *, text_format: str) -> Optional[Dict[str, Any]]:
 def _pub_tex_inline_from_node(n: Node, *, field: str) -> Optional[Dict[str, Any]]:
     """Return publication TeX inline IR attached to a node.
 
-    Option A convention:
+    Supported forms:
+
+    (A) Canonical JSON IR (preferred storage):
       - attr key: `pub.tex.<field>` where field in {"summary","text","body"}
       - value: JSON encoding of {"kind":"pub-tex-inline-v0","nodes":[...]}
 
-    We do not validate deeply here; renderer may validate further.
+    (B) Authoring shortcut (compiled deterministically at render time):
+      - attr key: `pub.tex.<field>.format` == "tex-inline-v0"
+      - attr key: `pub.tex.<field>` is a string containing typed segments:
+          {{m:...}} for math, {{c:...}} for code, everything else is text.
+        Escapes: \\{{ and \\}} for literal delimiters.
+
+    We do not deeply validate here; gates + renderer validate further.
     """
 
     if not n.attrs:
         return None
+
     k = f"pub.tex.{field}"
+
+    # (A) canonical JSON form
     v = find_attr_json_strict(n.attrs, k)
     if isinstance(v, dict) and v.get("kind") == "pub-tex-inline-v0":
         return v
-    return None
+
+    # (B) authoring shortcut
+    fmt = find_attr(n.attrs, f"pub.tex.{field}.format")
+    if fmt != "tex-inline-v0":
+        return None
+
+    if parse_tex_inline_v0 is None or pub_tex_to_ir is None:
+        raise SystemExit("PubTeX tex-inline-v0 parsing unavailable (import failed)")
+
+    raw = find_attr(n.attrs, k)
+    if raw is None:
+        raise SystemExit(f"Missing required attr: {k} (pub.tex.{field}.format=tex-inline-v0)")
+
+    nodes, errs = parse_tex_inline_v0(raw)
+    if errs:
+        # Fail hard with deterministic error text.
+        head = errs[0]
+        raise SystemExit(f"pub.tex.{field} parse error {head.code} at pos {head.pos}: {head.message} (node={n.id})")
+
+    return pub_tex_to_ir(nodes)  # kind=pub-tex-inline-v0
 
 
 def to_docir(g: Dict[str, Any], src_bytes: bytes) -> Dict[str, Any]:

@@ -132,22 +132,11 @@ nodes:
       $C' \\preceq C$ means shrinking capacity.
     attrs:
       - { key: "text.format", value: "md-block" }
+      - { key: "pub.tex.text.format", value: "tex-inline-v0" }
       -
         key: "pub.tex.text"
-        vtype: "json"
         value: >
-          {"kind":"pub-tex-inline-v0","nodes":[
-            {"t":"math","s":"\\Sigma"},
-            {"t":"text","s":" assumes a divergence (\"wobble\") "},
-            {"t":"math","s":"w: V \\times V \\to \\mathbb{R}_{\\ge 0}"},
-            {"t":"text","s":" on decision-relevant coordinates. Orders: "},
-            {"t":"math","s":"\\Theta \\preceq \\Theta'"},
-            {"t":"text","s":" means tightening floors; "},
-            {"t":"math","s":"\\beta' \\preceq \\beta"},
-            {"t":"text","s":" means tightening budgets; "},
-            {"t":"math","s":"C' \\preceq C"},
-            {"t":"text","s":" means shrinking capacity."}
-          ]}
+          {{m:\\Sigma}} assumes a divergence ("wobble") {{m:w: V \\times V \\to \\mathbb{R}_{\\ge 0}}} on decision-relevant coordinates. Orders: {{m:\\Theta \\preceq \\Theta'}} means tightening floors; {{m:\\beta' \\preceq \\beta}} means tightening budgets; {{m:C' \\preceq C}} means shrinking capacity.
 
   - id: "section.5.axioms"
     kind: "section"

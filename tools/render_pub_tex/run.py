@@ -55,10 +55,18 @@ def tex_escape(s: str) -> str:
 # (This is intentionally conservative; expand only with policy.)
 _FORBIDDEN_TEX_RE = re.compile(r"\\(input|include|write|openout|read|usepackage|catcode|def|edef|gdef)\b")
 
+# Extra-conservative for code spans: disallow any backslash control sequence.
+_FORBIDDEN_CODE_RE = re.compile(r"\\[A-Za-z@]+")
+
 
 def validate_math_tex(s: str) -> None:
     if _FORBIDDEN_TEX_RE.search(s or ""):
         raise ValueError("PubTeXIR: forbidden control sequence in math segment")
+
+
+def validate_code_tex(s: str) -> None:
+    if _FORBIDDEN_CODE_RE.search(s or ""):
+        raise ValueError("PubTeXIR: forbidden control sequence in code segment")
 
 
 def read_json(path: Path) -> Dict[str, Any]:
@@ -78,10 +86,12 @@ def render_tex_inline(nodes: List[Dict[str, Any]]) -> str:
         elif t == "math":
             s = str(n.get("s", ""))
             validate_math_tex(s)
-            out.append(r"\(" + s + r"\)")
+            out.append(r"\\(" + s + r"\\)")
         elif t == "code":
             # Inline code (not block). Keep it simple and deterministic.
-            out.append(r"\texttt{" + tex_escape(str(n.get("s", ""))) + "}")
+            s = str(n.get("s", ""))
+            validate_code_tex(s)
+            out.append(r"\\texttt{" + tex_escape(s) + "}")
         elif t == "strong":
             out.append(r"\textbf{" + render_tex_inline(n.get("c") or []) + "}")
         elif t == "emph":
