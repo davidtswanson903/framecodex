@@ -1,0 +1,142 @@
+graph_id: "spec://domains/systemics/k0-k1"
+version: "0.1.0"
+
+attrs:
+  - { key: "domain", value: "systemics" }
+  - { key: "profile", value: "specframe-k1" }
+  - { key: "depends_on", value: "spec://_kernel/spec/specframe-k1" }
+  - { key: "depends_on", value: "spec://_kernel/gf/gf0-k1" }
+
+nodes:
+  - id: "spec://domains/systemics/k0-k1"
+    kind: "spec"
+    status: "normative"
+    profile: "specframe-k1"
+    title: "Systemics — Kernel Axiom K0 (K1)"
+    summary: >
+      Defines the Systemics kernel model K=(S,I,O,B,E,F) and Axiom K0 (K1–K4):
+      records-first, replayability, budgeted behavior, composability.
+    attrs:
+      - { key: "doc.title", value: "Systemics — Kernel Axiom K0 (K1)" }
+      - { key: "doc.authors", value: "[\"David Swanson\"]", vtype: "json" }
+      - { key: "doc.created", value: "2026-01-04T00:00:00-06:00", vtype: "rfc3339" }
+      - { key: "doc.updated", value: "2026-01-04T00:00:00-06:00", vtype: "rfc3339" }
+      - { key: "doc.license", value: "CC-BY-4.0", vtype: "spdx" }
+      - { key: "doc.tags", value: "[\"systemics\",\"k0\",\"kernel\",\"axiom\"]", vtype: "json" }
+
+  - id: "ref.specframe"
+    kind: "spec_ref"
+    status: "informative"
+    target_graph_id: "spec://_kernel/spec/specframe-k1"
+    label: "SpecFrame K1"
+
+  - id: "ref.gf0"
+    kind: "spec_ref"
+    status: "informative"
+    target_graph_id: "spec://_kernel/gf/gf0-k1"
+    label: "GraphFrame K0 (GF0)"
+
+  - id: "section.1.definitions"
+    kind: "section"
+    status: "normative"
+    title: "Definitions"
+    order: 1
+
+  - id: "term.kernel"
+    kind: "term"
+    status: "normative"
+    label: "Kernel"
+    summary: >
+      A kernel is a tuple K=(S,I,O,B,E,F) with admissible transitions
+      (s_in, i, b_in, s_out, o, b_out, e) ∈ F.
+
+  - id: "property.kernel.fields"
+    kind: "property"
+    status: "normative"
+    label: "Kernel Tuple Fields"
+    fields:
+      - { name: "S", desc: "internal state space" }
+      - { name: "I", desc: "input space" }
+      - { name: "O", desc: "output space" }
+      - { name: "B", desc: "budget space (resource envelopes)" }
+      - { name: "E", desc: "evidence/receipt space" }
+      - { name: "F", desc: "admissible transition relation over (S,I,B,S,O,B,E)" }
+
+  - id: "section.2.axiom"
+    kind: "section"
+    status: "normative"
+    title: "Axiom K0"
+    order: 2
+
+  - id: "clause.k0"
+    kind: "clause"
+    status: "normative"
+    label: "Axiom K0 (Kernel axiom)"
+    text: >
+      Every system of interest decomposes into a finite collection of kernels {K_i}
+      satisfying K1–K4.
+
+  - id: "clause.k1.records_first"
+    kind: "clause"
+    status: "normative"
+    label: "K1 Records-first"
+    text: >
+      Each kernel application emits a receipt e ∈ E sufficient to later reconstruct
+      and audit the transition.
+
+  - id: "clause.k2.replayability"
+    kind: "clause"
+    status: "normative"
+    label: "K2 Replayability"
+    text: >
+      There exists a (possibly partial) replay operator R that, given an initial
+      state and a sequence of receipts, reconstructs final state and outputs.
+
+  - id: "clause.k3.budgeted"
+    kind: "clause"
+    status: "normative"
+    label: "K3 Budgeted behavior"
+    text: >
+      Transitions respect budgets: b_out ⪯ b_in for a well-founded preorder ⪯ on B.
+
+  - id: "clause.k4.composability"
+    kind: "clause"
+    status: "normative"
+    label: "K4 Composability"
+    text: >
+      Kernels compose along interfaces to form larger systems without breaking records-first
+      behavior.
+
+  - id: "section.3.notes"
+    kind: "section"
+    status: "informative"
+    title: "Notes"
+    order: 3
+
+  - id: "clause.domain_agnostic"
+    kind: "clause"
+    status: "informative"
+    label: "Domain-agnostic"
+    text: >
+      K0 does not constrain domain: kernels may represent software, human workflows,
+      simulation steps, or hybrid configurations.
+
+edges:
+  - { from: "spec://domains/systemics/k0-k1", to: "ref.specframe", type: "depends_on" }
+  - { from: "spec://domains/systemics/k0-k1", to: "ref.gf0", type: "depends_on" }
+
+  - { from: "spec://domains/systemics/k0-k1", to: "section.1.definitions", type: "contains" }
+  - { from: "section.1.definitions", to: "term.kernel", type: "contains" }
+  - { from: "section.1.definitions", to: "property.kernel.fields", type: "contains" }
+
+  - { from: "spec://domains/systemics/k0-k1", to: "section.2.axiom", type: "contains" }
+  - { from: "section.2.axiom", to: "clause.k0", type: "contains" }
+  - { from: "section.2.axiom", to: "clause.k1.records_first", type: "contains" }
+  - { from: "section.2.axiom", to: "clause.k2.replayability", type: "contains" }
+  - { from: "section.2.axiom", to: "clause.k3.budgeted", type: "contains" }
+  - { from: "section.2.axiom", to: "clause.k4.composability", type: "contains" }
+
+  - { from: "spec://domains/systemics/k0-k1", to: "section.3.notes", type: "contains" }
+  - { from: "section.3.notes", to: "clause.domain_agnostic", type: "contains" }
+
+meta: []

@@ -1,0 +1,102 @@
+graph_id: "spec://domains/systemics/systemics-core-k1"
+version: "0.1.0"
+
+attrs:
+  - { key: "domain", value: "systemics" }
+  - { key: "profile", value: "specframe-k1" }
+  - { key: "depends_on", value: "spec://_kernel/spec/specframe-k1" }
+  - { key: "depends_on", value: "spec://_kernel/gf/gf0-k1" }
+
+nodes:
+  - id: "spec://domains/systemics/systemics-core-k1"
+    kind: "spec"
+    status: "normative"
+    profile: "specframe-k1"
+    title: "Systemics Core — Domain Index (K1)"
+    summary: >
+      Index/landing SpecFrame for the Systemics core domain in framecodex.
+      Canonical in-repo source for the minimal Systemics core set: Kernel Axiom K0,
+      Systemics Σ, and Σ Composition.
+    attrs:
+      - { key: "doc.title", value: "Systemics Core — Domain Index (K1)" }
+      - { key: "doc.summary", value: "Landing index for Systemics Core specs (K0 + Σ)." }
+      - { key: "doc.authors", value: "[\"David Swanson\"]", vtype: "json" }
+      - { key: "doc.created", value: "2026-01-04T00:00:00-06:00", vtype: "rfc3339" }
+      - { key: "doc.updated", value: "2026-01-04T00:00:00-06:00", vtype: "rfc3339" }
+      - { key: "doc.license", value: "CC-BY-4.0", vtype: "spdx" }
+      - { key: "doc.tags", value: "[\"systemics\",\"domain\",\"index\"]", vtype: "json" }
+
+  - id: "ref.specframe"
+    kind: "spec_ref"
+    status: "informative"
+    target_graph_id: "spec://_kernel/spec/specframe-k1"
+    label: "SpecFrame K1"
+
+  - id: "ref.gf0"
+    kind: "spec_ref"
+    status: "informative"
+    target_graph_id: "spec://_kernel/gf/gf0-k1"
+    label: "GraphFrame K0 (GF0)"
+
+  - id: "ref.systemics.k0"
+    kind: "spec_ref"
+    status: "informative"
+    target_graph_id: "spec://domains/systemics/k0-k1"
+    label: "Systemics — Kernel Axiom K0"
+
+  - id: "ref.systemics.sigma"
+    kind: "spec_ref"
+    status: "informative"
+    target_graph_id: "spec://domains/systemics/sigma-k1"
+    label: "Systemics Σ — Minimal Specification"
+
+  - id: "ref.systemics.sigma.composition"
+    kind: "spec_ref"
+    status: "informative"
+    target_graph_id: "spec://domains/systemics/sigma-composition-k1"
+    label: "Systemics Σ — Composition"
+
+  - id: "section.1.charter"
+    kind: "section"
+    status: "normative"
+    title: "Charter"
+    order: 1
+
+  - id: "clause.charter.scope"
+    kind: "clause"
+    status: "normative"
+    label: "Scope"
+    text: >
+      Systemics Core currently includes only: (1) Kernel Axiom K0, (2) Systemics Σ Minimal
+      Specification, and (3) Σ Composition. Other Systemics meta-algebras and instantiations
+      are out of scope for this domain version.
+
+  - id: "section.2.specs"
+    kind: "section"
+    status: "normative"
+    title: "Included Specs"
+    order: 2
+
+  - id: "property.specs.list"
+    kind: "property"
+    status: "normative"
+    label: "Spec List"
+    specs:
+      - "spec://domains/systemics/k0-k1"
+      - "spec://domains/systemics/sigma-k1"
+      - "spec://domains/systemics/sigma-composition-k1"
+
+edges:
+  - { from: "spec://domains/systemics/systemics-core-k1", to: "ref.specframe", type: "depends_on" }
+  - { from: "spec://domains/systemics/systemics-core-k1", to: "ref.gf0", type: "depends_on" }
+
+  - { from: "spec://domains/systemics/systemics-core-k1", to: "section.1.charter", type: "contains" }
+  - { from: "section.1.charter", to: "clause.charter.scope", type: "contains" }
+
+  - { from: "spec://domains/systemics/systemics-core-k1", to: "section.2.specs", type: "contains" }
+  - { from: "section.2.specs", to: "ref.systemics.k0", type: "contains" }
+  - { from: "section.2.specs", to: "ref.systemics.sigma", type: "contains" }
+  - { from: "section.2.specs", to: "ref.systemics.sigma.composition", type: "contains" }
+  - { from: "section.2.specs", to: "property.specs.list", type: "contains" }
+
+meta: []

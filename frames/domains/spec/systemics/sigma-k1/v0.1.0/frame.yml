@@ -1,0 +1,267 @@
+graph_id: "spec://domains/systemics/sigma-k1"
+version: "0.1.0"
+
+attrs:
+  - { key: "domain", value: "systemics" }
+  - { key: "profile", value: "specframe-k1" }
+  - { key: "depends_on", value: "spec://_kernel/spec/specframe-k1" }
+  - { key: "depends_on", value: "spec://_kernel/gf/gf0-k1" }
+
+nodes:
+  - id: "spec://domains/systemics/sigma-k1"
+    kind: "spec"
+    status: "normative"
+    profile: "specframe-k1"
+    title: "Systemics Σ — Minimal Specification (K1)"
+    summary: >
+      Domain-agnostic minimal specification of Systemics Σ: alphabet, systemic kernel tuple,
+      metrics/orders, axioms Σ-A1..Σ-A8, conformance (lawful record), morphisms, and an
+      instantiation recipe.
+    attrs:
+      - { key: "doc.title", value: "Systemics Σ — Minimal Specification (K1)" }
+      - { key: "doc.authors", value: "[\"David Swanson\"]", vtype: "json" }
+      - { key: "doc.created", value: "2026-01-04T00:00:00-06:00", vtype: "rfc3339" }
+      - { key: "doc.updated", value: "2026-01-04T00:00:00-06:00", vtype: "rfc3339" }
+      - { key: "doc.license", value: "CC-BY-4.0", vtype: "spdx" }
+      - { key: "doc.tags", value: "[\"systemics\",\"sigma\",\"spec\"]", vtype: "json" }
+
+  - id: "ref.specframe"
+    kind: "spec_ref"
+    status: "informative"
+    target_graph_id: "spec://_kernel/spec/specframe-k1"
+    label: "SpecFrame K1"
+
+  - id: "ref.gf0"
+    kind: "spec_ref"
+    status: "informative"
+    target_graph_id: "spec://_kernel/gf/gf0-k1"
+    label: "GraphFrame K0 (GF0)"
+
+  - id: "ref.sigma.composition"
+    kind: "spec_ref"
+    status: "informative"
+    target_graph_id: "spec://domains/systemics/sigma-composition-k1"
+    label: "Σ Composition (separate spec)"
+
+  - id: "section.1.charter"
+    kind: "section"
+    status: "normative"
+    title: "Charter"
+    order: 1
+
+  - id: "clause.charter"
+    kind: "clause"
+    status: "normative"
+    label: "Charter"
+    text: >
+      Σ specifies a contract-shaped kernel that produces decisions from posted evidence
+      under benign variation, with replayable records, without making domain assumptions.
+
+  - id: "section.2.alphabet"
+    kind: "section"
+    status: "normative"
+    title: "Alphabet (Objects & Maps)"
+    order: 2
+
+  - id: "property.alphabet"
+    kind: "property"
+    status: "normative"
+    label: "Alphabet"
+    symbols:
+      - { sym: "U", desc: "universe of artifacts" }
+      - { sym: "V", desc: "valuation space (measurable space)" }
+      - { sym: "2", desc: "decision space {0,1}" }
+      - { sym: "Π", desc: "frames / benign contexts" }
+      - { sym: "P_n", desc: "probes / benign perturbations" }
+      - { sym: "Θ", desc: "floors/thresholds (poset)" }
+      - { sym: "β", desc: "invariance budgets (tolerances)" }
+      - { sym: "C", desc: "capacity budgets (bits/time/energy)" }
+      - { sym: "Γ", desc: "envelope/meta (versions, seeds, numeric modes, commits)" }
+      - { sym: "R", desc: "records (canonical map → bytes; hash/ledger optional)" }
+
+  - id: "section.3.kernel"
+    kind: "section"
+    status: "normative"
+    title: "Definition: Systemic Kernel"
+    order: 3
+
+  - id: "term.systemic_kernel"
+    kind: "term"
+    status: "normative"
+    label: "Systemic Kernel"
+    summary: >
+      A systemic kernel is K^Σ_μ = (v, χ, Π, P_n, Θ, β, C, Γ) where v:U→V is a valuation map
+      and χ:V×Θ×β→2 is a decision gate.
+
+  - id: "section.4.metrics_orders"
+    kind: "section"
+    status: "normative"
+    title: "Metrics & Order"
+    order: 4
+
+  - id: "clause.metrics_orders"
+    kind: "clause"
+    status: "normative"
+    label: "Wobble and orderings"
+    text: >
+      Σ assumes a divergence / wobble metric w: V×V→R_{≥0} on decision-relevant coordinates,
+      and partial orders expressing tightening floors, tightening budgets, and shrinking capacity.
+
+  - id: "section.5.axioms"
+    kind: "section"
+    status: "normative"
+    title: "Axioms (Minimal Core)"
+    order: 5
+
+  - id: "clause.a1"
+    kind: "clause"
+    status: "normative"
+    label: "Σ-A1 Well-typedness"
+    text: >
+      All maps are well-defined (measurable/continuous as needed); χ is total on V×Θ×β.
+
+  - id: "clause.a2"
+    kind: "clause"
+    status: "normative"
+    label: "Σ-A2 Posting / Records-only"
+    text: >
+      For any run on u∈U, the record κ∈R includes (v(u), Θ, β, C, Π, P_n, Γ), and the decision
+      depends only on posted data: χ*(u;κ)=χ(v(u),Θ,β).
+
+  - id: "clause.a3"
+    kind: "clause"
+    status: "normative"
+    label: "Σ-A3 Benign invariance"
+    text: >
+      Under benign frame/probe variations (π,p)∈Π×P_n producing v_{π,p}(u), if worst-case wobble
+      W(u) is within β then decisions are invariant across those variations.
+
+  - id: "clause.a4"
+    kind: "clause"
+    status: "normative"
+    label: "Σ-A4 Minimal sufficiency under capacity"
+    text: >
+      Among valuations that preserve decisions under posted (Θ,β), v is minimal with respect to
+      capacity cost subject to C.
+
+  - id: "clause.a5"
+    kind: "clause"
+    status: "normative"
+    label: "Σ-A5 Reflexive reproducibility"
+    text: >
+      There exists an independently realized valuation v' (different numeric route/implementation)
+      such that χ(v(u),Θ,β)=χ(v'(u),Θ,β), with both posted in κ (self-warrant).
+
+  - id: "clause.a6"
+    kind: "clause"
+    status: "normative"
+    label: "Σ-A6 Determinism & idempotence"
+    text: >
+      For fixed (v(u),Θ,β), χ yields a unique decision and is idempotent under re-evaluation.
+
+  - id: "clause.a7"
+    kind: "clause"
+    status: "normative"
+    label: "Σ-A7 Monotonicity"
+    text: >
+      Tightening floors or budgets cannot rescue a failure by hidden dependence: tightening cannot
+      create a pass that relies on unposted slack.
+
+  - id: "clause.a8"
+    kind: "clause"
+    status: "normative"
+    label: "Σ-A8 Isomorphism invariance"
+    text: >
+      If a frame induces a structure-preserving isomorphism of representation, decisions are
+      invariant.
+
+  - id: "section.6.conformance"
+    kind: "section"
+    status: "normative"
+    title: "Conformance (Lawful Record)"
+    order: 6
+
+  - id: "clause.conformance"
+    kind: "clause"
+    status: "normative"
+    label: "Σ-lawful record checklist"
+    text: >
+      A record κ∈R is Σ-lawful iff it includes: (1) contract (Θ,β,C,Π,P_n,Γ and guards),
+      (2) valuation v(u) (decision-relevant coords), (3) decision χ(v(u),Θ,β) with reasons,
+      (4) invariance evidence (wobble metrics + worst-case (π,p)), (5) reflexive warrant (v'(u)
+      and agreement), (6) canonicalization bytes/digest and optional chaining root.
+
+  - id: "section.7.morphisms"
+    kind: "section"
+    status: "normative"
+    title: "Morphisms of Systemics"
+    order: 7
+
+  - id: "term.morphism"
+    kind: "term"
+    status: "normative"
+    label: "Morphism F: Σ → Σ'"
+    summary: >
+      A morphism is a pair (φ_U, φ_V) preserving valuation/decision structure and mapping contracts
+      monotonically so that Σ axioms remain satisfied.
+
+  - id: "clause.morphism.eq"
+    kind: "clause"
+    status: "normative"
+    label: "Morphism preservation"
+    text: >
+      Morphisms preserve valuation/decision structure (up to φ mappings) and map contract parameters
+      monotonically, preserving Σ-A1..Σ-A7.
+
+  - id: "section.8.recipe"
+    kind: "section"
+    status: "informative"
+    title: "Instantiation Recipe (Domain-Agnostic)"
+    order: 8
+
+  - id: "clause.recipe"
+    kind: "clause"
+    status: "informative"
+    label: "Recipe"
+    text: >
+      Choose U,V,v,χ; post Θ,β,C,Π,P_n,Γ and wobble metric w; establish Σ-A1..Σ-A7 by construction/tests;
+      emit lawful κ and optionally chain pages into books.
+
+edges:
+  - { from: "spec://domains/systemics/sigma-k1", to: "ref.specframe", type: "depends_on" }
+  - { from: "spec://domains/systemics/sigma-k1", to: "ref.gf0", type: "depends_on" }
+  - { from: "spec://domains/systemics/sigma-k1", to: "ref.sigma.composition", type: "refers_to" }
+
+  - { from: "spec://domains/systemics/sigma-k1", to: "section.1.charter", type: "contains" }
+  - { from: "section.1.charter", to: "clause.charter", type: "contains" }
+
+  - { from: "spec://domains/systemics/sigma-k1", to: "section.2.alphabet", type: "contains" }
+  - { from: "section.2.alphabet", to: "property.alphabet", type: "contains" }
+
+  - { from: "spec://domains/systemics/sigma-k1", to: "section.3.kernel", type: "contains" }
+  - { from: "section.3.kernel", to: "term.systemic_kernel", type: "contains" }
+
+  - { from: "spec://domains/systemics/sigma-k1", to: "section.4.metrics_orders", type: "contains" }
+  - { from: "section.4.metrics_orders", to: "clause.metrics_orders", type: "contains" }
+
+  - { from: "spec://domains/systemics/sigma-k1", to: "section.5.axioms", type: "contains" }
+  - { from: "section.5.axioms", to: "clause.a1", type: "contains" }
+  - { from: "section.5.axioms", to: "clause.a2", type: "contains" }
+  - { from: "section.5.axioms", to: "clause.a3", type: "contains" }
+  - { from: "section.5.axioms", to: "clause.a4", type: "contains" }
+  - { from: "section.5.axioms", to: "clause.a5", type: "contains" }
+  - { from: "section.5.axioms", to: "clause.a6", type: "contains" }
+  - { from: "section.5.axioms", to: "clause.a7", type: "contains" }
+  - { from: "section.5.axioms", to: "clause.a8", type: "contains" }
+
+  - { from: "spec://domains/systemics/sigma-k1", to: "section.6.conformance", type: "contains" }
+  - { from: "section.6.conformance", to: "clause.conformance", type: "contains" }
+
+  - { from: "spec://domains/systemics/sigma-k1", to: "section.7.morphisms", type: "contains" }
+  - { from: "section.7.morphisms", to: "term.morphism", type: "contains" }
+  - { from: "section.7.morphisms", to: "clause.morphism.eq", type: "contains" }
+
+  - { from: "spec://domains/systemics/sigma-k1", to: "section.8.recipe", type: "contains" }
+  - { from: "section.8.recipe", to: "clause.recipe", type: "contains" }
+
+meta: []

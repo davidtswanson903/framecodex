@@ -74,6 +74,26 @@
       "graph_id": "spec://_kernel/validator/validatorgroup-k1",
       "path": "frames/_kernel/spec/validator/validatorgroup-k1/v0.1.0/frame.yml",
       "version": "0.1.0"
+    },
+    {
+      "graph_id": "spec://domains/systemics/k0-k1",
+      "path": "frames/domains/spec/systemics/k0-k1/v0.1.0/frame.yml",
+      "version": "0.1.0"
+    },
+    {
+      "graph_id": "spec://domains/systemics/sigma-composition-k1",
+      "path": "frames/domains/spec/systemics/sigma-composition-k1/v0.1.0/frame.yml",
+      "version": "0.1.0"
+    },
+    {
+      "graph_id": "spec://domains/systemics/sigma-k1",
+      "path": "frames/domains/spec/systemics/sigma-k1/v0.1.0/frame.yml",
+      "version": "0.1.0"
+    },
+    {
+      "graph_id": "spec://domains/systemics/systemics-core-k1",
+      "path": "frames/domains/spec/systemics/systemics-core-k1/v0.1.0/frame.yml",
+      "version": "0.1.0"
     }
   ],
   "manifest_version": "0.1.0",
@@ -141,6 +161,26 @@
     {
       "graph_id": "spec://_kernel/validator/validatorgroup-k1",
       "path": "docs/_kernel/spec/validator/validatorgroup-k1/v0.1.0/README.md",
+      "version": "0.1.0"
+    },
+    {
+      "graph_id": "spec://domains/systemics/k0-k1",
+      "path": "docs/domains/spec/systemics/k0-k1/v0.1.0/README.md",
+      "version": "0.1.0"
+    },
+    {
+      "graph_id": "spec://domains/systemics/sigma-composition-k1",
+      "path": "docs/domains/spec/systemics/sigma-composition-k1/v0.1.0/README.md",
+      "version": "0.1.0"
+    },
+    {
+      "graph_id": "spec://domains/systemics/sigma-k1",
+      "path": "docs/domains/spec/systemics/sigma-k1/v0.1.0/README.md",
+      "version": "0.1.0"
+    },
+    {
+      "graph_id": "spec://domains/systemics/systemics-core-k1",
+      "path": "docs/domains/spec/systemics/systemics-core-k1/v0.1.0/README.md",
       "version": "0.1.0"
     }
   ]

@@ -1,0 +1,161 @@
+graph_id: "spec://domains/systemics/sigma-composition-k1"
+version: "0.1.0"
+
+attrs:
+  - { key: "domain", value: "systemics" }
+  - { key: "profile", value: "specframe-k1" }
+  - { key: "depends_on", value: "spec://_kernel/spec/specframe-k1" }
+  - { key: "depends_on", value: "spec://_kernel/gf/gf0-k1" }
+
+nodes:
+  - id: "spec://domains/systemics/sigma-composition-k1"
+    kind: "spec"
+    status: "normative"
+    profile: "specframe-k1"
+    title: "Systemics Σ — Composition (K1)"
+    summary: >
+      Defines Σ composition forms: Serial composition (with posted adapter), Parallel/product
+      composition (posted decision combinator), and Temporal composition (window→page→book).
+      Constrains composition to preserve Σ lawfulness (axioms + contract monotonicity).
+    attrs:
+      - { key: "doc.title", value: "Systemics Σ — Composition (K1)" }
+      - { key: "doc.authors", value: "[\"David Swanson\"]", vtype: "json" }
+      - { key: "doc.created", value: "2026-01-04T00:00:00-06:00", vtype: "rfc3339" }
+      - { key: "doc.updated", value: "2026-01-04T00:00:00-06:00", vtype: "rfc3339" }
+      - { key: "doc.license", value: "CC-BY-4.0", vtype: "spdx" }
+      - { key: "doc.tags", value: "[\"systemics\",\"sigma\",\"composition\"]", vtype: "json" }
+
+  - id: "ref.specframe"
+    kind: "spec_ref"
+    status: "informative"
+    target_graph_id: "spec://_kernel/spec/specframe-k1"
+    label: "SpecFrame K1"
+
+  - id: "ref.gf0"
+    kind: "spec_ref"
+    status: "informative"
+    target_graph_id: "spec://_kernel/gf/gf0-k1"
+    label: "GraphFrame K0 (GF0)"
+
+  - id: "ref.sigma"
+    kind: "spec_ref"
+    status: "informative"
+    target_graph_id: "spec://domains/systemics/sigma-k1"
+    label: "Systemics Σ — Minimal Specification"
+
+  - id: "section.1.charter"
+    kind: "section"
+    status: "normative"
+    title: "Charter"
+    order: 1
+
+  - id: "clause.charter"
+    kind: "clause"
+    status: "normative"
+    label: "Charter"
+    text: >
+      This spec defines how lawful Σ kernels compose in serial, parallel, and temporal forms,
+      preserving Σ lawfulness via posted adapters/combinators and monotone contract combination.
+
+  - id: "section.2.serial"
+    kind: "section"
+    status: "normative"
+    title: "Serial Composition"
+    order: 2
+
+  - id: "clause.serial.adapter_posted"
+    kind: "clause"
+    status: "normative"
+    label: "Posted adapter requirement"
+    text: >
+      For K1 then K2, any adapter/bridge f used to produce the second valuation MUST be posted
+      as part of the record/contract, so downstream decisions remain records-only.
+
+  - id: "clause.serial.monotone_combine"
+    kind: "clause"
+    status: "normative"
+    label: "Monotone contract combination"
+    text: >
+      Serial composition is lawful only if combined (Θ,β,C) are formed via a monotone operator ⊕
+      (domain-chosen) and Σ-A1..Σ-A7 remain satisfied for the composite.
+
+  - id: "section.3.parallel"
+    kind: "section"
+    status: "normative"
+    title: "Parallel / Product Composition"
+    order: 3
+
+  - id: "clause.parallel.comb_posted"
+    kind: "clause"
+    status: "normative"
+    label: "Posted decision combinator"
+    text: >
+      For product kernel K1 ⊗ K2, the decision aggregation comb: 2×2→2 (e.g., AND/OR) MUST be posted
+      as part of the record/contract.
+
+  - id: "clause.parallel.monotone_contracts"
+    kind: "clause"
+    status: "normative"
+    label: "Monotone floors/budgets"
+    text: >
+      Floors and budgets for parallel composition MUST be combined monotonically (tightening cannot
+      rely on hidden slack).
+
+  - id: "section.4.temporal"
+    kind: "section"
+    status: "normative"
+    title: "Temporal Composition (window → page → book)"
+    order: 4
+
+  - id: "clause.temporal.pages_books"
+    kind: "clause"
+    status: "normative"
+    label: "Pages and books"
+    text: >
+      A page is a lawful record κ for one window; a book is an ordered sequence (optionally hash-chained)
+      of pages. Chaining preserves replay and does not alter decisions.
+
+  - id: "section.5.invariants"
+    kind: "section"
+    status: "normative"
+    title: "Composition Invariants"
+    order: 5
+
+  - id: "clause.invariant.records_only"
+    kind: "clause"
+    status: "normative"
+    label: "Records-only preserved"
+    text: >
+      Composition MUST preserve Σ-A2 (records-only): any dependency introduced by composition must be posted.
+
+  - id: "clause.invariant.replay_preserved"
+    kind: "clause"
+    status: "normative"
+    label: "Replay preserved"
+    text: >
+      Composition MUST preserve reflexive reproducibility and replayability obligations implied by the Σ contract.
+
+edges:
+  - { from: "spec://domains/systemics/sigma-composition-k1", to: "ref.specframe", type: "depends_on" }
+  - { from: "spec://domains/systemics/sigma-composition-k1", to: "ref.gf0", type: "depends_on" }
+  - { from: "spec://domains/systemics/sigma-composition-k1", to: "ref.sigma", type: "depends_on" }
+
+  - { from: "spec://domains/systemics/sigma-composition-k1", to: "section.1.charter", type: "contains" }
+  - { from: "section.1.charter", to: "clause.charter", type: "contains" }
+
+  - { from: "spec://domains/systemics/sigma-composition-k1", to: "section.2.serial", type: "contains" }
+  - { from: "section.2.serial", to: "clause.serial.adapter_posted", type: "contains" }
+  - { from: "section.2.serial", to: "clause.serial.monotone_combine", type: "contains" }
+
+  - { from: "spec://domains/systemics/sigma-composition-k1", to: "section.3.parallel", type: "contains" }
+  - { from: "section.3.parallel", to: "clause.parallel.comb_posted", type: "contains" }
+  - { from: "section.3.parallel", to: "clause.parallel.monotone_contracts", type: "contains" }
+
+  - { from: "spec://domains/systemics/sigma-composition-k1", to: "section.4.temporal", type: "contains" }
+  - { from: "section.4.temporal", to: "clause.temporal.pages_books", type: "contains" }
+
+  - { from: "spec://domains/systemics/sigma-composition-k1", to: "section.5.invariants", type: "contains" }
+  - { from: "section.5.invariants", to: "clause.invariant.records_only", type: "contains" }
+  - { from: "section.5.invariants", to: "clause.invariant.replay_preserved", type: "contains" }
+
+meta: []
