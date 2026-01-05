@@ -102,6 +102,14 @@ jobs:
             find . -type f -maxdepth 8 | sort
           ) > "dist/pub-filelist-${GITHUB_REF_NAME}.txt"
 
+          # Create uniquely-named per-doc assets to avoid collisions on
+          # MANIFEST.json / SHA256SUMS across multiple publications.
+          while IFS= read -r -d '' f; do
+            rel="${f#pub/}"
+            safe="${rel//\//__}"
+            cp -f "$f" "dist/${safe}"
+          done < <(find pub -type f \( -name '*.pdf' -o -name 'MANIFEST.json' -o -name 'SHA256SUMS' \) -print0)
+
       - name: Create GitHub Release and upload assets
         uses: softprops/action-gh-release@v2
         with:
@@ -110,6 +118,3 @@ jobs:
           generate_release_notes: true
           files: |
             dist/*
-            pub/**/out/*.pdf
-            pub/**/MANIFEST.json
-            pub/**/out/SHA256SUMS
