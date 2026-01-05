@@ -113,20 +113,26 @@ nodes:
     kind: "clause"
     status: "normative"
     label: "Scope of SpecFrame K1"
-    text: >
-      SpecFrame K1 specifies the canonical schema for representing specifications
-      as GraphFrame K0 graphs. A SpecFrame is any GF0 graph whose root node has
-      kind = 'spec' and profile = 'specframe-k1'. All such graphs MUST conform to
+    text: |
+      `SpecFrame K1` specifies the canonical schema for representing specifications
+      as `GraphFrame K0` graphs. A `SpecFrame` is any GF0 graph whose root node has
+      `kind = 'spec'` and `profile = 'specframe-k1'`. All such graphs **MUST** conform to
       the node, edge, and attribute conventions defined in this spec.
+    attrs:
+      - key: "text.format"
+        value: "md-inline"
 
   - id: "clause.scope.2"
     kind: "clause"
     status: "informative"
     label: "Intended consumers"
-    text: >
-      SpecFrame K1 is intended for: (a) human spec authors, (b) GraphBrain
+    text: |
+      `SpecFrame K1` is intended for: (a) human spec authors, (b) `GraphBrain`
       kernels that load, validate, and refactor specs, and (c) LLM workers that
       generate or update specs from code, docs, or other frames.
+    attrs:
+      - key: "text.format"
+        value: "md-inline"
 
   # --- Node kinds ------------------------------------------------------------
 
@@ -142,28 +148,34 @@ nodes:
     kind: "clause"
     status: "normative"
     label: "Allowed node kinds"
-    text: >
-      Within a SpecFrame, NodeK0.kind MUST be one of:
-        - 'spec'      : the root specification node (exactly one per SpecFrame),
-        - 'section'   : top-level or nested sections grouping terms and clauses,
-        - 'term'      : definitions of key concepts,
-        - 'clause'    : normative or informative statements,
-        - 'property'  : small structured facts (enums, lists, thresholds),
-        - 'example'   : worked examples illustrating other nodes,
-        - 'spec_ref'  : references to other specs or frames.
-      Any other value MUST be reported as a validation error.
+    text: |
+      Within a `SpecFrame`, `NodeK0.kind` **MUST** be one of:
+        - `'spec'`      : the root specification node (exactly one per SpecFrame),
+        - `'section'`   : top-level or nested sections grouping terms and clauses,
+        - `'term'`      : definitions of key concepts,
+        - `'clause'`    : normative or informative statements,
+        - `'property'`  : small structured facts (enums, lists, thresholds),
+        - `'example'`   : worked examples illustrating other nodes,
+        - `'spec_ref'`  : references to other specs or frames.
+      Any other value **MUST** be reported as a validation error.
+    attrs:
+      - key: "text.format"
+        value: "md-block"
 
   - id: "clause.node_kinds.root"
     kind: "clause"
     status: "normative"
     label: "Root spec node"
-    text: >
-      Each SpecFrame MUST contain exactly one node with:
-        - id == graph_id,
-        - kind == 'spec',
-        - status in {'normative', 'informative', 'experimental'}.
+    text: |
+      Each `SpecFrame` **MUST** contain exactly one node with:
+        - `id == graph_id`,
+        - `kind == 'spec'`,
+        - `status in {'normative', 'informative', 'experimental'}`.
       This node is the root of the spec and is the unique entry point for
       reachability and top-level attributes.
+    attrs:
+      - key: "text.format"
+        value: "md-block"
 
   # --- Edge kinds ------------------------------------------------------------
 
@@ -180,25 +192,31 @@ nodes:
     kind: "clause"
     status: "normative"
     label: "Allowed edge types"
-    text: >
-      Within a SpecFrame, EdgeK0.type MUST be one of:
-        - 'contains'   : structural containment / hierarchy,
-        - 'depends_on' : spec-level dependency on another node or spec,
-        - 'defines'    : term or clause defines another concept,
-        - 'refines'    : clause refines or tightens another clause,
-        - 'refers_to'  : non-normative reference to another node or spec,
-        - 'example_of' : examples illustrating a term or clause.
-      Any other value MUST be reported as a validation error.
+    text: |
+      Within a `SpecFrame`, `EdgeK0.type` **MUST** be one of:
+        - `'contains'`   : structural containment / hierarchy,
+        - `'depends_on'` : spec-level dependency on another node or spec,
+        - `'defines'`    : term or clause defines another concept,
+        - `'refines'`    : clause refines or tightens another clause,
+        - `'refers_to'`  : non-normative reference to another node or spec,
+        - `'example_of'` : examples illustrating a term or clause.
+      Any other value **MUST** be reported as a validation error.
+    attrs:
+      - key: "text.format"
+        value: "md-block"
 
   - id: "clause.edge.contains"
     kind: "clause"
     status: "normative"
     label: "contains edge semantics"
-    text: >
-      'contains' edges encode the structural tree of the spec. The root 'spec'
-      node MUST contain one or more 'section' nodes. Section nodes MAY contain
+    text: |
+      `'contains'` edges encode the structural tree of the spec. The root `'spec'`
+      node **MUST** contain one or more `'section'` nodes. Section nodes **MAY** contain
       other sections, terms, clauses, properties, and examples. Contains edges
-      MUST form an acyclic tree (or forest) rooted at the spec node.
+      **MUST** form an acyclic tree (or forest) rooted at the spec node.
+    attrs:
+      - key: "text.format"
+        value: "md-inline"
 
   # --- Attributes ------------------------------------------------------------
 
@@ -216,106 +234,133 @@ nodes:
     kind: "clause"
     status: "normative"
     label: "Allowed status values"
-    text: >
-      For all nodes in a SpecFrame, the status attribute MUST be one of:
-        - 'normative',
-        - 'informative',
-        - 'experimental'.
+    text: |
+      For all nodes in a `SpecFrame`, the `status` attribute **MUST** be one of:
+        - `'normative'`,
+        - `'informative'`,
+        - `'experimental'`.
+    attrs:
+      - key: "text.format"
+        value: "md-block"
 
   - id: "clause.attrs.spec"
     kind: "clause"
     status: "normative"
     label: "Attributes for spec nodes"
-    text: >
-      A node with kind == 'spec' MUST provide at least:
-        - 'title'   : short human-readable title,
-        - 'status'  : SpecStatus,
-        - 'summary' : short description of the spec's scope,
-        - 'profile' : string identifying the spec profile, e.g. 'specframe-k1'.
-      The spec node MAY also include 'version_note', 'domain', and additional
+    text: |
+      A node with `kind == 'spec'` **MUST** provide at least:
+        - `'title'`   : short human-readable title,
+        - `'status'`  : SpecStatus,
+        - `'summary'` : short description of the spec's scope,
+        - `'profile'` : string identifying the spec profile, e.g., `'specframe-k1'`.
+      The spec node **MAY** also include `'version_note'`, `'domain'`, and additional
       profile-specific attributes.
+    attrs:
+      - key: "text.format"
+        value: "md-block"
 
   - id: "clause.attrs.section"
     kind: "clause"
     status: "normative"
     label: "Attributes for section nodes"
-    text: >
-      A node with kind == 'section' MUST provide:
-        - 'title' : short section title,
-        - 'status': SpecStatus.
-      It SHOULD provide:
-        - 'order' : integer for ordering sections within the spec.
-      Sections MAY nest other sections via 'contains'.
+    text: |
+      A node with `kind == 'section'` **MUST** provide:
+        - `'title'` : short section title,
+        - `'status'`: SpecStatus.
+      It **SHOULD** provide:
+        - `'order'` : integer for ordering sections within the spec.
+      Sections **MAY** nest other sections via `'contains'`.
+    attrs:
+      - key: "text.format"
+        value: "md-block"
 
   - id: "clause.attrs.term"
     kind: "clause"
     status: "normative"
     label: "Attributes for term nodes"
-    text: >
-      A node with kind == 'term' MUST provide:
-        - 'label' : short name of the term,
-        - 'status': SpecStatus.
-      The primary definition text MAY be stored in 'text'. Terms are usually
-      linked via 'defines' edges from clauses that define them.
+    text: |
+      A node with `kind == 'term'` **MUST** provide:
+        - `'label'` : short name of the term,
+        - `'status'`: SpecStatus.
+      The primary definition text **MAY** be stored in `'text'`. Terms are usually
+      linked via `'defines'` edges from clauses that define them.
+    attrs:
+      - key: "text.format"
+        value: "md-inline"
 
   - id: "clause.attrs.clause"
     kind: "clause"
     status: "normative"
     label: "Attributes for clause nodes"
-    text: >
-      A node with kind == 'clause' MUST provide:
-        - 'label' : short handle for the clause,
-        - 'status': SpecStatus.
-      It SHOULD provide:
-        - 'text'  : full clause text in natural language.
+    text: |
+      A node with `kind == 'clause'` **MUST** provide:
+        - `'label'` : short handle for the clause,
+        - `'status'`: SpecStatus.
+      It **SHOULD** provide:
+        - `'text'`  : full clause text in natural language.
+    attrs:
+      - key: "text.format"
+        value: "md-inline"
 
   - id: "clause.attrs.property"
     kind: "clause"
     status: "normative"
     label: "Attributes for property nodes"
-    text: >
-      A node with kind == 'property' MUST provide:
-        - 'label' : short name of the property,
-        - 'status': SpecStatus.
-      Property nodes MAY carry arbitrary additional attributes (lists, enums,
+    text: |
+      A node with `kind == 'property'` **MUST** provide:
+        - `'label'` : short name of the property,
+        - `'status'`: SpecStatus.
+      Property nodes **MAY** carry arbitrary additional attributes (lists, enums,
       thresholds) that are interpreted by tooling.
+    attrs:
+      - key: "text.format"
+        value: "md-inline"
 
   - id: "clause.attrs.example"
     kind: "clause"
     status: "informative"
     label: "Attributes for example nodes"
-    text: >
-      A node with kind == 'example' MUST provide:
-        - 'label' : short identifier for the example,
-        - 'status': SpecStatus (typically 'informative').
-      It SHOULD provide:
-        - 'text'  : free-form example text or code snippet.
+    text: |
+      A node with `kind == 'example'` **MUST** provide:
+        - `'label'` : short identifier for the example,
+        - `'status'`: SpecStatus (typically `'informative'`).
+      It **SHOULD** provide:
+        - `'text'`  : free-form example text or code snippet.
+    attrs:
+      - key: "text.format"
+        value: "md-inline"
 
   - id: "clause.attrs.spec_ref"
     kind: "clause"
     status: "normative"
     label: "Attributes for spec_ref nodes"
-    text: >
-      A node with kind == 'spec_ref' MUST provide:
-        - 'target_graph_id' : canonical graph_id of the referenced spec or frame.
-      It MAY provide:
-        - 'label' : short human-readable label,
-        - 'note'  : explanatory text about the reference.
+    text: |
+      A node with `kind == 'spec_ref'` **MUST** provide:
+        - `'target_graph_id'` : canonical `graph_id` of the referenced spec or frame.
+      It **MAY** provide:
+        - `'label'` : short human-readable label,
+        - `'note'`  : explanatory text about the reference.
+    attrs:
+      - key: "text.format"
+        value: "md-inline"
 
   - id: "clause.attrs.required"
     kind: "clause"
     status: "normative"
     label: "Required attributes per node kind"
-    text: >
-      A SpecFrame validator MUST treat missing required attributes as a hard
+    text: |
+      A `SpecFrame` validator **MUST** treat missing required attributes as a hard
       validation error. Required attributes per kind are:
-        - spec     : title, status, summary, profile
-        - section  : title, status
-        - term     : label, status
-        - clause   : label, status
-        - property : label, status
-        - example  : label, status
-        - spec_ref : target_graph_id
+        - `spec`     : `title`, `status`, `summary`, `profile`
+        - `section`  : `title`, `status`
+        - `term`     : `label`, `status`
+        - `clause`   : `label`, `status`
+        - `property` : `label`, `status`
+        - `example`  : `label`, `status`
+        - `spec_ref` : `target_graph_id`
+    attrs:
+      - key: "text.format"
+        value: "md-block"
 
   # --- Validation invariants -------------------------------------------------
 
@@ -323,37 +368,49 @@ nodes:
     kind: "clause"
     status: "normative"
     label: "Node kind validation"
-    text: >
-      A SpecFrame validator MUST reject any node whose kind attribute is not
-      in the allowed set specified by property.node_kinds. Unknown or misspelled
+    text: |
+      A `SpecFrame` validator **MUST** reject any node whose `kind` attribute is not
+      in the allowed set specified by `property.node_kinds`. Unknown or misspelled
       kinds are considered hard validation failures.
+    attrs:
+      - key: "text.format"
+        value: "md-inline"
 
   - id: "clause.validation.edge_types"
     kind: "clause"
     status: "normative"
     label: "Edge type validation"
-    text: >
-      A SpecFrame validator MUST reject any edge whose type attribute is not
-      in the allowed set specified by property.edge_types. Unknown edge types
+    text: |
+      A `SpecFrame` validator **MUST** reject any edge whose `type` attribute is not
+      in the allowed set specified by `property.edge_types`. Unknown edge types
       are considered hard validation failures.
+    attrs:
+      - key: "text.format"
+        value: "md-inline"
 
   - id: "clause.validation.contains_tree"
     kind: "clause"
     status: "normative"
     label: "Contains edges form a tree"
-    text: >
-      'contains' edges MUST form an acyclic tree (or forest) rooted at the
-      spec node. Cycles or multiple parents for the same node via 'contains'
+    text: |
+      `'contains'` edges **MUST** form an acyclic tree (or forest) rooted at the
+      spec node. Cycles or multiple parents for the same node via `'contains'`
       are considered hard validation failures.
+    attrs:
+      - key: "text.format"
+        value: "md-inline"
 
   - id: "clause.validation.reachability"
     kind: "clause"
     status: "normative"
     label: "Reachability from root"
-    text: >
-      All normative nodes in a SpecFrame SHOULD be reachable from the root
-      spec node via one or more 'contains' edges. Unreachable normative nodes
-      SHOULD be treated as errors or at least strong warnings by tooling.
+    text: |
+      All normative nodes in a `SpecFrame` **SHOULD** be reachable from the root
+      spec node via one or more `'contains'` edges. Unreachable normative nodes
+      **SHOULD** be treated as errors or at least strong warnings by tooling.
+    attrs:
+      - key: "text.format"
+        value: "md-inline"
 
   # --- Integration and usage -------------------------------------------------
 
@@ -379,36 +436,45 @@ nodes:
     kind: "clause"
     status: "normative"
     label: "Frame-level metadata location"
-    text: >
-      In SpecFrames, frame-level metadata (publish routing, domain tags, dependency tags,
-      audience tags) SHOULD be stored in GraphFrameK0.attrs. GraphFrameK0.meta MUST be used
-      only for true MetaGraphs (aux layout/index/view graphs) as defined by GF0. A SpecFrame
-      validator MUST NOT require any particular GraphFrameK0.attrs keys; attrs is tooling-
+    text: |
+      In `SpecFrames`, frame-level metadata (publish routing, domain tags, dependency tags,
+      audience tags) **SHOULD** be stored in `GraphFrameK0.attrs`. `GraphFrameK0.meta` **MUST** be used
+      only for true `MetaGraph`s (aux layout/index/view graphs) as defined by GF0. A `SpecFrame`
+      validator **MUST NOT** require any particular `GraphFrameK0.attrs` keys; `attrs` is tooling-
       facing metadata and does not affect the node/edge validation rules.
+    attrs:
+      - key: "text.format"
+        value: "md-inline"
 
   - id: "clause.frame_metadata.recommended_keys"
     kind: "clause"
     status: "informative"
     label: "Recommended SpecFrame attrs keys"
-    text: >
-      Tooling MAY adopt the following conventional GraphFrameK0.attrs keys for SpecFrames:
-        - domain
-        - depends_on (repeatable)
-        - intended_consumer (repeatable)
-        - publish.root
-        - publish.path
-        - publish.slug
+    text: |
+      Tooling **MAY** adopt the following conventional `GraphFrameK0.attrs` keys for `SpecFrame`s:
+        - `domain`
+        - `depends_on` (repeatable)
+        - `intended_consumer` (repeatable)
+        - `publish.root`
+        - `publish.path`
+        - `publish.slug`
+    attrs:
+      - key: "text.format"
+        value: "md-block"
 
   - id: "clause.integration.usage"
     kind: "clause"
     status: "informative"
     label: "Use in GraphBrain and specgen"
-    text: >
-      GraphBrain and specgen SHOULD treat SpecFrame K1 as the canonical schema
-      for specs. Specs for other domains (canon, CBF, GSKernel, TaskFrame,
-      EvidenceFrame, KernelCore, regimes) SHOULD be represented as SpecFrames
+    text: |
+      `GraphBrain` and `specgen` **SHOULD** treat `SpecFrame K1` as the canonical schema
+      for specs. Specs for other domains (`canon`, `CBF`, `GSKernel`, `TaskFrame`,
+      `EvidenceFrame`, `KernelCore`, `regimes`) **SHOULD** be represented as `SpecFrame`s
       and validated against this schema so that they can be composed, diffed,
       and refactored uniformly.
+    attrs:
+      - key: "text.format"
+        value: "md-inline"
 
 edges:
   # Root contains sections and key properties/refs
