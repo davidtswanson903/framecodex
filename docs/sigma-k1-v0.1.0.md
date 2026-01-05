@@ -29,14 +29,14 @@
 
 **Systemic Kernel** _(normative)_
 
-A systemic kernel is the tuple: K^Σ*μ := (v, χ, Π, P*n, Θ, β, C, Γ), where v: U → V and χ: V × Θ × β → 2.
+A systemic kernel is the tuple: $K^{\\Sigma}_{\\mu} := (v, \\chi, \\Pi, P_n, \\Theta, \\beta, C, \\Gamma)$, where $v: U \\to V$ and $\\chi: V \\times \\Theta \\times \\beta \\to 2$.
 
 ## Metrics & Order
 <a id="section-4-metrics-orders-c4fd82d3"></a>
 
 **Wobble and orderings** _(normative)_
 
-Σ assumes a divergence ("wobble") w: V × V → R_{≥0} on decision-relevant coordinates. Orders: θ ⪯ θ' means tightening floors; β' ⪯ β means tightening budgets; C' ⪯ C means shrinking capacity.
+$\\Sigma$ assumes a divergence ("wobble") $w: V \\times V \\to \\mathbb{R}_{\\ge 0}$ on decision-relevant coordinates. Orders: $\\Theta \\preceq \\Theta'$ means tightening floors; $\\beta' \\preceq \\beta$ means tightening budgets; $C' \\preceq C$ means shrinking capacity.
 
 ## Axioms (Minimal Core)
 <a id="section-5-axioms-15c13760"></a>
