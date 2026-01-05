@@ -150,7 +150,7 @@ def render_inline_markup_k1_tex(ast: Dict[str, Any]) -> List[str]:
         if t == "code_fence":
             code = str(b.get("code") or "")
             # Use fancyvrb for better control and to avoid edge cases with verbatim.
-            out.append(r"\begin{Verbatim}[commandchars=\\\{\},fontsize=\\small]")
+            out.append(r"\begin{Verbatim}[commandchars=\\\{\},fontsize=\small]")
             out.extend(code.split("\n"))
             out.append(r"\end{Verbatim}")
             out.append("")
@@ -187,23 +187,23 @@ def render_preamble(title: str) -> List[str]:
     # Title should be treated as plain text (no TeX macro injection).
     t = tex_escape(title or "Document")
     return [
-        r"\\documentclass[11pt]{article}",
-        r"\\usepackage[T1]{fontenc}",
-        r"\\usepackage[utf8]{inputenc}",
-        r"\\usepackage{lmodern}",
-        r"\\usepackage{hyperref}",
-        r"\\usepackage{geometry}",
-        r"\\usepackage{amsmath}",
-        r"\\usepackage{amssymb}",
-        r"\\usepackage{fancyvrb}",
-        r"\\geometry{margin=1in}",
+        r"\documentclass[11pt]{article}",
+        r"\usepackage[T1]{fontenc}",
+        r"\usepackage[utf8]{inputenc}",
+        r"\usepackage{lmodern}",
+        r"\usepackage{hyperref}",
+        r"\usepackage{geometry}",
+        r"\usepackage{amsmath}",
+        r"\usepackage{amssymb}",
+        r"\usepackage{fancyvrb}",
+        r"\geometry{margin=1in}",
         "",
-        rf"\\title{{{t}}}",
-        r"\\author{}",
-        r"\\date{}",
+        rf"\title{{{t}}}",
+        r"\author{}",
+        r"\date{}",
         "",
-        r"\\begin{document}",
-        r"\\maketitle",
+        r"\begin{document}",
+        r"\maketitle",
         "",
     ]
 
@@ -220,7 +220,7 @@ def render_block(b: Dict[str, Any]) -> List[str]:
             return [rf"\subsection*{{{title}}}", ""]
         if level == 3:
             return [rf"\subsubsection*{{{title}}}", ""]
-        return [rf"\\paragraph*{{{title}}}", ""]
+        return [rf"\paragraph*{{{title}}}", ""]
 
     if t == "paragraph":
         bm = b.get("body_markup")
@@ -240,7 +240,7 @@ def render_block(b: Dict[str, Any]) -> List[str]:
     if t == "property":
         label = tex_escape(str(b.get("label", "")))
         status = tex_escape(str(b.get("status", "")))
-        head = rf"\\textbf{{{label}}}" + (rf" \\emph{{({status})}}" if status else "")
+        head = rf"\textbf{{{label}}}" + (rf" \emph{{({status})}}" if status else "")
         out: List[str] = [head, ""]
 
         # Optional property body text (often present when symbols need context).
@@ -251,7 +251,7 @@ def render_block(b: Dict[str, Any]) -> List[str]:
 
         symbols = b.get("symbols") or []
         if symbols:
-            out.append(r"\\begin{itemize}")
+            out.append(r"\begin{itemize}")
             for s in symbols:
                 sym_raw = str(s.get("sym", ""))
                 sym_math = normalize_tex_unicode(sym_raw)
@@ -259,10 +259,10 @@ def render_block(b: Dict[str, Any]) -> List[str]:
                 # Prefer markup-aware descriptions when present.
                 desc_rendered = _render_inline_block_or_plain(s.get("desc_markup") or s.get("desc"))
                 if sym_math:
-                    out.append(rf"  \\item \\({sym_math}\\): {desc_rendered}")
+                    out.append(rf"  \item \({sym_math}\): {desc_rendered}")
                 else:
-                    out.append(rf"  \\item {desc_rendered}")
-            out.append(r"\\end{itemize}")
+                    out.append(rf"  \item {desc_rendered}")
+            out.append(r"\end{itemize}")
             out.append("")
         return out
 
@@ -271,19 +271,19 @@ def render_block(b: Dict[str, Any]) -> List[str]:
         expr = normalize_tex_unicode(str(b.get("text", "") or b.get("expr", "") or "").strip())
         if not expr:
             return [""]
-        return [r"\\[", expr, r"\\]", ""]
+        return [r"\[", expr, r"\]", ""]
 
     if t == "list_item":
         txt = tex_escape(str(b.get("text", "")))
-        return [rf"\\item {txt}"]
+        return [rf"\item {txt}"]
 
     if t == "note":
         kind = tex_escape(str(b.get("kind", "note")))
         txt = tex_escape(str(b.get("text", "")))
-        return [rf"\\begin{{quote}}\\textbf{{{kind}}}: {txt}\\end{{quote}}", ""]
+        return [rf"\begin{{quote}}\textbf{{{kind}}}: {txt}\end{{quote}}", ""]
 
     return [
-        rf"\\begin{{quote}}\\textbf{{unhandled block}}: {tex_escape(str(t))}\\end{{quote}}",
+        rf"\begin{{quote}}\textbf{{unhandled block}}: {tex_escape(str(t))}\end{{quote}}",
         "",
     ]
 
