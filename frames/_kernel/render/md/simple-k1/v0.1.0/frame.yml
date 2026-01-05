@@ -127,111 +127,145 @@ nodes:
     status: "normative"
     label: "Scope"
     text: >
-      This renderer MUST accept any valid GraphFrame K0 (GF0) and MUST emit a single Markdown
-      document representing the frame. It MUST NOT rely on higher-level frame semantics
+      This renderer **MUST** accept any valid `GraphFrame K0` (GF0) and **MUST** emit a single Markdown
+      document representing the frame. It **MUST NOT** rely on higher-level frame semantics
       (SpecFrame, LawFrame, etc.) beyond what is present in the GF0 structure.
+    attrs:
+      - key: "text.format"
+        value: "md-inline"
 
   - id: "clause.input.gf0_required"
     kind: "clause"
     status: "normative"
     label: "Input must be valid GF0"
     text: >
-      Inputs MUST be structurally valid GF0: graph_id and version non-empty, attrs/nodes/edges/meta
+      Inputs **MUST** be structurally valid GF0: `graph_id` and `version` non-empty, `attrs`/`nodes`/`edges`/`meta`
       lists present, node IDs unique, and edges must reference existing node IDs.
+    attrs:
+      - key: "text.format"
+        value: "md-inline"
 
   - id: "clause.output.header"
     kind: "clause"
     status: "normative"
     label: "Header section"
     text: >
-      The output MUST begin with:
-        - H1: graph_id
-        - A short metadata block containing version, node_count, edge_count, meta_count.
+      The output **MUST** begin with:
+      - H1: `graph_id`
+      - A short metadata block containing `version`, `node_count`, `edge_count`, `meta_count`.
+    attrs:
+      - key: "text.format"
+        value: "md-block"
 
   - id: "clause.output.sections"
     kind: "clause"
     status: "normative"
     label: "Required sections"
     text: >
-      The output MUST include these sections in this order:
-        1) Header (H1 + metadata)
-        2) Nodes (index)
-        3) Edges (index)
-        4) Contains Tree (if any edges of type 'contains' exist)
-        5) Meta Graphs (if meta_count > 0)
+      The output **MUST** include these sections in this order:
+      1) Header (H1 + metadata)
+      2) Nodes (index)
+      3) Edges (index)
+      4) Contains Tree (if any edges of type `contains` exist)
+      5) Meta Graphs (if `meta_count > 0`)
+    attrs:
+      - key: "text.format"
+        value: "md-block"
 
   - id: "clause.nodes.rendering"
     kind: "clause"
     status: "normative"
     label: "Node rendering"
     text: >
-      Nodes MUST be rendered as a Markdown list in deterministic order.
+      Nodes **MUST** be rendered as a Markdown list in deterministic order.
       For each node:
-        - heading line: **<id>**  (kind: <kind>)
-        - if label exists: include "label: <label>"
-        - attrs table if attrs present: columns [key, value, vtype, desc]
-        - metrics table if metrics present: columns [name, value, unit, desc]
-        - extra fields: any additional node keys (e.g. title/status/text/summary/profile/order)
-          MUST be rendered under an "Extra fields" sub-bullet as a YAML code block.
+      - heading line: `**<id>**  (kind: <kind>)`
+      - if `label` exists: include `"label: <label>"`
+      - `attrs` table if `attrs` present: columns `[key, value, vtype, desc]`
+      - `metrics` table if `metrics` present: columns `[name, value, unit, desc]`
+      - extra fields: any additional node keys (e.g. `title`/`status`/`text`/`summary`/`profile`/`order`)
+        **MUST** be rendered under an "Extra fields" sub-bullet as a YAML code block.
+    attrs:
+      - key: "text.format"
+        value: "md-block"
 
   - id: "clause.edges.rendering"
     kind: "clause"
     status: "normative"
     label: "Edge rendering"
     text: >
-      Edges MUST be rendered as a Markdown table in deterministic order with columns:
-        [from, to, type, id(optional), attrs(optional), metrics(optional)].
-      If attrs/metrics exist, they MUST be rendered as compact JSON within the table cell.
+      Edges **MUST** be rendered as a Markdown table in deterministic order with columns:
+      `[from, to, type, id(optional), attrs(optional), metrics(optional)]`.
+      If `attrs`/`metrics` exist, they **MUST** be rendered as compact JSON within the table cell.
+    attrs:
+      - key: "text.format"
+        value: "md-inline"
 
   - id: "clause.contains_tree"
     kind: "clause"
     status: "normative"
     label: "Contains tree rendering"
     text: >
-      If any edges exist with type == property.contains_edge_type, the renderer MUST attempt
-      to render a tree rooted at node id == graph_id (if such a node exists), otherwise a forest.
-      If cycles or multiple parents are detected, the renderer MUST still output a best-effort
-      forest and MUST emit a warning (see Errors and Warnings).
+      If any edges exist with `type == property.contains_edge_type`, the renderer **MUST** attempt
+      to render a tree rooted at node `id == graph_id` (if such a node exists), otherwise a forest.
+      If cycles or multiple parents are detected, the renderer **MUST** still output a best-effort
+      forest and **MUST** emit a warning (see Errors and Warnings).
+    attrs:
+      - key: "text.format"
+        value: "md-inline"
 
   - id: "clause.meta.rendering"
     kind: "clause"
     status: "normative"
     label: "Meta graph rendering"
     text: >
-      Each meta subgraph MUST be rendered after the primary frame, separated by a horizontal rule,
-      using the same algorithm recursively. Meta graphs MUST be ordered deterministically.
+      Each meta subgraph **MUST** be rendered after the primary frame, separated by a horizontal rule,
+      using the same algorithm recursively. Meta graphs **MUST** be ordered deterministically.
+    attrs:
+      - key: "text.format"
+        value: "md-inline"
 
   - id: "clause.determinism.newlines"
     kind: "clause"
     status: "normative"
     label: "Newlines and whitespace"
     text: >
-      Output MUST use LF newlines. Trailing whitespace MUST be stripped from all lines.
-      The document MUST end with exactly one LF.
+      Output **MUST** use LF newlines. Trailing whitespace **MUST** be stripped from all lines.
+      The document **MUST** end with exactly one LF.
+    attrs:
+      - key: "text.format"
+        value: "md-inline"
 
   - id: "clause.determinism.sorting"
     kind: "clause"
     status: "normative"
     label: "Deterministic ordering"
     text: >
-      Node, edge, and meta ordering MUST follow property.ordering. Implementations in different
-      languages MUST produce byte-identical Markdown for the same input frame.
+      Node, edge, and meta ordering **MUST** follow `property.ordering`. Implementations in different
+      languages **MUST** produce byte-identical Markdown for the same input frame.
+    attrs:
+      - key: "text.format"
+        value: "md-inline"
 
   - id: "clause.errors.warn_codes"
     kind: "clause"
     status: "normative"
     label: "Warnings"
     text: >
-      The renderer SHOULD emit warnings (non-fatal) for:
-        - unknown/extra top-level keys on nodes/edges (still rendered under Extra fields)
-        - contains cycles or multiple parents
-        - missing root node id == graph_id (contains tree becomes a forest)
+      The renderer **SHOULD** emit warnings (non-fatal) for:
+      - unknown/extra top-level keys on nodes/edges (still rendered under Extra fields)
+      - `contains` cycles or multiple parents
+      - missing root node `id == graph_id` (contains tree becomes a forest)
+    attrs:
+      - key: "text.format"
+        value: "md-block"
 
   - id: "example.output_shape"
     kind: "example"
     status: "informative"
     label: "Markdown skeleton"
     text: |
+      ```markdown
       # <graph_id>
       - version: <version>
       - nodes: <n>
@@ -261,6 +295,10 @@ nodes:
 
       ## Meta Graphs
       ---
+      ```
+    attrs:
+      - key: "text.format"
+        value: "md-block"
 
 edges:
   - { from: "render://_kernel/md/simple-k1", to: "section.1.scope",       type: "contains" }
