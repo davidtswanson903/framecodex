@@ -1,0 +1,652 @@
+graph_id: "law://repo/governance/repo-law-k1"
+version: "0.1.0"
+
+attrs:
+  - { key: "domain", value: "repo" }
+  - { key: "depends_on", value: "spec.gf0-k1" }
+  - { key: "depends_on", value: "law.lawframe-k1" }
+  - { key: "depends_on", value: "law://_kernel/id/frameurl-k1" }
+
+nodes:
+  # ---------------------------------------------------------------------------
+  # Root
+  # ---------------------------------------------------------------------------
+  - id: "law://repo/governance/repo-law-k1"
+    kind: "law"
+    profile: "lawframe-k1"
+    status: "normative"
+    title: "RepoLaw K1 — Repository Structure, Frame Layout, and CI Gates"
+    summary: >
+      Governs the repository that stores GF0 frames (laws/specs/profiles/render plans/etc).
+      Defines canonical folder structure, required files, DocGroup selection, CI gates, and
+      enforcement rules. Uses FrameURL K1 for canonical graph_id and deterministic path projection.
+
+    law_id: "repo-law-k1"
+    law_version: "0.1.0"
+
+  # ---------------------------------------------------------------------------
+  # References (informative pointers; no network fetching implied)
+  # ---------------------------------------------------------------------------
+  - id: "ref.frameurl-k1"
+    kind: "reference"
+    status: "informative"
+    label: "FrameURL K1"
+    target: "law://_kernel/id/frameurl-k1"
+
+  - id: "ref.validatorgroup-k1"
+    kind: "reference"
+    status: "informative"
+    label: "ValidatorGroup K1"
+    target: "spec://_kernel/validator/validatorgroup-k1"
+
+  # ---------------------------------------------------------------------------
+  # Sections
+  # ---------------------------------------------------------------------------
+  - id: "title.0"
+    kind: "title"
+    status: "normative"
+    text: "RepoLaw K1"
+
+  - id: "section.1.charter"
+    kind: "section"
+    status: "normative"
+    title: "Charter"
+    order: 1
+
+  - id: "section.2.paths"
+    kind: "section"
+    status: "normative"
+    title: "Canonical Repository Paths"
+    order: 2
+
+  - id: "section.3.frames_tree"
+    kind: "section"
+    status: "normative"
+    title: "Frames Tree and Fractal Sharding"
+    order: 3
+
+  - id: "section.4.docgroup"
+    kind: "section"
+    status: "normative"
+    title: "DocGroup Selection"
+    order: 4
+
+  - id: "section.5.ci"
+    kind: "section"
+    status: "normative"
+    title: "CI Gates"
+    order: 5
+
+  - id: "section.6.receipts"
+    kind: "section"
+    status: "normative"
+    title: "Receipts and Manifests"
+    order: 6
+
+  - id: "section.7.violations"
+    kind: "section"
+    status: "normative"
+    title: "Required Violation Codes"
+    order: 7
+
+  - id: "section.8.examples"
+    kind: "section"
+    status: "informative"
+    title: "Examples"
+    order: 8
+
+  # ---------------------------------------------------------------------------
+  # Parameters (profiles may bind these, but MUST NOT weaken the law)
+  # ---------------------------------------------------------------------------
+  - id: "param.output_mode"
+    kind: "parameter"
+    status: "normative"
+    key: "output_mode"
+    allowed: ["commit_docs", "artifact_only"]
+    default: "commit_docs"
+
+  - id: "param.adapter_mode"
+    kind: "parameter"
+    status: "normative"
+    key: "adapter_mode"
+    allowed: ["none", "github"]
+    default: "github"
+
+  - id: "param.index_mode"
+    kind: "parameter"
+    status: "normative"
+    key: "index_mode"
+    allowed: ["none", "optional", "required"]
+    default: "optional"
+
+  - id: "param.docgroup_include_fixtures"
+    kind: "parameter"
+    status: "normative"
+    key: "docgroup_include_fixtures"
+    allowed: ["false", "true"]
+    default: "false"
+
+  - id: "param.frames_root"
+    kind: "parameter"
+    status: "normative"
+    key: "frames_root"
+    allowed: ["frames"]
+    default: "frames"
+
+  # ---------------------------------------------------------------------------
+  # Properties (deterministic lists)
+  # ---------------------------------------------------------------------------
+  - id: "prop.allowed_root_paths"
+    kind: "property"
+    status: "normative"
+    label: "Allowed repo root entries"
+    values:
+      - "frames/"
+      - "governance/"
+      - "tools/"
+      - "ci/"
+      - "docs/"
+      - "out/"
+      - ".github/"
+      - "README.md"
+      - "LICENSE"
+      - ".gitignore"
+
+  - id: "prop.required_paths"
+    kind: "property"
+    status: "normative"
+    label: "Required paths"
+    values:
+      - "frames/"
+      - "governance/ACTIVE.yml"
+      - "ci/contract.yml"
+      - "tools/"
+      - "out/"
+      - ".gitignore"
+      - "README.md"
+      - "LICENSE"
+
+  - id: "prop.required_paths_if_commit_docs"
+    kind: "property"
+    status: "normative"
+    label: "Required paths when output_mode=commit_docs"
+    values:
+      - "docs/"
+      - "docs/MANIFEST.json"
+
+  - id: "prop.forbidden_paths"
+    kind: "property"
+    status: "normative"
+    label: "Forbidden paths"
+    values:
+      - "frames" # must be a directory: frames/
+      - "out" # must be a directory: out/
+      - "docs" # must be a directory: docs/
+
+  - id: "prop.frames_leaf_filename"
+    kind: "property"
+    status: "normative"
+    label: "Canonical leaf filename for frames"
+    value: "frame.yml"
+
+  - id: "prop.frames_version_prefix"
+    kind: "property"
+    status: "normative"
+    label: "Canonical version folder prefix"
+    value: "v"
+
+  - id: "prop.required_frames_scopes"
+    kind: "property"
+    status: "normative"
+    label: "Required top-level scopes under frames/"
+    values:
+      - "_kernel"
+      - "repo"
+      - "domains"
+      - "projects"
+
+  - id: "prop.allowed_frame_schemes"
+    kind: "property"
+    status: "normative"
+    label: "Allowed frame schemes (must match FrameURL K1)"
+    values: ["law", "spec", "profile", "render", "fixture"]
+
+  - id: "prop.required_ci_gates"
+    kind: "property"
+    status: "normative"
+    label: "Minimal required CI gates"
+    values:
+      - "validate_group"
+      - "enforce_repo_law"
+
+  - id: "prop.required_ci_gates_if_commit_docs"
+    kind: "property"
+    status: "normative"
+    label: "Additional CI gates when output_mode=commit_docs"
+    values:
+      - "render_docs"
+      - "no_diff"
+
+  # ---------------------------------------------------------------------------
+  # Definitions (brief, normative terms used by rules)
+  # ---------------------------------------------------------------------------
+  - id: "def.docgroup"
+    kind: "definition"
+    status: "normative"
+    label: "DocGroup"
+    text: >
+      The set of frames considered authoritative inputs to validation and generation, selected
+      deterministically from the repository according to section.4 rules.
+
+  - id: "def.frame_file"
+    kind: "definition"
+    status: "normative"
+    label: "FrameFile"
+    text: >
+      A file that contains exactly one GF0 graph. Under this repo law, canonical frames are stored
+      as frame.yml at a path derived from (graph_id, version) per FrameURL K1.
+
+  - id: "def.active_pointer"
+    kind: "definition"
+    status: "normative"
+    label: "Active Pointer"
+    text: >
+      governance/ACTIVE.yml selects the active RepoLaw and (optionally) an active RepoProfile, by
+      referencing FrameURLs and explicit versions.
+
+  # ---------------------------------------------------------------------------
+  # Rules: Charter
+  # ---------------------------------------------------------------------------
+  - id: "rule.charter.frameurl_required"
+    kind: "rule"
+    status: "normative"
+    modal: "MUST"
+    label: "FrameURL required for canonical frames"
+    text: >
+      All canonical frames in this repository MUST use FrameURL K1 as graph_id and MUST obey
+      FrameURL K1 filesystem projection rules (graph_id+version -> frames/.../v<version>/frame.yml).
+
+  - id: "rule.charter.offline_repo"
+    kind: "rule"
+    status: "normative"
+    modal: "MUST"
+    label: "Offline and self-contained"
+    text: >
+      Validation and governance enforcement MUST be offline. The repository MUST contain all frames
+      required to validate itself and MUST NOT require network fetch to resolve references.
+
+  - id: "rule.charter.single_source_of_truth"
+    kind: "rule"
+    status: "normative"
+    modal: "MUST"
+    label: "frames/ is source of truth"
+    text: >
+      Canonical GF0 frames MUST live under frames/ and MUST NOT live outside frames/. Any GF0-like
+      files outside frames/ are non-authoritative and MUST be ignored by DocGroup selection.
+
+  # ---------------------------------------------------------------------------
+  # Rules: Required root structure
+  # ---------------------------------------------------------------------------
+  - id: "rule.paths.required_paths"
+    kind: "rule"
+    status: "normative"
+    modal: "MUST"
+    label: "Required repo paths"
+    text: >
+      The repository MUST contain all paths listed in prop.required_paths.
+
+  - id: "rule.paths.commit_docs_paths"
+    kind: "rule"
+    status: "normative"
+    modal: "MUST"
+    label: "Required docs paths if committing docs"
+    text: >
+      If output_mode == 'commit_docs', the repository MUST contain all paths listed in
+      prop.required_paths_if_commit_docs.
+
+  - id: "rule.paths.allowed_root_entries"
+    kind: "rule"
+    status: "normative"
+    modal: "SHOULD"
+    label: "Allowed root entries"
+    text: >
+      The repository root SHOULD NOT contain entries outside prop.allowed_root_paths. Tooling MAY
+      warn on unknown root entries, but the law does not forbid them unless explicitly listed.
+
+  - id: "rule.paths.out_gitignored"
+    kind: "rule"
+    status: "normative"
+    modal: "MUST"
+    label: "out/ is gitignored"
+    text: >
+      out/ MUST be excluded from version control via .gitignore.
+
+  # ---------------------------------------------------------------------------
+  # Rules: Frames tree structure
+  # ---------------------------------------------------------------------------
+  - id: "rule.frames.scopes_exist"
+    kind: "rule"
+    status: "normative"
+    modal: "MUST"
+    label: "Required frames scopes"
+    text: >
+      frames/ MUST contain the scope directories listed in prop.required_frames_scopes.
+
+  - id: "rule.frames.canonical_leaf"
+    kind: "rule"
+    status: "normative"
+    modal: "MUST"
+    label: "Canonical leaf filename"
+    text: >
+      Canonical frame files MUST be named prop.frames_leaf_filename (frame.yml) and MUST live
+      under a version folder named prop.frames_version_prefix + <version> (e.g., v1.0.0).
+
+  - id: "rule.frames.no_unversioned_frames"
+    kind: "rule"
+    status: "normative"
+    modal: "MUST"
+    label: "No unversioned canonical frames"
+    text: >
+      No canonical frame.yml may exist under frames/ outside a v<version>/ directory.
+
+  - id: "rule.frames.scheme_folder_matches_graph_id"
+    kind: "rule"
+    status: "normative"
+    modal: "MUST"
+    label: "Scheme folder matches graph_id scheme"
+    text: >
+      The directory immediately under frames/<scope>/ MUST be the scheme (law/spec/profile/render/fixture)
+      and MUST match the FrameURL scheme parsed from graph_id.
+
+  - id: "rule.frames.projected_path_must_match"
+    kind: "rule"
+    status: "normative"
+    modal: "MUST"
+    label: "Projected path must match"
+    text: >
+      Each canonical frame file path MUST equal the canonical projection derived from its (graph_id, version)
+      under FrameURL K1. Mismatches are hard errors.
+
+  - id: "rule.frames.optional_indexes"
+    kind: "rule"
+    status: "normative"
+    modal: "MAY"
+    label: "Indexes"
+    text: >
+      If index_mode is 'required', each frames/<scope>/ subtree MUST include an index file
+      (e.g., _index.yml) listing FrameURLs and paths. If index_mode is 'optional', indexes may
+      exist and MUST be treated as non-authoritative accelerators.
+
+  # ---------------------------------------------------------------------------
+  # Rules: governance/ACTIVE.yml
+  # ---------------------------------------------------------------------------
+  - id: "rule.active.required"
+    kind: "rule"
+    status: "normative"
+    modal: "MUST"
+    label: "ACTIVE.yml required"
+    text: >
+      governance/ACTIVE.yml MUST exist and MUST declare active_law and active_law_version. It MAY
+      declare active_profile and active_profile_version.
+
+  - id: "rule.active.must_resolve"
+    kind: "rule"
+    status: "normative"
+    modal: "MUST"
+    label: "ACTIVE pointers must resolve"
+    text: >
+      ACTIVE.yml pointers MUST resolve to canonical frames present in DocGroup (by FrameURL and version).
+      Unresolvable pointers are hard errors.
+
+  - id: "rule.active.profile_nonweakening"
+    kind: "rule"
+    status: "normative"
+    modal: "MUST"
+    label: "Profiles must not weaken law"
+    text: >
+      If an active profile is declared, it MUST NOT weaken or disable any RepoLaw MUST requirements.
+      Any attempt to do so is a hard error.
+
+  # ---------------------------------------------------------------------------
+  # Rules: DocGroup selection (deterministic scanning)
+  # ---------------------------------------------------------------------------
+  - id: "rule.docgroup.scan_rule"
+    kind: "rule"
+    status: "normative"
+    modal: "MUST"
+    label: "DocGroup scan rule"
+    text: >
+      DocGroup MUST be selected deterministically as:
+        - all files named frame.yml under frames/**/v*/frame.yml
+        - excluding frames/**/fixture/** unless docgroup_include_fixtures == 'true'
+      The scan order MUST be lexicographic by relative path (bytewise) to ensure stable behavior.
+
+  - id: "rule.docgroup.unique_graph_id"
+    kind: "rule"
+    status: "normative"
+    modal: "MUST"
+    label: "graph_id uniqueness"
+    text: >
+      Within DocGroup, graph_id MUST be unique. Duplicate graph_id is a hard error.
+
+  - id: "rule.docgroup.parse_each_frame"
+    kind: "rule"
+    status: "normative"
+    modal: "MUST"
+    label: "Each frame parses as GF0"
+    text: >
+      Each selected FrameFile MUST parse as exactly one GF0 graph and MUST pass GF0 structural validation
+      prior to any higher-level profile validation.
+
+  # ---------------------------------------------------------------------------
+  # Rules: CI gates
+  # ---------------------------------------------------------------------------
+  - id: "rule.ci.required_gates"
+    kind: "rule"
+    status: "normative"
+    modal: "MUST"
+    label: "Required CI gates"
+    text: >
+      CI MUST run all gates listed in prop.required_ci_gates. If output_mode == 'commit_docs', CI MUST
+      also run all gates listed in prop.required_ci_gates_if_commit_docs.
+
+  - id: "rule.ci.validate_group"
+    kind: "rule"
+    status: "normative"
+    modal: "MUST"
+    label: "Gate: validate_group"
+    text: >
+      validate_group MUST run the DocGroup validator (ValidatorGroup K1 or successor) and MUST produce
+      a canonical ValidationReport artifact.
+
+  - id: "rule.ci.enforce_repo_law"
+    kind: "rule"
+    status: "normative"
+    modal: "MUST"
+    label: "Gate: enforce_repo_law"
+    text: >
+      enforce_repo_law MUST verify:
+        - required paths exist
+        - out/ is gitignored
+        - DocGroup selection matches rule.docgroup.scan_rule
+        - each frame obeys FrameURL K1 projected path
+        - ACTIVE.yml pointers resolve and do not weaken the law
+
+  - id: "rule.ci.render_docs_if_commit"
+    kind: "rule"
+    status: "normative"
+    modal: "MUST"
+    label: "Gate: render_docs (conditional)"
+    text: >
+      If output_mode == 'commit_docs', render_docs MUST deterministically generate docs/ from DocGroup
+      and the applicable RenderFrames, and MUST produce docs/MANIFEST.json.
+
+  - id: "rule.ci.no_diff_if_commit"
+    kind: "rule"
+    status: "normative"
+    modal: "MUST"
+    label: "Gate: no_diff (conditional)"
+    text: >
+      If output_mode == 'commit_docs', no_diff MUST prove that the generated docs/ tree matches the
+      committed docs/ tree exactly (byte-for-byte), excluding any explicitly law-permitted exceptions.
+
+  # ---------------------------------------------------------------------------
+  # Rules: Receipts and manifests (sketch-level)
+  # ---------------------------------------------------------------------------
+  - id: "rule.receipts.required_artifacts"
+    kind: "rule"
+    status: "normative"
+    modal: "SHOULD"
+    label: "Receipts"
+    text: >
+      Each CI gate SHOULD emit a receipt containing:
+        - ordered list of input (graph_id, version, sha256 over canonical bytes)
+        - tool_id and tool_version
+        - ordered list of output (path, sha256 over file bytes)
+      Receipt serialization SHOULD be canonical (stable key order, stable list order, LF newlines).
+
+  - id: "rule.manifest.docs"
+    kind: "rule"
+    status: "normative"
+    modal: "MUST"
+    label: "docs/MANIFEST.json (conditional)"
+    text: >
+      If output_mode == 'commit_docs', docs/MANIFEST.json MUST exist and MUST include, at minimum:
+        - active law + profile pointers (FrameURL + version)
+        - inputs list (graph_id, version, sha256)
+        - outputs list (path, sha256)
+      The manifest MUST be deterministic and stable across implementations.
+
+  # ---------------------------------------------------------------------------
+  # Required violation codes (repo enforcement layer)
+  # ---------------------------------------------------------------------------
+  - id: "prop.required_violation_codes"
+    kind: "property"
+    status: "normative"
+    label: "Required RepoLaw violation codes"
+    values:
+      - "REPO.E.MISSING_PATH"
+      - "REPO.E.BAD_PATH_TYPE"
+      - "REPO.E.OUT_NOT_IGNORED"
+      - "REPO.E.BAD_FRAME_LEAF"
+      - "REPO.E.UNVERSIONED_FRAME"
+      - "REPO.E.DOCGROUP_DUP_GRAPH_ID"
+      - "REPO.E.FRAME_PARSE_ERROR"
+      - "REPO.E.ACTIVE_MISSING_KEYS"
+      - "REPO.E.ACTIVE_UNRESOLVED_POINTER"
+      - "REPO.E.PROFILE_WEAKENING"
+      - "REPO.W.UNKNOWN_ROOT_ENTRY"
+
+  - id: "rule.violations.stable"
+    kind: "rule"
+    status: "normative"
+    modal: "MUST"
+    label: "Stable violations"
+    text: >
+      Implementations claiming conformance to this RepoLaw MUST emit the codes listed in
+      prop.required_violation_codes with stable semantics and deterministic ordering.
+
+  # ---------------------------------------------------------------------------
+  # Examples
+  # ---------------------------------------------------------------------------
+  - id: "ex.active_yml"
+    kind: "example"
+    status: "informative"
+    label: "governance/ACTIVE.yml"
+    text: |
+      active_law: "law://repo/governance/repo-law-k1"
+      active_law_version: "0.1.0"
+      active_profile: "profile://repo/governance/default"
+      active_profile_version: "0.1.0"
+
+  - id: "ex.projected_path"
+    kind: "example"
+    status: "informative"
+    label: "Projected frame path"
+    text: |
+      graph_id: law://repo/governance/repo-law-k1
+      version:  0.1.0
+      path:     frames/repo/law/governance/repo-law-k1/v0.1.0/frame.yml
+
+edges:
+  # Root contains
+  - { from: "law://repo/governance/repo-law-k1", to: "title.0", type: "contains" }
+  - { from: "law://repo/governance/repo-law-k1", to: "ref.frameurl-k1", type: "contains" }
+  - { from: "law://repo/governance/repo-law-k1", to: "ref.validatorgroup-k1", type: "contains" }
+
+  - { from: "law://repo/governance/repo-law-k1", to: "section.1.charter", type: "contains" }
+  - { from: "law://repo/governance/repo-law-k1", to: "section.2.paths", type: "contains" }
+  - { from: "law://repo/governance/repo-law-k1", to: "section.3.frames_tree", type: "contains" }
+  - { from: "law://repo/governance/repo-law-k1", to: "section.4.docgroup", type: "contains" }
+  - { from: "law://repo/governance/repo-law-k1", to: "section.5.ci", type: "contains" }
+  - { from: "law://repo/governance/repo-law-k1", to: "section.6.receipts", type: "contains" }
+  - { from: "law://repo/governance/repo-law-k1", to: "section.7.violations", type: "contains" }
+  - { from: "law://repo/governance/repo-law-k1", to: "section.8.examples", type: "contains" }
+
+  # Charter contents
+  - { from: "section.1.charter", to: "def.docgroup", type: "contains" }
+  - { from: "section.1.charter", to: "def.frame_file", type: "contains" }
+  - { from: "section.1.charter", to: "def.active_pointer", type: "contains" }
+  - { from: "section.1.charter", to: "rule.charter.frameurl_required", type: "contains" }
+  - { from: "section.1.charter", to: "rule.charter.offline_repo", type: "contains" }
+  - { from: "section.1.charter", to: "rule.charter.single_source_of_truth", type: "contains" }
+
+  # Paths section
+  - { from: "section.2.paths", to: "param.output_mode", type: "contains" }
+  - { from: "section.2.paths", to: "param.adapter_mode", type: "contains" }
+  - { from: "section.2.paths", to: "param.index_mode", type: "contains" }
+  - { from: "section.2.paths", to: "param.frames_root", type: "contains" }
+  - { from: "section.2.paths", to: "prop.allowed_root_paths", type: "contains" }
+  - { from: "section.2.paths", to: "prop.required_paths", type: "contains" }
+  - { from: "section.2.paths", to: "prop.required_paths_if_commit_docs", type: "contains" }
+  - { from: "section.2.paths", to: "prop.forbidden_paths", type: "contains" }
+  - { from: "section.2.paths", to: "rule.paths.required_paths", type: "contains" }
+  - { from: "section.2.paths", to: "rule.paths.commit_docs_paths", type: "contains" }
+  - { from: "section.2.paths", to: "rule.paths.allowed_root_entries", type: "contains" }
+  - { from: "section.2.paths", to: "rule.paths.out_gitignored", type: "contains" }
+
+  # Frames tree section
+  - { from: "section.3.frames_tree", to: "prop.required_frames_scopes", type: "contains" }
+  - { from: "section.3.frames_tree", to: "prop.allowed_frame_schemes", type: "contains" }
+  - { from: "section.3.frames_tree", to: "prop.frames_leaf_filename", type: "contains" }
+  - { from: "section.3.frames_tree", to: "prop.frames_version_prefix", type: "contains" }
+  - { from: "section.3.frames_tree", to: "rule.frames.scopes_exist", type: "contains" }
+  - { from: "section.3.frames_tree", to: "rule.frames.canonical_leaf", type: "contains" }
+  - { from: "section.3.frames_tree", to: "rule.frames.no_unversioned_frames", type: "contains" }
+  - { from: "section.3.frames_tree", to: "rule.frames.scheme_folder_matches_graph_id", type: "contains" }
+  - { from: "section.3.frames_tree", to: "rule.frames.projected_path_must_match", type: "contains" }
+  - { from: "section.3.frames_tree", to: "rule.frames.optional_indexes", type: "contains" }
+
+  # DocGroup section
+  - { from: "section.4.docgroup", to: "param.docgroup_include_fixtures", type: "contains" }
+  - { from: "section.4.docgroup", to: "rule.docgroup.scan_rule", type: "contains" }
+  - { from: "section.4.docgroup", to: "rule.docgroup.unique_graph_id", type: "contains" }
+  - { from: "section.4.docgroup", to: "rule.docgroup.parse_each_frame", type: "contains" }
+
+  # ACTIVE section (placed under docgroup for now, could be its own section later)
+  - { from: "section.4.docgroup", to: "rule.active.required", type: "contains" }
+  - { from: "section.4.docgroup", to: "rule.active.must_resolve", type: "contains" }
+  - { from: "section.4.docgroup", to: "rule.active.profile_nonweakening", type: "contains" }
+
+  # CI section
+  - { from: "section.5.ci", to: "prop.required_ci_gates", type: "contains" }
+  - { from: "section.5.ci", to: "prop.required_ci_gates_if_commit_docs", type: "contains" }
+  - { from: "section.5.ci", to: "rule.ci.required_gates", type: "contains" }
+  - { from: "section.5.ci", to: "rule.ci.validate_group", type: "contains" }
+  - { from: "section.5.ci", to: "rule.ci.enforce_repo_law", type: "contains" }
+  - { from: "section.5.ci", to: "rule.ci.render_docs_if_commit", type: "contains" }
+  - { from: "section.5.ci", to: "rule.ci.no_diff_if_commit", type: "contains" }
+
+  # Receipts section
+  - { from: "section.6.receipts", to: "rule.receipts.required_artifacts", type: "contains" }
+  - { from: "section.6.receipts", to: "rule.manifest.docs", type: "contains" }
+
+  # Violations section
+  - { from: "section.7.violations", to: "prop.required_violation_codes", type: "contains" }
+  - { from: "section.7.violations", to: "rule.violations.stable", type: "contains" }
+
+  # Examples section
+  - { from: "section.8.examples", to: "ex.active_yml", type: "contains" }
+  - { from: "section.8.examples", to: "ex.projected_path", type: "contains" }
+
+meta: []

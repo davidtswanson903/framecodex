@@ -1,0 +1,664 @@
+graph_id: "spec://_kernel/validator/validatorgroup-k1"
+version: "0.1.0"
+
+attrs:
+  - { key: "profile", value: "specframe-k1" }
+  - { key: "domain", value: "graphbrain.validation" }
+  - { key: "depends_on", value: "spec://_kernel/gf/gf0-k1" }
+  - { key: "depends_on", value: "spec://_kernel/spec/specframe-k1" }
+  - { key: "depends_on", value: "spec://_kernel/render/renderframe-k1" }
+
+nodes:
+  # --- Root spec node --------------------------------------------------------
+  - id: "spec://_kernel/validator/validatorgroup-k1"
+    kind: "spec"
+    status: "normative"
+    profile: "specframe-k1"
+    title: "ValidatorGroup K1 — Deterministic Doc-Group Validation"
+    summary: >
+      ValidatorGroup K1 defines a deterministic validation contract for a group of GF0 graphs.
+      It specifies (a) validation stages from GF0 up through higher-level profiles, (b) a
+      canonical violation model, and (c) canonical ordering/serialization rules so that
+      independent implementations (Python, Go, etc.) produce identical results.
+
+  # --- References ------------------------------------------------------------
+  - id: "ref.spec.gf0-k1"
+    kind: "spec_ref"
+    status: "informative"
+    target_graph_id: "spec://_kernel/gf/gf0-k1"
+    label: "GraphFrame K0 schema"
+
+  - id: "ref.spec.specframe-k1"
+    kind: "spec_ref"
+    status: "informative"
+    target_graph_id: "spec://_kernel/spec/specframe-k1"
+    label: "SpecFrame K1 schema"
+
+  - id: "ref.spec.renderframe-k1"
+    kind: "spec_ref"
+    status: "informative"
+    target_graph_id: "spec://_kernel/render/renderframe-k1"
+    label: "RenderFrame K1 schema"
+
+  # --- Sections --------------------------------------------------------------
+  - id: "section.1.scope"
+    kind: "section"
+    status: "normative"
+    order: 1
+    title: "Scope and Intent"
+
+  - id: "section.2.inputs"
+    kind: "section"
+    status: "normative"
+    order: 2
+    title: "Inputs and Canonicalization"
+
+  - id: "section.3.stages"
+    kind: "section"
+    status: "normative"
+    order: 3
+    title: "Validation Stages"
+
+  - id: "section.4.determinism"
+    kind: "section"
+    status: "normative"
+    order: 4
+    title: "Determinism and Ordering"
+
+  - id: "section.5.report"
+    kind: "section"
+    status: "normative"
+    order: 5
+    title: "Validation Report Model"
+
+  - id: "section.6.codes"
+    kind: "section"
+    status: "normative"
+    order: 6
+    title: "Required Violation Codes"
+
+  - id: "section.7.examples"
+    kind: "section"
+    status: "informative"
+    order: 7
+    title: "Examples"
+
+  - id: "section.8.integration"
+    kind: "section"
+    status: "informative"
+    order: 8
+    title: "Integration Notes"
+
+  # --- Terms ----------------------------------------------------------------
+  - id: "term.doc_group"
+    kind: "term"
+    status: "normative"
+    label: "DocGroup"
+    text: >
+      A DocGroup is an unordered set of GF0 graphs validated together to enable cross-graph
+      checks (e.g., referenced spec existence, shared profiles, render plans).
+
+  - id: "term.graph_record"
+    kind: "term"
+    status: "normative"
+    label: "GraphRecord"
+    text: >
+      A GraphRecord is a GF0 graph plus optional source metadata. Source metadata MUST NOT
+      affect validation semantics or canonical outputs, except where explicitly stated.
+
+  - id: "term.profile_detection"
+    kind: "term"
+    status: "normative"
+    label: "ProfileDetection"
+    text: >
+      The deterministic process of deciding which higher-level validators apply to a graph,
+      based on its root node and attributes.
+
+  - id: "term.validation_stage"
+    kind: "term"
+    status: "normative"
+    label: "ValidationStage"
+    text: >
+      A named stage of validation. Stages are evaluated in deterministic order and MAY be
+      skipped for a graph if prerequisite stages failed.
+
+  - id: "term.violation"
+    kind: "term"
+    status: "normative"
+    label: "Violation"
+    text: >
+      A structured, canonical report entry describing a validation failure or warning at a
+      specific stage. A violation is identified by (code, stage, location, details).
+
+  - id: "term.location"
+    kind: "term"
+    status: "normative"
+    label: "Location"
+    text: >
+      A structured pointer identifying where a violation occurred: graph_id plus optional
+      node_id, edge_key, and meta_path.
+
+  - id: "term.canonical_equivalence"
+    kind: "term"
+    status: "normative"
+    label: "CanonicalEquivalence"
+    text: >
+      Two ValidationReports are canonically equivalent if their canonical serialization bytes
+      are identical (see clause.report.canonical_json).
+
+  # --- Properties (enums + required stage list) ------------------------------
+  - id: "property.severity_enum"
+    kind: "property"
+    status: "normative"
+    label: "Severity enum"
+    severity_values:
+      - error
+      - warning
+
+  - id: "property.stage_enum"
+    kind: "property"
+    status: "normative"
+    label: "Stage enum"
+    stage_values:
+      - gf0_struct
+      - profile_detect
+      - specframe_k1
+      - renderframe_k1
+      - links
+
+  - id: "property.stage_order"
+    kind: "property"
+    status: "normative"
+    label: "Stage evaluation order"
+    stage_order:
+      - gf0_struct
+      - profile_detect
+      - specframe_k1
+      - renderframe_k1
+      - links
+
+  - id: "property.report_fields"
+    kind: "property"
+    status: "normative"
+    label: "Required report fields"
+    required_fields:
+      - version
+      - ok
+      - violations
+
+  - id: "property.violation_fields"
+    kind: "property"
+    status: "normative"
+    label: "Required violation fields"
+    required_fields:
+      - severity
+      - code
+      - stage
+      - location
+      - details
+
+  - id: "property.location_fields"
+    kind: "property"
+    status: "normative"
+    label: "Location fields"
+    fields:
+      - graph_id
+      - meta_path
+      - node_id
+      - edge_key
+
+  - id: "property.details_kv"
+    kind: "property"
+    status: "normative"
+    label: "Details are ordered KV pairs"
+    details_shape: >
+      details MUST be an ordered list of {key,value} pairs (not a map), with stable ordering.
+
+  # --- Clauses: Scope --------------------------------------------------------
+  - id: "clause.scope.intent"
+    kind: "clause"
+    status: "normative"
+    label: "Intent"
+    text: >
+      ValidatorGroup K1 exists to ensure that independent implementations validate the same
+      DocGroup and produce identical canonical results, enabling deterministic CI, refactors,
+      and generator pipelines.
+
+  - id: "clause.scope.non_goals"
+    kind: "clause"
+    status: "normative"
+    label: "Non-goals"
+    text: >
+      This spec does not mandate any particular programming language, IO mechanism, file layout,
+      or CLI UX. It does not mandate performance characteristics beyond bounded recursion.
+
+  # --- Clauses: Inputs -------------------------------------------------------
+  - id: "clause.inputs.graphrecord"
+    kind: "clause"
+    status: "normative"
+    label: "GraphRecord input model"
+    text: >
+      A validator consumes a DocGroup expressed as a list of GraphRecords:
+        - graph: a GF0 GraphFrameK0 value
+        - source_id: optional string (e.g. file path, URL, label)
+      source_id MUST NOT affect the canonical validation result.
+
+  - id: "clause.inputs.graph_id_uniqueness_across_group"
+    kind: "clause"
+    status: "normative"
+    label: "graph_id uniqueness across DocGroup"
+    text: >
+      Within a DocGroup, graph_id values SHOULD be unique. If duplicates exist:
+        - the validator MUST emit at least one violation per duplicated graph_id, and
+        - the validator MUST NOT arbitrarily choose one duplicate as canonical.
+      Deterministic behavior rule: graphs with duplicated graph_id MUST be validated for GF0
+      structural integrity, but MUST be excluded from higher-level profile validation and
+      excluded from cross-graph linking, to avoid nondeterministic resolution.
+
+  - id: "clause.inputs.meta_recursion"
+    kind: "clause"
+    status: "normative"
+    label: "Meta recursion"
+    text: >
+      Validation MUST recursively validate each MetaGraph using the same GF0 rules, subject to
+      a maximum meta depth (see clause.determinism.limits). MetaGraphs MUST be treated as
+      structurally independent; parent references, if any, are purely attribute/semantics level.
+
+  # --- Clauses: Stages -------------------------------------------------------
+  - id: "clause.stages.definition"
+    kind: "clause"
+    status: "normative"
+    label: "Stage definition"
+    text: >
+      Validation proceeds in the stage order specified by property.stage_order.
+      Each stage MAY add violations. A stage MAY be skipped for a graph if prerequisites fail.
+
+  - id: "clause.stages.gf0_struct"
+    kind: "clause"
+    status: "normative"
+    label: "Stage: gf0_struct"
+    text: >
+      gf0_struct performs structural validation of each graph (and recursively its MetaGraphs):
+        - required top-level fields are present and correctly typed;
+        - graph_id and version are non-empty strings;
+        - NodeK0 IDs are unique within the frame;
+        - EdgeK0 endpoints refer to existing NodeK0 IDs in the same frame.
+      Any failure in gf0_struct MUST emit an error severity violation for that graph.
+
+  - id: "clause.stages.profile_detect"
+    kind: "clause"
+    status: "normative"
+    label: "Stage: profile_detect"
+    text: >
+      profile_detect deterministically identifies which higher-level validators apply to a graph.
+      Detection MUST be based only on the graph's own content (not filename or environment).
+      Minimum required detection rules:
+        - SpecFrameK1 applies if the graph contains exactly one node with id==graph_id, kind=='spec',
+          and profile=='specframe-k1'.
+        - RenderFrameK1 applies if the graph contains exactly one node with id==graph_id,
+          kind=='render_plan', and profile=='renderframe-k1'.
+      If a graph matches multiple profile rules, the validator MUST emit an error and MUST NOT
+      proceed to the conflicting profile validators.
+
+  - id: "clause.stages.specframe"
+    kind: "clause"
+    status: "normative"
+    label: "Stage: specframe_k1"
+    text: >
+      specframe_k1 validates graphs detected as SpecFrames:
+        - NodeK0.kind is within the allowed SpecFrame kinds set;
+        - EdgeK0.type is within the allowed SpecFrame edge types set;
+        - 'contains' edges form an acyclic tree (or forest) rooted at the spec node;
+        - required attributes per node kind are present.
+      Missing required attributes MUST be treated as errors.
+
+  - id: "clause.stages.renderframe"
+    kind: "clause"
+    status: "normative"
+    label: "Stage: renderframe_k1"
+    text: >
+      renderframe_k1 validates graphs detected as RenderFrames:
+        - allowed node kinds and edge types for RenderFrameK1;
+        - exactly one render_plan root node with id==graph_id and profile=='renderframe-k1';
+        - 'contains' edges form an acyclic tree rooted at the render_plan node;
+        - rule edges and reference targets are well-typed (selects->selector, emits->emitter, etc.).
+      (RenderFrameK1's detailed rules are defined by spec://_kernel/render/renderframe-k1; this stage MUST implement them
+      when that spec is available in the DocGroup.)
+
+  - id: "clause.stages.links"
+    kind: "clause"
+    status: "normative"
+    label: "Stage: links"
+    text: >
+      links performs cross-graph checks using only graphs that passed gf0_struct and have unique graph_id:
+        - For SpecFrames: every spec_ref.target_graph_id MUST exist as a graph_id in the DocGroup.
+        - Additional link rules MAY be implemented, but MUST be deterministic and MUST have stable codes.
+      Links stage MUST NOT attempt network fetch or external resolution unless the caller explicitly
+      provides those graphs in the DocGroup.
+
+  # --- Clauses: Determinism --------------------------------------------------
+  - id: "clause.determinism.sorting"
+    kind: "clause"
+    status: "normative"
+    label: "Canonical sorting rules"
+    text: >
+      To ensure identical outputs across implementations:
+        - Graph processing order MUST be ascending lexicographic order of graph_id.
+        - Within a graph, node lookup order MUST be ascending lexicographic order of node.id.
+        - Edge lookup order MUST be ascending lexicographic order of (edge.type, edge.from, edge.to, edge.id).
+      All violation lists MUST be sorted by the canonical violation ordering (clause.determinism.violation_order).
+
+  - id: "clause.determinism.violation_order"
+    kind: "clause"
+    status: "normative"
+    label: "Canonical violation ordering"
+    text: >
+      Violations MUST be sorted ascending by the tuple:
+        (severity_rank, code, stage, location.graph_id, meta_path_join, node_id, edge_key, details_join)
+      where:
+        - severity_rank(error)=0, severity_rank(warning)=1
+        - meta_path_join is meta_path joined by ' > ' (empty string if none)
+        - node_id and edge_key are empty string if absent
+        - details_join is details joined as 'k=v' pairs in order with ';' separators
+
+  - id: "clause.determinism.details_order"
+    kind: "clause"
+    status: "normative"
+    label: "Details ordering"
+    text: >
+      Violation.details MUST be an ordered list of {key,value} pairs and MUST be sorted by key
+      ascending lexicographic order, with stable tie-breaker by value ascending lexicographic order,
+      unless a specific code explicitly requires a different order.
+
+  - id: "clause.determinism.limits"
+    kind: "clause"
+    status: "normative"
+    label: "Safety limits"
+    text: >
+      Implementations MUST protect against unbounded recursion and pathological inputs by enforcing:
+        - max_meta_depth: default 16 (caller may lower or raise; if exceeded, emit GF0.E.META_DEPTH_EXCEEDED)
+        - max_nodes_per_graph: default 1,000,000 (if exceeded, emit GF0.E.GRAPH_TOO_LARGE)
+        - max_edges_per_graph: default 2,000,000 (if exceeded, emit GF0.E.GRAPH_TOO_LARGE)
+      Limits MUST be applied deterministically and reported via stable codes.
+
+  # --- Clauses: Report model -------------------------------------------------
+  - id: "clause.report.model"
+    kind: "clause"
+    status: "normative"
+    label: "ValidationReportK1 model"
+    text: >
+      The validator produces a ValidationReportK1 object with fields:
+        - version: fixed string 'validatorgroup-k1@0.1.0'
+        - ok: boolean
+        - violations: ordered list of Violation objects
+      ok MUST be true iff violations contains no entries with severity == 'error'.
+
+  - id: "clause.report.violation_model"
+    kind: "clause"
+    status: "normative"
+    label: "Violation model"
+    text: >
+      A Violation object MUST have:
+        - severity: 'error' | 'warning'
+        - code: stable string code (see section.6)
+        - stage: one of property.stage_enum.stage_values
+        - location: Location object
+        - details: ordered list of {key,value} pairs (not a map)
+      A Violation MAY have:
+        - message: non-canonical human-readable string (MUST be ignored for canonical equivalence)
+
+  - id: "clause.report.location_model"
+    kind: "clause"
+    status: "normative"
+    label: "Location model"
+    text: >
+      A Location object MUST have:
+        - graph_id: string
+        - meta_path: ordered list of string graph_ids from outermost graph to the graph where the violation occurred
+      It MAY have:
+        - node_id: string
+        - edge_key: string (canonical edge key 'type|from|to|id', with empty id allowed)
+
+  - id: "clause.report.canonical_json"
+    kind: "clause"
+    status: "normative"
+    label: "Canonical JSON serialization"
+    text: >
+      Canonical equivalence is defined by canonical JSON serialization of the report:
+        - UTF-8 encoding
+        - Object keys are sorted lexicographically (byte order of UTF-8)
+        - Arrays preserve their specified order
+        - No insignificant whitespace is permitted
+        - Newlines in strings MUST be '\n' (LF)
+      message fields, if present, MUST be excluded from canonical serialization.
+
+  - id: "clause.report.fingerprint"
+    kind: "clause"
+    status: "informative"
+    label: "Fingerprint"
+    text: >
+      Implementations MAY provide a 'fingerprint' value computed as SHA-256 over the canonical JSON bytes
+      as a convenience for fast equivalence checks.
+
+  # --- Clauses: Codes --------------------------------------------------------
+  - id: "clause.codes.requirement"
+    kind: "clause"
+    status: "normative"
+    label: "Stable codes"
+    text: >
+      Codes MUST be stable across versions of implementations that claim conformance to this spec.
+      Codes MUST NOT include implementation-specific details (paths, line numbers, stack traces).
+
+  - id: "property.required_codes"
+    kind: "property"
+    status: "normative"
+    label: "Required violation codes"
+    codes:
+      # --- GF0 structural
+      - "GF0.E.MISSING_FIELD"
+      - "GF0.E.EMPTY_GRAPH_ID_OR_VERSION"
+      - "GF0.E.DUP_NODE_ID"
+      - "GF0.E.BAD_EDGE_ENDPOINT"
+      - "GF0.E.META_DEPTH_EXCEEDED"
+      - "GF0.E.GRAPH_TOO_LARGE"
+      # --- Profile detection
+      - "PROF.E.MULTIPLE_PROFILE_MATCH"
+      - "PROF.E.BAD_ROOT_NODE"
+      # --- SpecFrame
+      - "SPEC.E.BAD_NODE_KIND"
+      - "SPEC.E.BAD_EDGE_TYPE"
+      - "SPEC.E.CONTAINS_CYCLE_OR_MULTIPARENT"
+      - "SPEC.E.MISSING_REQUIRED_ATTR"
+      # --- Cross-graph links
+      - "LINK.E.MISSING_TARGET_GRAPH"
+      - "LINK.W.UNREACHABLE_NORMATIVE"
+
+  - id: "clause.codes.gf0_missing_field"
+    kind: "clause"
+    status: "normative"
+    label: "GF0.E.MISSING_FIELD"
+    text: >
+      Emitted when any required GF0 top-level field is missing in canonical form.
+      details MUST include: field_name.
+
+  - id: "clause.codes.gf0_empty_id_ver"
+    kind: "clause"
+    status: "normative"
+    label: "GF0.E.EMPTY_GRAPH_ID_OR_VERSION"
+    text: >
+      Emitted when graph_id or version is empty string.
+      details MUST include: which ('graph_id'|'version').
+
+  - id: "clause.codes.gf0_dup_node"
+    kind: "clause"
+    status: "normative"
+    label: "GF0.E.DUP_NODE_ID"
+    text: >
+      Emitted when two or more nodes share the same id within one frame.
+      details MUST include: node_id.
+
+  - id: "clause.codes.gf0_bad_edge"
+    kind: "clause"
+    status: "normative"
+    label: "GF0.E.BAD_EDGE_ENDPOINT"
+    text: >
+      Emitted when an edge endpoint references a missing node.
+      details MUST include: edge_key, missing_endpoint ('from'|'to'), missing_node_id.
+
+  - id: "clause.codes.spec_bad_kind"
+    kind: "clause"
+    status: "normative"
+    label: "SPEC.E.BAD_NODE_KIND"
+    text: >
+      Emitted when a SpecFrame contains a node with kind not in the SpecFrame allowed set.
+      details MUST include: node_id, node_kind.
+
+  - id: "clause.codes.spec_bad_edge_type"
+    kind: "clause"
+    status: "normative"
+    label: "SPEC.E.BAD_EDGE_TYPE"
+    text: >
+      Emitted when a SpecFrame contains an edge with type not in the SpecFrame allowed set.
+      details MUST include: edge_key, edge_type.
+
+  - id: "clause.codes.spec_contains_cycle"
+    kind: "clause"
+    status: "normative"
+    label: "SPEC.E.CONTAINS_CYCLE_OR_MULTIPARENT"
+    text: >
+      Emitted when 'contains' edges are cyclic or a node has multiple 'contains' parents.
+      details MUST include: node_id.
+      details MAY include: parent_ids (ordered list of parents), cycle_hint (string).
+
+  - id: "clause.codes.spec_missing_attr"
+    kind: "clause"
+    status: "normative"
+    label: "SPEC.E.MISSING_REQUIRED_ATTR"
+    text: >
+      Emitted when a required attribute per SpecFrame node kind is missing.
+      details MUST include: node_id, node_kind, attr_name.
+
+  - id: "clause.codes.link_missing_target_graph"
+    kind: "clause"
+    status: "normative"
+    label: "LINK.E.MISSING_TARGET_GRAPH"
+    text: >
+      Emitted when a spec_ref.target_graph_id does not exist in the DocGroup.
+      details MUST include: node_id, target_graph_id.
+
+  - id: "clause.codes.link_unreachable_normative"
+    kind: "clause"
+    status: "normative"
+    label: "LINK.W.UNREACHABLE_NORMATIVE"
+    text: >
+      Emitted (as warning by default) when a normative node is unreachable from the SpecFrame root via 'contains'.
+      details MUST include: node_id.
+
+  # --- Examples --------------------------------------------------------------
+  - id: "example.minimal_report"
+    kind: "example"
+    status: "informative"
+    label: "Minimal ValidationReportK1"
+    text: |
+      version: "validatorgroup-k1@0.1.0"
+      ok: false
+      violations:
+        - severity: "error"
+          code: "GF0.E.BAD_EDGE_ENDPOINT"
+          stage: "gf0_struct"
+          location:
+            graph_id: "spec.some-doc"
+            meta_path: ["spec.some-doc"]
+            edge_key: "contains|spec.some-doc|section.1.scope|"
+          details:
+            - { key: "missing_endpoint", value: "to" }
+            - { key: "missing_node_id", value: "section.1.scope" }
+
+  - id: "example.group_dedup_behavior"
+    kind: "example"
+    status: "informative"
+    label: "Duplicate graph_id behavior"
+    text: |
+      If two GraphRecords share graph_id="spec.dup", the validator MUST:
+        - emit an error violation for the duplicated graph_id, and
+        - run gf0_struct on both,
+        - skip specframe/renderframe/links stages for graph_id="spec.dup".
+
+edges:
+  # Root contains
+  - { from: "spec://_kernel/validator/validatorgroup-k1", to: "ref.spec.gf0-k1", type: "contains" }
+  - { from: "spec://_kernel/validator/validatorgroup-k1", to: "ref.spec.specframe-k1", type: "contains" }
+  - { from: "spec://_kernel/validator/validatorgroup-k1", to: "ref.spec.renderframe-k1", type: "contains" }
+
+  - { from: "spec://_kernel/validator/validatorgroup-k1", to: "section.1.scope", type: "contains" }
+  - { from: "spec://_kernel/validator/validatorgroup-k1", to: "section.2.inputs", type: "contains" }
+  - { from: "spec://_kernel/validator/validatorgroup-k1", to: "section.3.stages", type: "contains" }
+  - { from: "spec://_kernel/validator/validatorgroup-k1", to: "section.4.determinism", type: "contains" }
+  - { from: "spec://_kernel/validator/validatorgroup-k1", to: "section.5.report", type: "contains" }
+  - { from: "spec://_kernel/validator/validatorgroup-k1", to: "section.6.codes", type: "contains" }
+  - { from: "spec://_kernel/validator/validatorgroup-k1", to: "section.7.examples", type: "contains" }
+  - { from: "spec://_kernel/validator/validatorgroup-k1", to: "section.8.integration", type: "contains" }
+
+  # Scope
+  - { from: "section.1.scope", to: "clause.scope.intent", type: "contains" }
+  - { from: "section.1.scope", to: "clause.scope.non_goals", type: "contains" }
+  - { from: "section.1.scope", to: "term.doc_group", type: "contains" }
+  - { from: "section.1.scope", to: "term.graph_record", type: "contains" }
+  - { from: "section.1.scope", to: "term.profile_detection", type: "contains" }
+  - { from: "section.1.scope", to: "term.validation_stage", type: "contains" }
+  - { from: "section.1.scope", to: "term.violation", type: "contains" }
+  - { from: "section.1.scope", to: "term.location", type: "contains" }
+  - { from: "section.1.scope", to: "term.canonical_equivalence", type: "contains" }
+
+  # Inputs
+  - { from: "section.2.inputs", to: "clause.inputs.graphrecord", type: "contains" }
+  - { from: "section.2.inputs", to: "clause.inputs.graph_id_uniqueness_across_group", type: "contains" }
+  - { from: "section.2.inputs", to: "clause.inputs.meta_recursion", type: "contains" }
+
+  # Stages
+  - { from: "section.3.stages", to: "property.stage_enum", type: "contains" }
+  - { from: "section.3.stages", to: "property.stage_order", type: "contains" }
+  - { from: "section.3.stages", to: "clause.stages.definition", type: "contains" }
+  - { from: "section.3.stages", to: "clause.stages.gf0_struct", type: "contains" }
+  - { from: "section.3.stages", to: "clause.stages.profile_detect", type: "contains" }
+  - { from: "section.3.stages", to: "clause.stages.specframe", type: "contains" }
+  - { from: "section.3.stages", to: "clause.stages.renderframe", type: "contains" }
+  - { from: "section.3.stages", to: "clause.stages.links", type: "contains" }
+
+  # Determinism
+  - { from: "section.4.determinism", to: "property.details_kv", type: "contains" }
+  - { from: "section.4.determinism", to: "clause.determinism.sorting", type: "contains" }
+  - { from: "section.4.determinism", to: "clause.determinism.violation_order", type: "contains" }
+  - { from: "section.4.determinism", to: "clause.determinism.details_order", type: "contains" }
+  - { from: "section.4.determinism", to: "clause.determinism.limits", type: "contains" }
+
+  # Report
+  - { from: "section.5.report", to: "property.severity_enum", type: "contains" }
+  - { from: "section.5.report", to: "property.report_fields", type: "contains" }
+  - { from: "section.5.report", to: "property.violation_fields", type: "contains" }
+  - { from: "section.5.report", to: "property.location_fields", type: "contains" }
+  - { from: "section.5.report", to: "clause.report.model", type: "contains" }
+  - { from: "section.5.report", to: "clause.report.violation_model", type: "contains" }
+  - { from: "section.5.report", to: "clause.report.location_model", type: "contains" }
+  - { from: "section.5.report", to: "clause.report.canonical_json", type: "contains" }
+  - { from: "section.5.report", to: "clause.report.fingerprint", type: "contains" }
+
+  # Codes
+  - { from: "section.6.codes", to: "clause.codes.requirement", type: "contains" }
+  - { from: "section.6.codes", to: "property.required_codes", type: "contains" }
+  - { from: "section.6.codes", to: "clause.codes.gf0_missing_field", type: "contains" }
+  - { from: "section.6.codes", to: "clause.codes.gf0_empty_id_ver", type: "contains" }
+  - { from: "section.6.codes", to: "clause.codes.gf0_dup_node", type: "contains" }
+  - { from: "section.6.codes", to: "clause.codes.gf0_bad_edge", type: "contains" }
+  - { from: "section.6.codes", to: "clause.codes.spec_bad_kind", type: "contains" }
+  - { from: "section.6.codes", to: "clause.codes.spec_bad_edge_type", type: "contains" }
+  - { from: "section.6.codes", to: "clause.codes.spec_contains_cycle", type: "contains" }
+  - { from: "section.6.codes", to: "clause.codes.spec_missing_attr", type: "contains" }
+  - { from: "section.6.codes", to: "clause.codes.link_missing_target_graph", type: "contains" }
+  - { from: "section.6.codes", to: "clause.codes.link_unreachable_normative", type: "contains" }
+
+  # Examples
+  - { from: "section.7.examples", to: "example.minimal_report", type: "contains" }
+  - { from: "section.7.examples", to: "example.group_dedup_behavior", type: "contains" }
+
+meta: []

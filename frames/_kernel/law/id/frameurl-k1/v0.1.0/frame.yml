@@ -1,0 +1,455 @@
+graph_id: "law://_kernel/id/frameurl-k1"
+version: "0.1.0"
+
+attrs:
+  - { key: "depends_on", value: "spec://_kernel/gf/gf0-k1" }
+  - { key: "depends_on", value: "law://_kernel/law/lawframe-k1" }
+  - { key: "domain", value: "_kernel.id" }
+
+nodes:
+  # ---------------------------------------------------------------------------
+  # Root
+  # ---------------------------------------------------------------------------
+  - id: "law://_kernel/id/frameurl-k1"
+    kind: "law"
+    profile: "lawframe-k1"
+    status: "normative"
+    title: "FrameURL K1 — Canonical Identity and Filesystem Projection"
+    summary: >
+      Defines a strict URL-like canonical identifier (FrameURL) for GF0 frames and a deterministic
+      projection from (graph_id, version) to a repository filesystem path.
+
+    law_id: "frameurl-k1"
+    law_version: "0.1.0"
+
+  # ---------------------------------------------------------------------------
+  # Sections
+  # ---------------------------------------------------------------------------
+  - id: "title.0"
+    kind: "title"
+    status: "informative"
+    text: "FrameURL K1"
+
+  - id: "section.1.charter"
+    kind: "section"
+    status: "normative"
+    title: "Charter"
+    order: 1
+
+  - id: "section.2.grammar"
+    kind: "section"
+    status: "normative"
+    title: "FrameURL Grammar"
+    order: 2
+
+  - id: "section.3.normalization"
+    kind: "section"
+    status: "normative"
+    title: "Normalization Rules"
+    order: 3
+
+  - id: "section.4.path_projection"
+    kind: "section"
+    status: "normative"
+    title: "Filesystem Path Projection"
+    order: 4
+
+  - id: "section.7.violations"
+    kind: "section"
+    status: "normative"
+    title: "Required Violation Codes"
+    order: 7
+
+  - id: "section.8.examples"
+    kind: "section"
+    status: "informative"
+    title: "Examples"
+    order: 8
+
+  # ---------------------------------------------------------------------------
+  # Definitions
+  # ---------------------------------------------------------------------------
+  - id: "def.frameurl"
+    kind: "definition"
+    status: "normative"
+    label: "FrameURL"
+    text: >
+      A canonical, URL-like identifier used as GF0 graph_id. FrameURL K1 uses a strict grammar:
+      <scheme>://<scope>/<segment>/<segment>/.../<name>. FrameURL is versionless.
+
+  - id: "def.scheme"
+    kind: "definition"
+    status: "normative"
+    label: "Scheme"
+    text: >
+      The FrameURL scheme indicates the frame class. Schemes are an enum defined by prop.scheme_enum.
+
+  - id: "def.scope"
+    kind: "definition"
+    status: "normative"
+    label: "Scope"
+    text: >
+      The first path segment after '://'. Scope is used as the top-level shard for filesystem layout.
+
+  - id: "def.segment"
+    kind: "definition"
+    status: "normative"
+    label: "Segment"
+    text: >
+      A single FrameURL path component. Segment charset is restricted for determinism and portability.
+
+  - id: "def.name"
+    kind: "definition"
+    status: "normative"
+    label: "Name"
+    text: >
+      The final segment of a FrameURL. Name is semantically the artifact identifier within its package path.
+
+  - id: "def.pkg"
+    kind: "definition"
+    status: "normative"
+    label: "Package Path (pkg)"
+    text: >
+      The ordered list of segments that define where a frame lives in the fractal tree.
+      For FrameURL, pkg == [scope] + [segment...name] (excluding scheme).
+
+  # ---------------------------------------------------------------------------
+  # Properties / enums / patterns
+  # ---------------------------------------------------------------------------
+  - id: "prop.scheme_enum"
+    kind: "property"
+    status: "normative"
+    label: "Allowed schemes"
+    values:
+      - "law"
+      - "spec"
+      - "profile"
+      - "render"
+      - "fixture"
+
+  - id: "prop.segment_regex"
+    kind: "property"
+    status: "normative"
+    label: "Segment regex"
+    value: "^[a-z0-9][a-z0-9._-]{0,63}$"
+
+  - id: "prop.version_folder_prefix"
+    kind: "property"
+    status: "normative"
+    label: "Version folder prefix"
+    value: "v"
+
+  - id: "prop.path_root"
+    kind: "property"
+    status: "normative"
+    label: "Repository frames root"
+    value: "frames"
+
+  - id: "prop.leaf_filename"
+    kind: "property"
+    status: "normative"
+    label: "Leaf filename"
+    value: "frame.yml"
+
+  - id: "prop.forbidden_segments"
+    kind: "property"
+    status: "normative"
+    label: "Forbidden segments"
+    values:
+      - "."
+      - ".."
+
+  - id: "prop.required_root_node_invariant"
+    kind: "property"
+    status: "normative"
+    label: "Root node invariant"
+    value: "Each frame MUST contain a root node where node.id == graph_id."
+
+  # ---------------------------------------------------------------------------
+  # Rules: Charter
+  # ---------------------------------------------------------------------------
+  - id: "rule.charter.graph_id_is_frameurl"
+    kind: "rule"
+    status: "normative"
+    modal: "MUST"
+    label: "graph_id is canonical FrameURL"
+    text: >
+      A frame claiming conformance to FrameURL K1 MUST use a canonical FrameURL as graph_id.
+
+  - id: "rule.charter.version_is_separate"
+    kind: "rule"
+    status: "normative"
+    modal: "MUST"
+    label: "Version is separate from FrameURL"
+    text: >
+      FrameURL is versionless. Version MUST be expressed only via GF0.version, not embedded into graph_id.
+
+  - id: "rule.charter.root_node_id"
+    kind: "rule"
+    status: "normative"
+    modal: "MUST"
+    label: "Root node id equals graph_id"
+    text: >
+      Each frame MUST contain exactly one root node where node.id == graph_id. The root node MUST
+      be treated as the canonical identity-bearing node.
+
+  # ---------------------------------------------------------------------------
+  # Rules: Grammar
+  # ---------------------------------------------------------------------------
+  - id: "rule.grammar.strict_form"
+    kind: "rule"
+    status: "normative"
+    modal: "MUST"
+    label: "Strict FrameURL grammar"
+    text: >
+      FrameURL MUST match: <scheme>://<scope>/<segment>.../<name>
+      where:
+        - scheme is one of prop.scheme_enum
+        - scope and all segments (including name) match prop.segment_regex
+        - forbidden segments prop.forbidden_segments are disallowed
+        - there is at least one segment after scope (i.e., name exists)
+
+  - id: "rule.grammar.no_query_fragment"
+    kind: "rule"
+    status: "normative"
+    modal: "MUST"
+    label: "No query or fragment"
+    text: >
+      FrameURL MUST NOT contain '?', '#', or any query/fragment component. The identifier is purely
+      hierarchical.
+
+  - id: "rule.grammar.no_percent_encoding"
+    kind: "rule"
+    status: "normative"
+    modal: "MUST"
+    label: "No percent-encoding"
+    text: >
+      FrameURL MUST NOT use percent-encoding. All segments must be representable using the restricted
+      segment charset.
+
+  # ---------------------------------------------------------------------------
+  # Rules: Normalization
+  # ---------------------------------------------------------------------------
+  - id: "rule.norm.lowercase_only"
+    kind: "rule"
+    status: "normative"
+    modal: "MUST"
+    label: "Lowercase only"
+    text: >
+      FrameURL MUST be lowercase ASCII only. Uppercase letters are forbidden.
+
+  - id: "rule.norm.no_whitespace"
+    kind: "rule"
+    status: "normative"
+    modal: "MUST"
+    label: "No whitespace"
+    text: >
+      FrameURL MUST NOT contain whitespace. Leading/trailing whitespace MUST be treated as invalid
+      (not auto-trimmed).
+
+  - id: "rule.norm.canonical_slashes"
+    kind: "rule"
+    status: "normative"
+    modal: "MUST"
+    label: "Canonical slashes"
+    text: >
+      FrameURL MUST use exactly one '://' delimiter and '/' as the only segment separator.
+      Repeated slashes '//' in the path portion are forbidden.
+
+  - id: "rule.norm.scheme_validation"
+    kind: "rule"
+    status: "normative"
+    modal: "MUST"
+    label: "Scheme validation"
+    text: >
+      scheme MUST be in prop.scheme_enum. Unknown schemes are invalid.
+
+  # ---------------------------------------------------------------------------
+  # Rules: Filesystem projection
+  # ---------------------------------------------------------------------------
+  - id: "rule.path.projection_function"
+    kind: "rule"
+    status: "normative"
+    modal: "MUST"
+    label: "Canonical path projection"
+    text: >
+      The canonical relative filesystem path for a frame is a pure function of (graph_id, version):
+        frames/<scope>/<scheme>/<segments...>/<name>/v<version>/frame.yml
+      where scope and segments are derived from parsing graph_id.
+
+  - id: "rule.path.must_match_on_disk"
+    kind: "rule"
+    status: "normative"
+    modal: "MUST"
+    label: "On-disk path must match projection"
+    text: >
+      If a repository uses FrameURL K1 as its on-disk convention, each frame file MUST be located at
+      the canonical projected path derived from (graph_id, version). Deviations are invalid.
+
+  - id: "rule.path.version_folder"
+    kind: "rule"
+    status: "normative"
+    modal: "MUST"
+    label: "Version folder format"
+    text: >
+      The version folder name MUST be 'v' + version (prop.version_folder_prefix), with no additional
+      decoration. Example: v1.2.0.
+
+  - id: "rule.path.leaf_filename"
+    kind: "rule"
+    status: "normative"
+    modal: "MUST"
+    label: "Leaf filename"
+    text: >
+      The leaf filename MUST be prop.leaf_filename ('frame.yml') for canonical projection.
+      Repositories MAY provide a compatibility mode that also accepts <graph_id_sanitized>.yml, but
+      canonical projection remains authoritative.
+
+  # ---------------------------------------------------------------------------
+  # Rules: Reference resolution
+  # ---------------------------------------------------------------------------
+  - id: "rule.ref.frameref_is_frameurl"
+    kind: "rule"
+    status: "normative"
+    modal: "MUST"
+    label: "FrameRef must be a canonical FrameURL"
+    text: >
+      A FrameRef consumed by tools MUST be a canonical FrameURL.
+
+  - id: "rule.ref.no_external_fetch"
+    kind: "rule"
+    status: "normative"
+    modal: "MUST"
+    label: "No external fetch"
+    text: >
+      Reference normalization MUST be offline. Implementations MUST NOT fetch or infer missing frames
+      from network sources unless explicitly provided by the caller.
+
+  # ---------------------------------------------------------------------------
+  # Required violation codes (minimum)
+  # ---------------------------------------------------------------------------
+  - id: "prop.required_violation_codes"
+    kind: "property"
+    status: "normative"
+    label: "Required violation codes"
+    values:
+      - "ID.E.BAD_FRAMEURL"
+      - "ID.E.BAD_SCHEME"
+      - "ID.E.BAD_SEGMENT"
+      - "ID.E.FORBIDDEN_SEGMENT"
+      - "ID.E.BAD_VERSION_FOLDER"
+      - "ID.E.PATH_MISMATCH"
+      - "ID.E.MISSING_ROOT_NODE"
+      - "ID.E.UNKNOWN_REFERENCE"
+
+  - id: "rule.codes.stable"
+    kind: "rule"
+    status: "normative"
+    modal: "MUST"
+    label: "Stable codes"
+    text: >
+      Implementations claiming conformance MUST emit the violation codes listed in
+      prop.required_violation_codes with stable semantics.
+
+  - id: "rule.code.bad_frameurl"
+    kind: "rule"
+    status: "normative"
+    modal: "MUST"
+    label: "ID.E.BAD_FRAMEURL"
+    text: >
+      Emit when graph_id fails FrameURL parsing under rule.grammar.strict_form or rule.grammar.no_query_fragment
+      or rule.grammar.no_percent_encoding or rule.norm.*. details MUST include: graph_id.
+
+  - id: "rule.code.path_mismatch"
+    kind: "rule"
+    status: "normative"
+    modal: "MUST"
+    label: "ID.E.PATH_MISMATCH"
+    text: >
+      Emit when an on-disk frame path does not equal the canonical projection under rule.path.projection_function.
+      details MUST include: graph_id, version, expected_path, actual_path.
+
+  - id: "rule.code.unknown_reference"
+    kind: "rule"
+    status: "normative"
+    modal: "MUST"
+    label: "ID.E.UNKNOWN_REFERENCE"
+    text: >
+      Emit when a FrameRef is not a valid FrameURL.
+      details MUST include: reference.
+
+  # ---------------------------------------------------------------------------
+  # Examples
+  # ---------------------------------------------------------------------------
+  - id: "ex.1.frameurl"
+    kind: "example"
+    status: "informative"
+    label: "Canonical FrameURL"
+    text: |
+      law://repo/governance/repo-k1
+      spec://_kernel/gf/gf0-k1
+      render://repo/docs/default
+
+  - id: "ex.2.path_projection"
+    kind: "example"
+    status: "informative"
+    label: "Projected path"
+    text: |
+      graph_id:  law://repo/governance/repo-k1
+      version:   1.0.0
+      path:      frames/repo/law/governance/repo-k1/v1.0.0/frame.yml
+
+edges:
+  - { from: "law://_kernel/id/frameurl-k1", to: "title.0", type: "contains" }
+
+  - { from: "law://_kernel/id/frameurl-k1", to: "section.1.charter", type: "contains" }
+  - { from: "law://_kernel/id/frameurl-k1", to: "section.2.grammar", type: "contains" }
+  - { from: "law://_kernel/id/frameurl-k1", to: "section.3.normalization", type: "contains" }
+  - { from: "law://_kernel/id/frameurl-k1", to: "section.4.path_projection", type: "contains" }
+  - { from: "law://_kernel/id/frameurl-k1", to: "section.7.violations", type: "contains" }
+  - { from: "law://_kernel/id/frameurl-k1", to: "section.8.examples", type: "contains" }
+
+  # Charter
+  - { from: "section.1.charter", to: "def.frameurl", type: "contains" }
+  - { from: "section.1.charter", to: "rule.charter.graph_id_is_frameurl", type: "contains" }
+  - { from: "section.1.charter", to: "rule.charter.version_is_separate", type: "contains" }
+  - { from: "section.1.charter", to: "rule.charter.root_node_id", type: "contains" }
+
+  # Grammar
+  - { from: "section.2.grammar", to: "def.scheme", type: "contains" }
+  - { from: "section.2.grammar", to: "def.scope", type: "contains" }
+  - { from: "section.2.grammar", to: "def.segment", type: "contains" }
+  - { from: "section.2.grammar", to: "def.name", type: "contains" }
+  - { from: "section.2.grammar", to: "def.pkg", type: "contains" }
+  - { from: "section.2.grammar", to: "prop.scheme_enum", type: "contains" }
+  - { from: "section.2.grammar", to: "prop.segment_regex", type: "contains" }
+  - { from: "section.2.grammar", to: "prop.forbidden_segments", type: "contains" }
+  - { from: "section.2.grammar", to: "rule.grammar.strict_form", type: "contains" }
+  - { from: "section.2.grammar", to: "rule.grammar.no_query_fragment", type: "contains" }
+  - { from: "section.2.grammar", to: "rule.grammar.no_percent_encoding", type: "contains" }
+
+  # Normalization
+  - { from: "section.3.normalization", to: "rule.norm.lowercase_only", type: "contains" }
+  - { from: "section.3.normalization", to: "rule.norm.no_whitespace", type: "contains" }
+  - { from: "section.3.normalization", to: "rule.norm.canonical_slashes", type: "contains" }
+  - { from: "section.3.normalization", to: "rule.norm.scheme_validation", type: "contains" }
+
+  # Path projection
+  - { from: "section.4.path_projection", to: "prop.path_root", type: "contains" }
+  - { from: "section.4.path_projection", to: "prop.version_folder_prefix", type: "contains" }
+  - { from: "section.4.path_projection", to: "prop.leaf_filename", type: "contains" }
+  - { from: "section.4.path_projection", to: "rule.path.projection_function", type: "contains" }
+  - { from: "section.4.path_projection", to: "rule.path.must_match_on_disk", type: "contains" }
+  - { from: "section.4.path_projection", to: "rule.path.version_folder", type: "contains" }
+  - { from: "section.4.path_projection", to: "rule.path.leaf_filename", type: "contains" }
+
+  # Violations
+  - { from: "section.7.violations", to: "prop.required_violation_codes", type: "contains" }
+  - { from: "section.7.violations", to: "rule.codes.stable", type: "contains" }
+  - { from: "section.7.violations", to: "rule.code.bad_frameurl", type: "contains" }
+  - { from: "section.7.violations", to: "rule.code.path_mismatch", type: "contains" }
+  - { from: "section.7.violations", to: "rule.code.unknown_reference", type: "contains" }
+
+  # Examples
+  - { from: "section.8.examples", to: "ex.1.frameurl", type: "contains" }
+  - { from: "section.8.examples", to: "ex.2.path_projection", type: "contains" }

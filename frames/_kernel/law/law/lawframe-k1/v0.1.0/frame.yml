@@ -1,0 +1,209 @@
+graph_id: "law://_kernel/law/lawframe-k1"
+version: "0.1.0"
+
+attrs:
+  - { key: "domain", value: "graphbrain.law" }
+  - { key: "depends_on", value: "spec://_kernel/gf/gf0-k1" }
+
+nodes:
+  # Root
+  - id: "law://_kernel/law/lawframe-k1"
+    kind: "law"
+    profile: "lawframe-k1"
+    status: "normative"
+    title: "LawFrame K1 — Generic Law Graph Profile over GF0"
+    summary: "Defines a GF0 profile for expressing laws, policies, and governance as graphs."
+    law_id: "lawframe-k1"
+    law_version: "0.1.0"
+
+  # --- Definitions ----------------------------------------------------------
+  - id: "def.lawdoc"
+    kind: "definition"
+    label: "LawDoc"
+    text: "A GF0 graph whose root node has id==graph_id, kind='law', profile='lawframe-k1'."
+
+  - id: "def.lawprofile"
+    kind: "definition"
+    label: "LawProfile"
+    text: "A GF0 graph whose root node has id==graph_id, kind='law_profile', profile='lawprofile-k1'."
+
+  - id: "def.rule"
+    kind: "definition"
+    label: "Rule"
+    text: "A normative statement with a modal (MUST/MUST_NOT/SHOULD/SHOULD_NOT/MAY) and text."
+
+  - id: "def.modal"
+    kind: "definition"
+    label: "Modal"
+    text: "A fixed enum controlling normative force: MUST, MUST_NOT, SHOULD, SHOULD_NOT, MAY."
+
+  - id: "def.location"
+    kind: "definition"
+    label: "Location"
+    text: "A pointer into a law graph: graph_id, optional node_id, optional edge_key, optional meta_path."
+
+  # --- Structured properties (deterministic lists) --------------------------
+  - id: "prop.allowed_node_kinds"
+    kind: "property"
+    label: "Allowed node kinds"
+    values:
+      - law
+      - title
+      - section
+      - definition
+      - rule
+      - exception
+      - parameter
+      - reference
+      - example
+
+  - id: "prop.allowed_edge_types"
+    kind: "property"
+    label: "Allowed edge types"
+    values:
+      - contains
+      - defines
+      - refers_to
+      - applies_to
+      - exception_of
+      - supersedes
+      - amends
+      - enables
+      - disables
+
+  - id: "prop.modal_enum"
+    kind: "property"
+    label: "Modal enum"
+    values: ["MUST", "MUST_NOT", "SHOULD", "SHOULD_NOT", "MAY"]
+
+  # --- Core rules -----------------------------------------------------------
+  - id: "rule.root_shape"
+    kind: "rule"
+    modal: "MUST"
+    label: "Root law node"
+    text: >
+      A LawDoc MUST contain exactly one root node where id==graph_id, kind=='law', profile=='lawframe-k1'.
+
+  - id: "rule.gf0_conformance"
+    kind: "rule"
+    modal: "MUST"
+    label: "GF0 conformance"
+    text: >
+      Every LawDoc MUST be a valid GraphFrameK0: fields {graph_id, version, attrs, nodes, edges, meta}
+      MUST be present and empty lists encoded as [].
+
+  - id: "rule.kind_restriction"
+    kind: "rule"
+    modal: "MUST"
+    label: "Node kind restriction"
+    text: >
+      Node kinds within a LawDoc MUST be limited to prop.allowed_node_kinds unless an extension
+      mechanism is explicitly invoked (see rule.extensions).
+
+  - id: "rule.edge_restriction"
+    kind: "rule"
+    modal: "MUST"
+    label: "Edge type restriction"
+    text: >
+      Edge types within a LawDoc MUST be limited to prop.allowed_edge_types unless an extension
+      mechanism is explicitly invoked (see rule.extensions).
+
+  - id: "rule.contains_tree"
+    kind: "rule"
+    modal: "MUST"
+    label: "Structural containment"
+    text: >
+      'contains' edges MUST be acyclic and define the primary structural tree rooted at the law root.
+      Multiple 'contains' parents for the same node are forbidden.
+
+  - id: "rule.rule_fields"
+    kind: "rule"
+    modal: "MUST"
+    label: "Rule required fields"
+    text: >
+      A node with kind=='rule' MUST have: label (string), modal (Modal), text (string).
+      It MAY have: scope, applies_to, params, and references.
+
+  - id: "rule.deterministic_order"
+    kind: "rule"
+    modal: "MUST"
+    label: "Deterministic ordering"
+    text: >
+      Where ordering is required, implementations MUST order by explicit integer 'order' if present;
+      otherwise by lexicographic ordering of node IDs; otherwise by lexicographic ordering of edge keys.
+
+  - id: "rule.supersession"
+    kind: "rule"
+    modal: "MUST"
+    label: "Supersession is explicit"
+    text: >
+      Supersession MUST be expressed explicitly via 'supersedes' edges (or 'amends' for partial changes).
+      Implicit supersession by timestamps or filenames is forbidden.
+
+  - id: "rule.meta_usage"
+    kind: "rule"
+    modal: "SHOULD"
+    label: "Meta usage"
+    text: >
+      Non-authoritative overlays (commentary, provenance, index, CI receipts) SHOULD be carried in GF0 meta
+      as MetaGraphs, which are structurally independent from the parent graph.
+
+  - id: "rule.extensions"
+    kind: "rule"
+    modal: "MAY"
+    label: "Extension mechanism"
+    text: >
+      Extensions MAY introduce additional node kinds and edge types if the LawDoc includes an explicit
+      extension declaration node with kind=='parameter' and key=='extensions' listing allowed additions.
+
+  # --- Minimal structure nodes ----------------------------------------------
+  - id: "title.0"
+    kind: "title"
+    text: "LawFrame K1"
+
+  - id: "section.1.charter"
+    kind: "section"
+    title: "Charter"
+    order: 1
+
+  - id: "section.2.model"
+    kind: "section"
+    title: "Model"
+    order: 2
+
+  - id: "section.3.invariants"
+    kind: "section"
+    title: "Invariants"
+    order: 3
+
+edges:
+  - { from: "law://_kernel/law/lawframe-k1", to: "title.0", type: "contains" }
+  - { from: "law://_kernel/law/lawframe-k1", to: "section.1.charter", type: "contains" }
+  - { from: "law://_kernel/law/lawframe-k1", to: "section.2.model", type: "contains" }
+  - { from: "law://_kernel/law/lawframe-k1", to: "section.3.invariants", type: "contains" }
+
+  - { from: "section.2.model", to: "def.lawdoc", type: "contains" }
+  - { from: "section.2.model", to: "def.lawprofile", type: "contains" }
+  - { from: "section.2.model", to: "def.rule", type: "contains" }
+  - { from: "section.2.model", to: "def.modal", type: "contains" }
+
+  - { from: "section.2.model", to: "prop.allowed_node_kinds", type: "contains" }
+  - { from: "section.2.model", to: "prop.allowed_edge_types", type: "contains" }
+  - { from: "section.2.model", to: "prop.modal_enum", type: "contains" }
+
+  - { from: "section.3.invariants", to: "rule.root_shape", type: "contains" }
+  - { from: "section.3.invariants", to: "rule.gf0_conformance", type: "contains" }
+  - { from: "section.3.invariants", to: "rule.kind_restriction", type: "contains" }
+  - { from: "section.3.invariants", to: "rule.edge_restriction", type: "contains" }
+  - { from: "section.3.invariants", to: "rule.contains_tree", type: "contains" }
+  - { from: "section.3.invariants", to: "rule.rule_fields", type: "contains" }
+  - { from: "section.3.invariants", to: "rule.deterministic_order", type: "contains" }
+  - { from: "section.3.invariants", to: "rule.supersession", type: "contains" }
+  - { from: "section.3.invariants", to: "rule.meta_usage", type: "contains" }
+  - { from: "section.3.invariants", to: "rule.extensions", type: "contains" }
+
+  # optional: explicit defines links
+  - { from: "rule.root_shape", to: "def.lawdoc", type: "refers_to" }
+  - { from: "rule.rule_fields", to: "def.rule", type: "refers_to" }
+
+meta: []

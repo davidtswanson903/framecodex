@@ -1,0 +1,474 @@
+graph_id: "spec://_kernel/spec/specframe-k1"
+version: "0.3.0"
+
+# Frame-level metadata (tooling-facing). MetaGraphs belong in `meta`, not here.
+attrs:
+  - { key: "profile", value: "specframe-k1" }
+  - { key: "domain", value: "graphbrain.spec" }
+  - { key: "depends_on", value: "spec://_kernel/gf/gf0-k1" }
+  - { key: "depends_on", value: "spec://_kernel/targetref/targetref-k1" }
+  - { key: "depends_on", value: "spec://_kernel/canon/canon-k1" }
+  - { key: "intended_consumer", value: "Spec authors" }
+  - { key: "intended_consumer", value: "GraphBrain kernels" }
+  - { key: "intended_consumer", value: "LLM workers generating or refactoring specs" }
+  - key: "notes"
+    value: >
+      SpecFrame K1 is the canonical way to represent specs as graphs. Other
+      specs (canon, CBF, GSKernel, TaskFrame, EvidenceFrame, KernelCore, regimes)
+      SHOULD be expressed as SpecFrames conforming to this schema so that they
+      can be composed, diffed, and refactored uniformly by GraphBrain.
+
+nodes:
+  # --- Root spec node --------------------------------------------------------
+
+  - id: "spec://_kernel/spec/specframe-k1"
+    kind: "spec"
+    status: "normative"
+    profile: "specframe-k1"
+    title: "SpecFrame K1 — Canonical Specification Graph Schema"
+    summary: >
+      SpecFrame K1 defines how specifications themselves are represented as
+      GraphFrame K0 graphs. It constrains node kinds, edge types, and attribute
+      conventions so that specs can be encoded as sections, terms, clauses, and
+      properties in a deterministic, machine-readable way suitable for GraphBrain
+      kernels and LLM workers.
+
+  # --- Top-level sections ----------------------------------------------------
+
+  - id: "section.1.scope"
+    kind: "section"
+    status: "normative"
+    title: "Scope and Intent"
+    order: 1
+
+  - id: "section.2.node_kinds"
+    kind: "section"
+    status: "normative"
+    title: "Node Kinds"
+    order: 2
+
+  - id: "section.3.edge_kinds"
+    kind: "section"
+    status: "normative"
+    title: "Edge Types"
+    order: 3
+
+  - id: "section.4.attributes"
+    kind: "section"
+    status: "normative"
+    title: "Attributes"
+    order: 4
+
+  - id: "section.5.validation"
+    kind: "section"
+    status: "normative"
+    title: "Validation Invariants"
+    order: 5
+
+  - id: "section.6.integration"
+    kind: "section"
+    status: "informative"
+    title: "Integration and Usage"
+    order: 6
+
+  # --- Enums / properties (machine-readable) ---------------------------------
+
+  - id: "property.node_kinds"
+    kind: "property"
+    status: "normative"
+    label: "Allowed Node Kinds"
+    node_kinds:
+      - spec
+      - section
+      - term
+      - clause
+      - property
+      - example
+      - spec_ref
+
+  - id: "property.edge_types"
+    kind: "property"
+    status: "normative"
+    label: "Allowed Edge Types"
+    edge_types:
+      - contains
+      - depends_on
+      - defines
+      - refines
+      - refers_to
+      - example_of
+
+  - id: "property.status_enum"
+    kind: "property"
+    status: "normative"
+    label: "Spec Status Enum"
+    status_values:
+      - normative
+      - informative
+      - experimental
+
+  # --- Scope and intent ------------------------------------------------------
+
+  - id: "clause.scope.1"
+    kind: "clause"
+    status: "normative"
+    label: "Scope of SpecFrame K1"
+    text: >
+      SpecFrame K1 specifies the canonical schema for representing specifications
+      as GraphFrame K0 graphs. A SpecFrame is any GF0 graph whose root node has
+      kind = 'spec' and profile = 'specframe-k1'. All such graphs MUST conform to
+      the node, edge, and attribute conventions defined in this spec.
+
+  - id: "clause.scope.2"
+    kind: "clause"
+    status: "informative"
+    label: "Intended consumers"
+    text: >
+      SpecFrame K1 is intended for: (a) human spec authors, (b) GraphBrain
+      kernels that load, validate, and refactor specs, and (c) LLM workers that
+      generate or update specs from code, docs, or other frames.
+
+  # --- Node kinds ------------------------------------------------------------
+
+  - id: "term.node_kind"
+    kind: "term"
+    status: "normative"
+    label: "NodeK0.kind in SpecFrames"
+    text: >
+      In SpecFrames, the NodeK0.kind field encodes the logical role of each node
+      in the spec: spec, section, term, clause, property, example, or spec_ref.
+
+  - id: "clause.node_kinds.allowed"
+    kind: "clause"
+    status: "normative"
+    label: "Allowed node kinds"
+    text: >
+      Within a SpecFrame, NodeK0.kind MUST be one of:
+        - 'spec'      : the root specification node (exactly one per SpecFrame),
+        - 'section'   : top-level or nested sections grouping terms and clauses,
+        - 'term'      : definitions of key concepts,
+        - 'clause'    : normative or informative statements,
+        - 'property'  : small structured facts (enums, lists, thresholds),
+        - 'example'   : worked examples illustrating other nodes,
+        - 'spec_ref'  : references to other specs or frames.
+      Any other value MUST be reported as a validation error.
+
+  - id: "clause.node_kinds.root"
+    kind: "clause"
+    status: "normative"
+    label: "Root spec node"
+    text: >
+      Each SpecFrame MUST contain exactly one node with:
+        - id == graph_id,
+        - kind == 'spec',
+        - status in {'normative', 'informative', 'experimental'}.
+      This node is the root of the spec and is the unique entry point for
+      reachability and top-level attributes.
+
+  # --- Edge kinds ------------------------------------------------------------
+
+  - id: "term.edge_type"
+    kind: "term"
+    status: "normative"
+    label: "EdgeK0.type in SpecFrames"
+    text: >
+      In SpecFrames, the EdgeK0.type field encodes structural and semantic
+      relationships between nodes. Only a small fixed set of edge types is
+      allowed.
+
+  - id: "clause.edge_types.allowed"
+    kind: "clause"
+    status: "normative"
+    label: "Allowed edge types"
+    text: >
+      Within a SpecFrame, EdgeK0.type MUST be one of:
+        - 'contains'   : structural containment / hierarchy,
+        - 'depends_on' : spec-level dependency on another node or spec,
+        - 'defines'    : term or clause defines another concept,
+        - 'refines'    : clause refines or tightens another clause,
+        - 'refers_to'  : non-normative reference to another node or spec,
+        - 'example_of' : examples illustrating a term or clause.
+      Any other value MUST be reported as a validation error.
+
+  - id: "clause.edge.contains"
+    kind: "clause"
+    status: "normative"
+    label: "contains edge semantics"
+    text: >
+      'contains' edges encode the structural tree of the spec. The root 'spec'
+      node MUST contain one or more 'section' nodes. Section nodes MAY contain
+      other sections, terms, clauses, properties, and examples. Contains edges
+      MUST form an acyclic tree (or forest) rooted at the spec node.
+
+  # --- Attributes ------------------------------------------------------------
+
+  - id: "term.status"
+    kind: "term"
+    status: "normative"
+    label: "SpecStatus"
+    text: >
+      SpecStatus describes the normative weight of a node:
+        - 'normative'   : enforceable spec law,
+        - 'informative' : non-binding explanatory material,
+        - 'experimental': provisional or unstable guidance.
+
+  - id: "clause.attrs.status_enum"
+    kind: "clause"
+    status: "normative"
+    label: "Allowed status values"
+    text: >
+      For all nodes in a SpecFrame, the status attribute MUST be one of:
+        - 'normative',
+        - 'informative',
+        - 'experimental'.
+
+  - id: "clause.attrs.spec"
+    kind: "clause"
+    status: "normative"
+    label: "Attributes for spec nodes"
+    text: >
+      A node with kind == 'spec' MUST provide at least:
+        - 'title'   : short human-readable title,
+        - 'status'  : SpecStatus,
+        - 'summary' : short description of the spec's scope,
+        - 'profile' : string identifying the spec profile, e.g. 'specframe-k1'.
+      The spec node MAY also include 'version_note', 'domain', and additional
+      profile-specific attributes.
+
+  - id: "clause.attrs.section"
+    kind: "clause"
+    status: "normative"
+    label: "Attributes for section nodes"
+    text: >
+      A node with kind == 'section' MUST provide:
+        - 'title' : short section title,
+        - 'status': SpecStatus.
+      It SHOULD provide:
+        - 'order' : integer for ordering sections within the spec.
+      Sections MAY nest other sections via 'contains'.
+
+  - id: "clause.attrs.term"
+    kind: "clause"
+    status: "normative"
+    label: "Attributes for term nodes"
+    text: >
+      A node with kind == 'term' MUST provide:
+        - 'label' : short name of the term,
+        - 'status': SpecStatus.
+      The primary definition text MAY be stored in 'text'. Terms are usually
+      linked via 'defines' edges from clauses that define them.
+
+  - id: "clause.attrs.clause"
+    kind: "clause"
+    status: "normative"
+    label: "Attributes for clause nodes"
+    text: >
+      A node with kind == 'clause' MUST provide:
+        - 'label' : short handle for the clause,
+        - 'status': SpecStatus.
+      It SHOULD provide:
+        - 'text'  : full clause text in natural language.
+
+  - id: "clause.attrs.property"
+    kind: "clause"
+    status: "normative"
+    label: "Attributes for property nodes"
+    text: >
+      A node with kind == 'property' MUST provide:
+        - 'label' : short name of the property,
+        - 'status': SpecStatus.
+      Property nodes MAY carry arbitrary additional attributes (lists, enums,
+      thresholds) that are interpreted by tooling.
+
+  - id: "clause.attrs.example"
+    kind: "clause"
+    status: "informative"
+    label: "Attributes for example nodes"
+    text: >
+      A node with kind == 'example' MUST provide:
+        - 'label' : short identifier for the example,
+        - 'status': SpecStatus (typically 'informative').
+      It SHOULD provide:
+        - 'text'  : free-form example text or code snippet.
+
+  - id: "clause.attrs.spec_ref"
+    kind: "clause"
+    status: "normative"
+    label: "Attributes for spec_ref nodes"
+    text: >
+      A node with kind == 'spec_ref' MUST provide:
+        - 'target_graph_id' : canonical graph_id of the referenced spec or frame.
+      It MAY provide:
+        - 'label' : short human-readable label,
+        - 'note'  : explanatory text about the reference.
+
+  - id: "clause.attrs.required"
+    kind: "clause"
+    status: "normative"
+    label: "Required attributes per node kind"
+    text: >
+      A SpecFrame validator MUST treat missing required attributes as a hard
+      validation error. Required attributes per kind are:
+        - spec     : title, status, summary, profile
+        - section  : title, status
+        - term     : label, status
+        - clause   : label, status
+        - property : label, status
+        - example  : label, status
+        - spec_ref : target_graph_id
+
+  # --- Validation invariants -------------------------------------------------
+
+  - id: "clause.validation.node_kinds"
+    kind: "clause"
+    status: "normative"
+    label: "Node kind validation"
+    text: >
+      A SpecFrame validator MUST reject any node whose kind attribute is not
+      in the allowed set specified by property.node_kinds. Unknown or misspelled
+      kinds are considered hard validation failures.
+
+  - id: "clause.validation.edge_types"
+    kind: "clause"
+    status: "normative"
+    label: "Edge type validation"
+    text: >
+      A SpecFrame validator MUST reject any edge whose type attribute is not
+      in the allowed set specified by property.edge_types. Unknown edge types
+      are considered hard validation failures.
+
+  - id: "clause.validation.contains_tree"
+    kind: "clause"
+    status: "normative"
+    label: "Contains edges form a tree"
+    text: >
+      'contains' edges MUST form an acyclic tree (or forest) rooted at the
+      spec node. Cycles or multiple parents for the same node via 'contains'
+      are considered hard validation failures.
+
+  - id: "clause.validation.reachability"
+    kind: "clause"
+    status: "normative"
+    label: "Reachability from root"
+    text: >
+      All normative nodes in a SpecFrame SHOULD be reachable from the root
+      spec node via one or more 'contains' edges. Unreachable normative nodes
+      SHOULD be treated as errors or at least strong warnings by tooling.
+
+  # --- Integration and usage -------------------------------------------------
+
+  - id: "ref.spec.gf0-k1"
+    kind: "spec_ref"
+    status: "informative"
+    target_graph_id: "spec://_kernel/gf/gf0-k1"
+    label: "GraphFrame K0 schema"
+
+  - id: "ref.spec.targetref-k1"
+    kind: "spec_ref"
+    status: "informative"
+    target_graph_id: "spec://_kernel/targetref/targetref-k1"
+    label: "TargetRef naming scheme"
+
+  - id: "ref.spec.canon-k1"
+    kind: "spec_ref"
+    status: "informative"
+    target_graph_id: "spec://_kernel/canon/canon-k1"
+    label: "Canon envelope mappings"
+
+  - id: "clause.frame_metadata.location"
+    kind: "clause"
+    status: "normative"
+    label: "Frame-level metadata location"
+    text: >
+      In SpecFrames, frame-level metadata (publish routing, domain tags, dependency tags,
+      audience tags) SHOULD be stored in GraphFrameK0.attrs. GraphFrameK0.meta MUST be used
+      only for true MetaGraphs (aux layout/index/view graphs) as defined by GF0. A SpecFrame
+      validator MUST NOT require any particular GraphFrameK0.attrs keys; attrs is tooling-
+      facing metadata and does not affect the node/edge validation rules.
+
+  - id: "clause.frame_metadata.recommended_keys"
+    kind: "clause"
+    status: "informative"
+    label: "Recommended SpecFrame attrs keys"
+    text: >
+      Tooling MAY adopt the following conventional GraphFrameK0.attrs keys for SpecFrames:
+        - domain
+        - depends_on (repeatable)
+        - intended_consumer (repeatable)
+        - publish.root
+        - publish.path
+        - publish.slug
+
+  - id: "clause.integration.usage"
+    kind: "clause"
+    status: "informative"
+    label: "Use in GraphBrain and specgen"
+    text: >
+      GraphBrain and specgen SHOULD treat SpecFrame K1 as the canonical schema
+      for specs. Specs for other domains (canon, CBF, GSKernel, TaskFrame,
+      EvidenceFrame, KernelCore, regimes) SHOULD be represented as SpecFrames
+      and validated against this schema so that they can be composed, diffed,
+      and refactored uniformly.
+
+edges:
+  # Root contains sections and key properties/refs
+  - { from: "spec://_kernel/spec/specframe-k1", to: "section.1.scope",        type: "contains" }
+  - { from: "spec://_kernel/spec/specframe-k1", to: "section.2.node_kinds",   type: "contains" }
+  - { from: "spec://_kernel/spec/specframe-k1", to: "section.3.edge_kinds",   type: "contains" }
+  - { from: "spec://_kernel/spec/specframe-k1", to: "section.4.attributes",   type: "contains" }
+  - { from: "spec://_kernel/spec/specframe-k1", to: "section.5.validation",   type: "contains" }
+  - { from: "spec://_kernel/spec/specframe-k1", to: "section.6.integration",  type: "contains" }
+
+  - { from: "spec://_kernel/spec/specframe-k1", to: "property.node_kinds",    type: "contains" }
+  - { from: "spec://_kernel/spec/specframe-k1", to: "property.edge_types",    type: "contains" }
+  - { from: "spec://_kernel/spec/specframe-k1", to: "property.status_enum",   type: "contains" }
+
+  - { from: "spec://_kernel/spec/specframe-k1", to: "ref.spec.gf0-k1",        type: "contains" }
+  - { from: "spec://_kernel/spec/specframe-k1", to: "ref.spec.targetref-k1",  type: "contains" }
+  - { from: "spec://_kernel/spec/specframe-k1", to: "ref.spec.canon-k1",      type: "contains" }
+
+  # Section 1: scope
+  - { from: "section.1.scope",      to: "clause.scope.1",      type: "contains" }
+  - { from: "section.1.scope",      to: "clause.scope.2",      type: "contains" }
+
+  # Section 2: node kinds
+  - { from: "section.2.node_kinds", to: "term.node_kind",      type: "contains" }
+  - { from: "section.2.node_kinds", to: "clause.node_kinds.allowed", type: "contains" }
+  - { from: "section.2.node_kinds", to: "clause.node_kinds.root",    type: "contains" }
+  - { from: "section.2.node_kinds", to: "property.node_kinds", type: "contains" }
+
+  # Section 3: edge kinds
+  - { from: "section.3.edge_kinds", to: "term.edge_type",           type: "contains" }
+  - { from: "section.3.edge_kinds", to: "clause.edge_types.allowed", type: "contains" }
+  - { from: "section.3.edge_kinds", to: "clause.edge.contains",     type: "contains" }
+  - { from: "section.3.edge_kinds", to: "property.edge_types",      type: "contains" }
+
+  # Section 4: attributes
+  - { from: "section.4.attributes", to: "term.status",              type: "contains" }
+  - { from: "section.4.attributes", to: "clause.attrs.status_enum", type: "contains" }
+  - { from: "section.4.attributes", to: "clause.attrs.spec",        type: "contains" }
+  - { from: "section.4.attributes", to: "clause.attrs.section",     type: "contains" }
+  - { from: "section.4.attributes", to: "clause.attrs.term",        type: "contains" }
+  - { from: "section.4.attributes", to: "clause.attrs.clause",      type: "contains" }
+  - { from: "section.4.attributes", to: "clause.attrs.property",    type: "contains" }
+  - { from: "section.4.attributes", to: "clause.attrs.example",     type: "contains" }
+  - { from: "section.4.attributes", to: "clause.attrs.spec_ref",    type: "contains" }
+  - { from: "section.4.attributes", to: "clause.attrs.required",    type: "contains" }
+  - { from: "section.4.attributes", to: "property.status_enum",     type: "refers_to" }
+
+  # Section 5: validation
+  - { from: "section.5.validation", to: "clause.validation.node_kinds",   type: "contains" }
+  - { from: "section.5.validation", to: "clause.validation.edge_types",   type: "contains" }
+  - { from: "section.5.validation", to: "clause.validation.contains_tree", type: "contains" }
+  - { from: "section.5.validation", to: "clause.validation.reachability", type: "contains" }
+
+  # Section 6: integration
+  - { from: "section.6.integration", to: "clause.frame_metadata.location",          type: "contains" }
+  - { from: "section.6.integration", to: "clause.frame_metadata.recommended_keys", type: "contains" }
+  - { from: "section.6.integration", to: "clause.integration.usage", type: "contains" }
+  - { from: "section.6.integration", to: "ref.spec.gf0-k1",          type: "refers_to" }
+  - { from: "section.6.integration", to: "ref.spec.targetref-k1",    type: "refers_to" }
+  - { from: "section.6.integration", to: "ref.spec.canon-k1",        type: "refers_to" }
+
+# meta is reserved for MetaGraphs per GF0 and is empty for this spec.
+meta: []

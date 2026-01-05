@@ -1,0 +1,460 @@
+graph_id: "law://_kernel/meta/frame-meta-k1"
+version: "0.1.0"
+
+attrs:
+  - { key: "domain", value: "graphbrain.meta" }
+  - { key: "depends_on", value: "spec://_kernel/gf/gf0-k1" }
+  - { key: "depends_on", value: "law://_kernel/ip/doclicense-k1" }
+
+nodes:
+  # ---------------------------------------------------------------------------
+  # Root
+  # ---------------------------------------------------------------------------
+  - id: "law://_kernel/meta/frame-meta-k1"
+    kind: "law"
+    profile: "lawframe-k1"
+    status: "normative"
+    title: "FrameMeta K1 — Common Per-Frame Metadata Fields"
+    summary: >
+      Defines a common, frame-level metadata surface for GF0 frames (author, created/updated,
+      contact, tags, etc.). Metadata is expressed via AttrK0 on the root node (id==graph_id).
+      This law defines keys, encoding, and stable violation codes; repo profiles may choose
+      which fields are required.
+
+    law_id: "frame-meta-k1"
+    law_version: "0.1.0"
+
+  # ---------------------------------------------------------------------------
+  # References
+  # ---------------------------------------------------------------------------
+  - id: "ref.gf0"
+    kind: "spec_ref"
+    status: "informative"
+    target_graph_id: "spec://_kernel/gf/gf0-k1"
+    label: "GF0 (GraphFrameK0 / AttrK0)"
+
+  - id: "ref.doclicense"
+    kind: "spec_ref"
+    status: "informative"
+    target_graph_id: "law://_kernel/ip/doclicense-k1"
+    label: "DocLicense K1 (doc.license)"
+
+  # ---------------------------------------------------------------------------
+  # Sections
+  # ---------------------------------------------------------------------------
+  - id: "title.0"
+    kind: "title"
+    text: "FrameMeta K1"
+
+  - id: "section.1.charter"
+    kind: "section"
+    title: "Charter"
+    order: 1
+
+  - id: "section.2.storage"
+    kind: "section"
+    title: "Storage Location and Scope"
+    order: 2
+
+  - id: "section.3.keys"
+    kind: "section"
+    title: "Standard Metadata Keys"
+    order: 3
+
+  - id: "section.4.encoding"
+    kind: "section"
+    title: "Encoding and Normalization"
+    order: 4
+
+  - id: "section.5.resolution"
+    kind: "section"
+    title: "Effective Metadata Resolution"
+    order: 5
+
+  - id: "section.6.violations"
+    kind: "section"
+    title: "Required Violation Codes"
+    order: 6
+
+  - id: "section.7.examples"
+    kind: "section"
+    title: "Examples"
+    order: 7
+
+  # ---------------------------------------------------------------------------
+  # Properties
+  # ---------------------------------------------------------------------------
+  - id: "prop.meta_key_prefix"
+    kind: "property"
+    status: "normative"
+    label: "Metadata key prefix"
+    value: "doc."
+
+  - id: "prop.standard_keys"
+    kind: "property"
+    status: "normative"
+    label: "Standard metadata keys"
+    keys:
+      # identity-ish (human)
+      - "doc.title"
+      - "doc.summary"
+      # authorship
+      - "doc.author"       # shorthand single author
+      - "doc.authors"      # canonical multi-author list (JSON array)
+      - "doc.contact"      # contact points (JSON array)
+      # time
+      - "doc.created"
+      - "doc.updated"
+      # discoverability
+      - "doc.tags"         # JSON array
+      - "doc.keywords"     # JSON array
+      # misc
+      - "doc.audience"     # enum-ish string
+      - "doc.status"       # freeform (distinct from SpecFrame node.status)
+      - "doc.note"         # freeform
+      # licensing is governed by DocLicense K1
+      - "doc.license"
+
+  - id: "prop.recommended_keys_minset"
+    kind: "property"
+    status: "normative"
+    label: "Recommended minimal set (repo may require)"
+    keys:
+      - "doc.authors"
+      - "doc.created"
+      - "doc.updated"
+      - "doc.license"
+
+  - id: "prop.audience_enum"
+    kind: "property"
+    status: "normative"
+    label: "Recommended audience values"
+    values:
+      - "self"
+      - "public"
+      - "collaborators"
+      - "customers"
+      - "academic"
+      - "internal"
+
+  - id: "prop.rfc3339_regex"
+    kind: "property"
+    status: "normative"
+    label: "RFC3339 timestamp regex (strict enough for offline validation)"
+    value: "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(\\.[0-9]+)?(Z|[+-][0-9]{2}:[0-9]{2})$"
+
+  - id: "prop.json_array_string_regex"
+    kind: "property"
+    status: "normative"
+    label: "Canonical JSON array string encoding"
+    summary: >
+      We constrain structured values to JSON arrays (not objects) to keep determinism simple
+      across implementations.
+    value: "^\\[[^\\s].*\\]$"
+
+  - id: "prop.contact_entry_recommendation"
+    kind: "property"
+    status: "informative"
+    label: "Recommended contact entry formats"
+    values:
+      - "email:someone@example.com"
+      - "url:https://example.com"
+      - "handle:@name"
+      - "Name <someone@example.com>"
+
+  # ---------------------------------------------------------------------------
+  # Clauses / rules
+  # ---------------------------------------------------------------------------
+  - id: "rule.charter.uses_attrs"
+    kind: "rule"
+    modal: "MUST"
+    label: "Metadata stored as AttrK0"
+    text: >
+      Frame-level metadata MUST be represented using AttrK0 on NodeK0.attrs. AttrK0 is a simple
+      key–value struct stored in a deterministic slice.
+
+  - id: "rule.storage.root_only"
+    kind: "rule"
+    modal: "MUST"
+    label: "Metadata keys live on root node only"
+    text: >
+      All keys listed in prop.standard_keys MUST be declared only on the root node where node.id == graph_id.
+      Declaring these keys on non-root nodes is invalid.
+
+  - id: "rule.storage.attrs_slice_not_map"
+    kind: "rule"
+    modal: "MUST"
+    label: "Attrs remain slices"
+    text: >
+      Implementations MUST preserve attrs as ordered slices and MUST NOT canonicalize them into maps,
+      even when interpreting metadata keys.
+
+  - id: "rule.keys.prefix"
+    kind: "rule"
+    modal: "SHOULD"
+    label: "doc.* prefix"
+    text: >
+      Frame-level metadata keys SHOULD use the doc.* namespace (prop.meta_key_prefix). Repos MAY define
+      additional namespaces, but doc.* is reserved for this law.
+
+  - id: "rule.keys.author_shorthand"
+    kind: "rule"
+    modal: "MAY"
+    label: "doc.author shorthand"
+    text: >
+      doc.author MAY be used as a shorthand for a single author. If both doc.author and doc.authors
+      are present, doc.authors is authoritative and doc.author SHOULD be treated as redundant.
+
+  - id: "rule.keys.authors_format"
+    kind: "rule"
+    modal: "MUST"
+    label: "doc.authors format"
+    text: >
+      If doc.authors is present, its value MUST be a JSON array string (prop.json_array_string_regex)
+      whose elements are non-empty strings. vtype SHOULD be 'json'.
+
+  - id: "rule.keys.contact_format"
+    kind: "rule"
+    modal: "MUST"
+    label: "doc.contact format"
+    text: >
+      If doc.contact is present, its value MUST be a JSON array string (prop.json_array_string_regex)
+      whose elements are non-empty strings. vtype SHOULD be 'json'.
+
+  - id: "rule.keys.created_format"
+    kind: "rule"
+    modal: "MUST"
+    label: "doc.created format"
+    text: >
+      If doc.created is present, it MUST match prop.rfc3339_regex. vtype SHOULD be 'rfc3339'.
+
+  - id: "rule.keys.updated_format"
+    kind: "rule"
+    modal: "MUST"
+    label: "doc.updated format"
+    text: >
+      If doc.updated is present, it MUST match prop.rfc3339_regex. vtype SHOULD be 'rfc3339'.
+
+  - id: "rule.keys.updated_not_before_created"
+    kind: "rule"
+    modal: "SHOULD"
+    label: "updated should not precede created"
+    text: >
+      If both doc.created and doc.updated are present and parseable as RFC3339, doc.updated SHOULD NOT be
+      earlier than doc.created. Tooling MAY warn or error based on repo policy.
+
+  - id: "rule.keys.tags_format"
+    kind: "rule"
+    modal: "MUST"
+    label: "doc.tags format"
+    text: >
+      If doc.tags is present, its value MUST be a JSON array string (prop.json_array_string_regex)
+      whose elements are non-empty strings. vtype SHOULD be 'json'.
+
+  - id: "rule.keys.keywords_format"
+    kind: "rule"
+    modal: "MUST"
+    label: "doc.keywords format"
+    text: >
+      If doc.keywords is present, its value MUST be a JSON array string (prop.json_array_string_regex)
+      whose elements are non-empty strings. vtype SHOULD be 'json'.
+
+  - id: "rule.keys.audience_enum"
+    kind: "rule"
+    modal: "SHOULD"
+    label: "doc.audience recommended enum"
+    text: >
+      If doc.audience is present, its value SHOULD be one of prop.audience_enum. Repo policy MAY tighten
+      this to MUST.
+
+  - id: "rule.keys.license_delegation"
+    kind: "rule"
+    modal: "MUST"
+    label: "doc.license governed elsewhere"
+    text: >
+      doc.license semantics and validation are governed by DocLicense K1 (ref.doclicense). This law only
+      reserves the key within prop.standard_keys.
+
+  - id: "rule.encoding.unique_keys"
+    kind: "rule"
+    modal: "MUST"
+    label: "No duplicate doc.* keys on root"
+    text: >
+      On the root node, each key listed in prop.standard_keys MUST appear at most once in attrs. Duplicate
+      keys are invalid (even though attrs are slices).
+
+  - id: "rule.encoding.value_is_string"
+    kind: "rule"
+    modal: "MUST"
+    label: "AttrK0 values remain strings"
+    text: >
+      AttrK0.value MUST remain a UTF-8 string; structured content (authors/tags/contact) MUST be encoded
+      as JSON array strings per this law.
+
+  - id: "rule.resolution.effective_metadata"
+    kind: "rule"
+    modal: "MAY"
+    label: "Effective metadata resolution (optional)"
+    text: >
+      Tooling MAY compute EffectiveMetadata for missing keys using repo-provided defaults (e.g., default
+      author/contact), but MUST NOT change the stored frame content when doing so. Defaults MUST be
+      provided offline by repository governance.
+
+  - id: "rule.resolution.no_network"
+    kind: "rule"
+    modal: "MUST"
+    label: "No network fetch"
+    text: >
+      Implementations MUST NOT fetch external sources (Git history, APIs, remote services) to fill or
+      validate doc.* metadata unless explicitly provided as inputs by the caller.
+
+  # ---------------------------------------------------------------------------
+  # Violations
+  # ---------------------------------------------------------------------------
+  - id: "prop.required_violation_codes"
+    kind: "property"
+    status: "normative"
+    label: "Required violation codes"
+    values:
+      - "META.E.NONROOT_META_KEY"
+      - "META.E.DUPLICATE_META_KEY"
+      - "META.E.BAD_RFC3339"
+      - "META.E.BAD_JSON_ARRAY"
+      - "META.W.MISSING_RECOMMENDED_KEY"
+      - "META.W.UPDATED_BEFORE_CREATED"
+
+  - id: "rule.violations.stable"
+    kind: "rule"
+    modal: "MUST"
+    label: "Stable violations"
+    text: >
+      Implementations claiming conformance MUST emit the codes listed in prop.required_violation_codes
+      with stable semantics and deterministic ordering.
+
+  - id: "code.nonroot"
+    kind: "rule"
+    modal: "MUST"
+    label: "META.E.NONROOT_META_KEY"
+    text: >
+      Emit when any key in prop.standard_keys is found on a non-root node. details MUST include:
+      graph_id, node_id, key.
+
+  - id: "code.dupkey"
+    kind: "rule"
+    modal: "MUST"
+    label: "META.E.DUPLICATE_META_KEY"
+    text: >
+      Emit when the root node contains duplicate occurrences of any key in prop.standard_keys. details
+      MUST include: graph_id, key, count.
+
+  - id: "code.bad_rfc3339"
+    kind: "rule"
+    modal: "MUST"
+    label: "META.E.BAD_RFC3339"
+    text: >
+      Emit when doc.created or doc.updated is present but does not match prop.rfc3339_regex. details MUST
+      include: graph_id, key, value.
+
+  - id: "code.bad_json_array"
+    kind: "rule"
+    modal: "MUST"
+    label: "META.E.BAD_JSON_ARRAY"
+    text: >
+      Emit when doc.authors/doc.contact/doc.tags/doc.keywords is present but is not a JSON array string or
+      contains empty elements. details MUST include: graph_id, key, value.
+
+  - id: "warn.missing_recommended"
+    kind: "rule"
+    modal: "MAY"
+    label: "META.W.MISSING_RECOMMENDED_KEY"
+    text: >
+      Emit when a key in prop.recommended_keys_minset is missing from the root node. details SHOULD include:
+      graph_id, missing_key.
+
+  - id: "warn.updated_before_created"
+    kind: "rule"
+    modal: "MAY"
+    label: "META.W.UPDATED_BEFORE_CREATED"
+    text: >
+      Emit when both doc.created and doc.updated are present, parseable, and doc.updated < doc.created.
+      details SHOULD include: graph_id, created, updated.
+
+  # ---------------------------------------------------------------------------
+  # Examples
+  # ---------------------------------------------------------------------------
+  - id: "ex.1.minimal"
+    kind: "example"
+    status: "informative"
+    label: "Minimal recommended metadata"
+    text: |
+      attrs:
+        - { key: "doc.authors", value: "[\"David Swanson\"]", vtype: "json" }
+        - { key: "doc.created", value: "2026-01-04T12:00:00-06:00", vtype: "rfc3339" }
+        - { key: "doc.updated", value: "2026-01-04T12:00:00-06:00", vtype: "rfc3339" }
+        - { key: "doc.license", value: "CC-BY-4.0", vtype: "spdx" }
+
+  - id: "ex.2.tags_contact"
+    kind: "example"
+    status: "informative"
+    label: "Tags + contact"
+    text: |
+      attrs:
+        - { key: "doc.tags", value: "[\"gf0\",\"governance\",\"rendering\"]", vtype: "json" }
+        - { key: "doc.contact", value: "[\"email:you@example.com\",\"handle:@plainstack\"]", vtype: "json" }
+        - { key: "doc.audience", value: "public" }
+
+edges:
+  - { from: "law://_kernel/meta/frame-meta-k1", to: "title.0", type: "contains" }
+  - { from: "law://_kernel/meta/frame-meta-k1", to: "section.1.charter", type: "contains" }
+  - { from: "law://_kernel/meta/frame-meta-k1", to: "section.2.storage", type: "contains" }
+  - { from: "law://_kernel/meta/frame-meta-k1", to: "section.3.keys", type: "contains" }
+  - { from: "law://_kernel/meta/frame-meta-k1", to: "section.4.encoding", type: "contains" }
+  - { from: "law://_kernel/meta/frame-meta-k1", to: "section.5.resolution", type: "contains" }
+  - { from: "law://_kernel/meta/frame-meta-k1", to: "section.6.violations", type: "contains" }
+  - { from: "law://_kernel/meta/frame-meta-k1", to: "section.7.examples", type: "contains" }
+
+  - { from: "law://_kernel/meta/frame-meta-k1", to: "ref.gf0", type: "contains" }
+  - { from: "law://_kernel/meta/frame-meta-k1", to: "ref.doclicense", type: "contains" }
+
+  - { from: "section.1.charter", to: "rule.charter.uses_attrs", type: "contains" }
+
+  - { from: "section.2.storage", to: "rule.storage.root_only", type: "contains" }
+  - { from: "section.2.storage", to: "rule.storage.attrs_slice_not_map", type: "contains" }
+
+  - { from: "section.3.keys", to: "prop.meta_key_prefix", type: "contains" }
+  - { from: "section.3.keys", to: "prop.standard_keys", type: "contains" }
+  - { from: "section.3.keys", to: "prop.recommended_keys_minset", type: "contains" }
+  - { from: "section.3.keys", to: "prop.audience_enum", type: "contains" }
+  - { from: "section.3.keys", to: "rule.keys.prefix", type: "contains" }
+  - { from: "section.3.keys", to: "rule.keys.author_shorthand", type: "contains" }
+  - { from: "section.3.keys", to: "rule.keys.authors_format", type: "contains" }
+  - { from: "section.3.keys", to: "rule.keys.contact_format", type: "contains" }
+  - { from: "section.3.keys", to: "rule.keys.created_format", type: "contains" }
+  - { from: "section.3.keys", to: "rule.keys.updated_format", type: "contains" }
+  - { from: "section.3.keys", to: "rule.keys.updated_not_before_created", type: "contains" }
+  - { from: "section.3.keys", to: "rule.keys.tags_format", type: "contains" }
+  - { from: "section.3.keys", to: "rule.keys.keywords_format", type: "contains" }
+  - { from: "section.3.keys", to: "rule.keys.audience_enum", type: "contains" }
+  - { from: "section.3.keys", to: "rule.keys.license_delegation", type: "contains" }
+
+  - { from: "section.4.encoding", to: "prop.rfc3339_regex", type: "contains" }
+  - { from: "section.4.encoding", to: "prop.json_array_string_regex", type: "contains" }
+  - { from: "section.4.encoding", to: "rule.encoding.unique_keys", type: "contains" }
+  - { from: "section.4.encoding", to: "rule.encoding.value_is_string", type: "contains" }
+
+  - { from: "section.5.resolution", to: "rule.resolution.effective_metadata", type: "contains" }
+  - { from: "section.5.resolution", to: "rule.resolution.no_network", type: "contains" }
+
+  - { from: "section.6.violations", to: "prop.required_violation_codes", type: "contains" }
+  - { from: "section.6.violations", to: "rule.violations.stable", type: "contains" }
+  - { from: "section.6.violations", to: "code.nonroot", type: "contains" }
+  - { from: "section.6.violations", to: "code.dupkey", type: "contains" }
+  - { from: "section.6.violations", to: "code.bad_rfc3339", type: "contains" }
+  - { from: "section.6.violations", to: "code.bad_json_array", type: "contains" }
+  - { from: "section.6.violations", to: "warn.missing_recommended", type: "contains" }
+  - { from: "section.6.violations", to: "warn.updated_before_created", type: "contains" }
+
+  - { from: "section.7.examples", to: "ex.1.minimal", type: "contains" }
+  - { from: "section.7.examples", to: "ex.2.tags_contact", type: "contains" }
+
+meta: []

@@ -1,0 +1,6 @@
+# RepoLaw K1 requirement: out/ MUST be gitignored
+out/
+
+# Common local noise
+.DS_Store
+*.tmp

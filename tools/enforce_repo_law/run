@@ -1,0 +1,59 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+repo_root="$(cd "$(dirname "$0")/../.." && pwd)"
+out_dir="$repo_root/out/enforce_repo_law"
+mkdir -p "$out_dir"
+
+report="$out_dir/report.json"
+
+# Minimal deterministic checks per RepoLaw K1 (structure).
+
+missing=()
+required=(
+  "frames"
+  "governance/ACTIVE.yml"
+  "ci/contract.yml"
+  "tools"
+  "out"
+  ".gitignore"
+  "README.md"
+  "LICENSE"
+)
+
+for p in "${required[@]}"; do
+  if [ ! -e "$repo_root/$p" ]; then
+    missing+=("$p")
+  fi
+done
+
+# Check out/ is gitignored (best-effort): look for an exact line 'out/'
+out_ignored="false"
+if [ -f "$repo_root/.gitignore" ]; then
+  if grep -Fxq "out/" "$repo_root/.gitignore"; then
+    out_ignored="true"
+  fi
+fi
+
+# Emit deterministic JSON report
+{
+  printf '{\n'
+  printf '  "tool": {"id": "enforce_repo_law", "version": "0.1.2"},\n'
+  printf '  "law": {"graph_id": "law://repo/governance/repo-law-k1", "version": "0.1.0"},\n'
+  printf '  "ok": %s,\n' "$([ ${#missing[@]} -eq 0 ] && [ "$out_ignored" = "true" ] && echo true || echo false)"
+  printf '  "checks": {\n'
+  printf '    "required_paths_missing": ['
+  for i in "${!missing[@]}"; do
+    [ $i -gt 0 ] && printf ','
+    printf '%s' "\"${missing[$i]}\""
+  done
+  printf '],\n'
+  printf '    "out_gitignored": %s\n' "$out_ignored"
+  printf '  }\n'
+  printf '}\n'
+} > "$report"
+
+# Shell exit code: fail if not ok
+if [ ${#missing[@]} -ne 0 ] || [ "$out_ignored" != "true" ]; then
+  exit 1
+fi

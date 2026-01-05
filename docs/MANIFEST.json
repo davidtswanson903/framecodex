@@ -1,0 +1,147 @@
+{
+  "active": {
+    "law": {
+      "graph_id": "law://repo/governance/repo-law-k1",
+      "version": "0.1.0"
+    }
+  },
+  "generated_by": {
+    "tool": "render_docs",
+    "version": "0.2.0"
+  },
+  "inputs": [
+    {
+      "graph_id": "law://_kernel/id/frameurl-k1",
+      "path": "frames/_kernel/law/id/frameurl-k1/v0.1.0/frame.yml",
+      "version": "0.1.0"
+    },
+    {
+      "graph_id": "law://_kernel/ip/doclicense-k1",
+      "path": "frames/_kernel/law/ip/doclicense-k1/v0.1.0/frame.yml",
+      "version": "0.1.0"
+    },
+    {
+      "graph_id": "law://_kernel/law/lawframe-k1",
+      "path": "frames/_kernel/law/law/lawframe-k1/v0.1.0/frame.yml",
+      "version": "0.1.0"
+    },
+    {
+      "graph_id": "law://_kernel/law/lawprofile-k1",
+      "path": "frames/_kernel/law/law/lawprofile-k1/v0.1.0/frame.yml",
+      "version": "0.1.0"
+    },
+    {
+      "graph_id": "law://_kernel/meta/frame-meta-k1",
+      "path": "frames/_kernel/law/meta/frame-meta-k1/v0.1.0/frame.yml",
+      "version": "0.1.0"
+    },
+    {
+      "graph_id": "law://repo/governance/repo-law-k1",
+      "path": "frames/repo/law/governance/repo-law-k1/v0.1.0/frame.yml",
+      "version": "0.1.0"
+    },
+    {
+      "graph_id": "render://_kernel/md/simple-k1",
+      "path": "frames/_kernel/render/md/simple-k1/v0.1.0/frame.yml",
+      "version": "0.1.0"
+    },
+    {
+      "graph_id": "spec://_kernel/docs/docprofiles-k1",
+      "path": "frames/_kernel/spec/docs/docprofiles-k1/v0.1.0/frame.yml",
+      "version": "0.1.0"
+    },
+    {
+      "graph_id": "spec://_kernel/gf/gf0-k1",
+      "path": "frames/_kernel/spec/gf/gf0-k1/v0.3.0/frame.yml",
+      "version": "0.3.0"
+    },
+    {
+      "graph_id": "spec://_kernel/render/renderframe-k1",
+      "path": "frames/_kernel/spec/render/renderframe-k1/v0.1.0/frame.yml",
+      "version": "0.1.0"
+    },
+    {
+      "graph_id": "spec://_kernel/spec/specframe-k1",
+      "path": "frames/_kernel/spec/spec/specframe-k1/v0.3.0/frame.yml",
+      "version": "0.3.0"
+    },
+    {
+      "graph_id": "spec://_kernel/template/software-spec-k1",
+      "path": "frames/_kernel/spec/template/software-spec-k1/v0.1.0/frame.yml",
+      "version": "0.1.0"
+    },
+    {
+      "graph_id": "spec://_kernel/validator/validatorgroup-k1",
+      "path": "frames/_kernel/spec/validator/validatorgroup-k1/v0.1.0/frame.yml",
+      "version": "0.1.0"
+    }
+  ],
+  "manifest_version": "0.1.0",
+  "outputs": [
+    {
+      "graph_id": "law://_kernel/id/frameurl-k1",
+      "path": "docs/_kernel/law/id/frameurl-k1/v0.1.0/README.md",
+      "version": "0.1.0"
+    },
+    {
+      "graph_id": "law://_kernel/ip/doclicense-k1",
+      "path": "docs/_kernel/law/ip/doclicense-k1/v0.1.0/README.md",
+      "version": "0.1.0"
+    },
+    {
+      "graph_id": "law://_kernel/law/lawframe-k1",
+      "path": "docs/_kernel/law/law/lawframe-k1/v0.1.0/README.md",
+      "version": "0.1.0"
+    },
+    {
+      "graph_id": "law://_kernel/law/lawprofile-k1",
+      "path": "docs/_kernel/law/law/lawprofile-k1/v0.1.0/README.md",
+      "version": "0.1.0"
+    },
+    {
+      "graph_id": "law://_kernel/meta/frame-meta-k1",
+      "path": "docs/_kernel/law/meta/frame-meta-k1/v0.1.0/README.md",
+      "version": "0.1.0"
+    },
+    {
+      "graph_id": "law://repo/governance/repo-law-k1",
+      "path": "docs/repo/law/governance/repo-law-k1/v0.1.0/README.md",
+      "version": "0.1.0"
+    },
+    {
+      "graph_id": "render://_kernel/md/simple-k1",
+      "path": "docs/_kernel/render/md/simple-k1/v0.1.0/README.md",
+      "version": "0.1.0"
+    },
+    {
+      "graph_id": "spec://_kernel/docs/docprofiles-k1",
+      "path": "docs/_kernel/spec/docs/docprofiles-k1/v0.1.0/README.md",
+      "version": "0.1.0"
+    },
+    {
+      "graph_id": "spec://_kernel/gf/gf0-k1",
+      "path": "docs/_kernel/spec/gf/gf0-k1/v0.3.0/README.md",
+      "version": "0.3.0"
+    },
+    {
+      "graph_id": "spec://_kernel/render/renderframe-k1",
+      "path": "docs/_kernel/spec/render/renderframe-k1/v0.1.0/README.md",
+      "version": "0.1.0"
+    },
+    {
+      "graph_id": "spec://_kernel/spec/specframe-k1",
+      "path": "docs/_kernel/spec/spec/specframe-k1/v0.3.0/README.md",
+      "version": "0.3.0"
+    },
+    {
+      "graph_id": "spec://_kernel/template/software-spec-k1",
+      "path": "docs/_kernel/spec/template/software-spec-k1/v0.1.0/README.md",
+      "version": "0.1.0"
+    },
+    {
+      "graph_id": "spec://_kernel/validator/validatorgroup-k1",
+      "path": "docs/_kernel/spec/validator/validatorgroup-k1/v0.1.0/README.md",
+      "version": "0.1.0"
+    }
+  ]
+}

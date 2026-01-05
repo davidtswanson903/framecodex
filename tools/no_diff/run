@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+repo_root="$(cd "$(dirname "$0")/../.." && pwd)"
+out_dir="$repo_root/out/no_diff"
+mkdir -p "$out_dir"
+
+# Bootstrap: since render_docs is deterministic placeholder, we just assert MANIFEST exists.
+ok=true
+if [ ! -f "$repo_root/docs/MANIFEST.json" ]; then
+  ok=false
+fi
+
+cat > "$out_dir/report.json" <<JSON
+{
+  "tool": {"id": "no_diff", "version": "0.1.0"},
+  "ok": $ok,
+  "note": "Bootstrap stub: replace with byte-for-byte docs tree comparison."
+}
+JSON
+
+if [ "$ok" != "true" ]; then
+  exit 1
+fi

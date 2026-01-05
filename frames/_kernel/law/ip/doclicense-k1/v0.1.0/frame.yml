@@ -1,0 +1,383 @@
+graph_id: "law://_kernel/ip/doclicense-k1"
+version: "0.1.0"
+
+attrs:
+  - { key: "domain", value: "graphbrain.ip" }
+  - { key: "depends_on", value: "spec://_kernel/gf/gf0-k1" }
+
+nodes:
+  # ---------------------------------------------------------------------------
+  # Root
+  # ---------------------------------------------------------------------------
+  - id: "law://_kernel/ip/doclicense-k1"
+    kind: "law"
+    profile: "lawframe-k1"
+    status: "normative"
+    title: "DocLicense K1 — Per-Document Licensing Metadata"
+    summary: >
+      Defines a per-document license attribute for GF0 frames. Establishes required keys, a
+      deterministic effective-license resolution algorithm (explicit > package default > repo default),
+      and stable violation codes.
+
+    law_id: "doclicense-k1"
+    law_version: "0.1.0"
+
+  # ---------------------------------------------------------------------------
+  # Sections
+  # ---------------------------------------------------------------------------
+  - id: "title.0"
+    kind: "title"
+    text: "DocLicense K1"
+
+  - id: "section.1.charter"
+    kind: "section"
+    title: "Charter"
+    order: 1
+
+  - id: "section.2.model"
+    kind: "section"
+    title: "Model"
+    order: 2
+
+  - id: "section.3.fields"
+    kind: "section"
+    title: "Required and Optional Fields"
+    order: 3
+
+  - id: "section.4.resolution"
+    kind: "section"
+    title: "Effective License Resolution"
+    order: 4
+
+  - id: "section.5.rendering"
+    kind: "section"
+    title: "Renderer Requirements"
+    order: 5
+
+  - id: "section.6.violations"
+    kind: "section"
+    title: "Required Violation Codes"
+    order: 6
+
+  - id: "section.7.examples"
+    kind: "section"
+    title: "Examples"
+    order: 7
+
+  # ---------------------------------------------------------------------------
+  # Definitions
+  # ---------------------------------------------------------------------------
+  - id: "def.doc_license_attr"
+    kind: "definition"
+    label: "doc.license"
+    text: >
+      An AttrK0 on the root node (node.id == graph_id) whose value is a license expression string.
+      This value determines the license for the document unless overridden by higher-precedence rules.
+
+  - id: "def.license_expression"
+    kind: "definition"
+    label: "LicenseExpression"
+    text: >
+      A string representing the license terms for a document. This law prefers SPDX license identifiers
+      and SPDX-like expressions, but also permits a bounded set of non-SPDX sentinel values.
+
+  - id: "def.effective_license"
+    kind: "definition"
+    label: "EffectiveLicense"
+    text: >
+      The resolved license string produced by applying the deterministic resolution algorithm in section.4.
+
+  - id: "def.package_default"
+    kind: "definition"
+    label: "Package default license"
+    text: >
+      An optional default license associated with the document's package scope. How package scope is
+      determined is a repository concern (typically via filesystem projection or FrameURL package path).
+
+  - id: "def.repo_default"
+    kind: "definition"
+    label: "Repo default license"
+    text: >
+      A required default license configured by repository governance (e.g., RepoLaw/Profile). Used when
+      doc.license is absent and no package default is provided.
+
+  # ---------------------------------------------------------------------------
+  # Properties (constraints)
+  # ---------------------------------------------------------------------------
+  - id: "prop.license_attr_keys"
+    kind: "property"
+    label: "License attribute keys"
+    values:
+      - "doc.license"
+      - "doc.license.note"
+      - "doc.copyright"
+
+  - id: "prop.non_spdx_sentinels"
+    kind: "property"
+    label: "Permitted non-SPDX sentinel values"
+    values:
+      - "Proprietary"
+      - "Public-Domain"
+      - "Unlicensed"
+
+  - id: "prop.license_regex_spdx_like"
+    kind: "property"
+    label: "SPDX-like license expression regex (permissive)"
+    # NOTE: This is intentionally permissive and offline-friendly. Repo policy may tighten it later.
+    value: "^[A-Za-z0-9.+-]+([ ]+(AND|OR|WITH)[ ]+[A-Za-z0-9.+-]+)*$"
+
+  - id: "prop.default_repo_license_recommendation"
+    kind: "property"
+    label: "Recommended repo default (free/open)"
+    value: "CC-BY-4.0"
+
+  - id: "prop.attr_json_array_regex"
+    kind: "property"
+    label: "Canonical JSON array encoding (for future multi-value attrs)"
+    value: "^\\[[^\\s].*\\]$"
+
+  # ---------------------------------------------------------------------------
+  # Rules: Charter
+  # ---------------------------------------------------------------------------
+  - id: "rule.charter.per_doc_license"
+    kind: "rule"
+    modal: "MUST"
+    label: "Per-document license metadata"
+    text: >
+      A repository adopting DocLicense K1 MUST treat each GF0 frame as a licensable document and MUST
+      compute an EffectiveLicense for the frame using section.4.
+
+  - id: "rule.charter.default_open"
+    kind: "rule"
+    modal: "SHOULD"
+    label: "Default should be free/open"
+    text: >
+      Repository governance SHOULD set repo_default_license to a free/open license (recommended:
+      prop.default_repo_license_recommendation) unless the repository explicitly targets restricted content.
+
+  # ---------------------------------------------------------------------------
+  # Rules: Fields
+  # ---------------------------------------------------------------------------
+  - id: "rule.fields.root_only"
+    kind: "rule"
+    modal: "MUST"
+    label: "License attrs live on root node"
+    text: >
+      doc.license, doc.license.note, and doc.copyright (if present) MUST be declared only on the root node
+      where node.id == graph_id. Declaring these keys on non-root nodes is invalid.
+
+  - id: "rule.fields.doc_license_format"
+    kind: "rule"
+    modal: "MUST"
+    label: "doc.license format"
+    text: >
+      If doc.license is present, its value MUST either:
+        (a) match prop.license_regex_spdx_like, OR
+        (b) equal one of prop.non_spdx_sentinels.
+      Any other value is invalid.
+
+  - id: "rule.fields.doc_license_note_format"
+    kind: "rule"
+    modal: "MAY"
+    label: "doc.license.note"
+    text: >
+      doc.license.note MAY be present as a free-form string. Tooling MUST NOT interpret it for resolution,
+      but MAY render it.
+
+  - id: "rule.fields.copyright_format"
+    kind: "rule"
+    modal: "MAY"
+    label: "doc.copyright"
+    text: >
+      doc.copyright MAY be present as a free-form string.
+
+  # ---------------------------------------------------------------------------
+  # Rules: Effective license resolution
+  # ---------------------------------------------------------------------------
+  - id: "rule.resolution.deterministic"
+    kind: "rule"
+    modal: "MUST"
+    label: "Deterministic resolution algorithm"
+    text: >
+      EffectiveLicense MUST be computed deterministically using this precedence order:
+        1) If root has doc.license, EffectiveLicense := doc.license
+        2) Else if package_default_license is provided by the caller, EffectiveLicense := package_default_license
+        3) Else EffectiveLicense := repo_default_license
+      If repo_default_license is absent/empty, this is an error.
+
+  - id: "rule.resolution.no_implicit_fetch"
+    kind: "rule"
+    modal: "MUST"
+    label: "Offline resolution"
+    text: >
+      Resolution MUST be offline. Implementations MUST NOT fetch external metadata to determine the license.
+      Any package_default_license or repo_default_license inputs MUST be supplied by repository governance.
+
+  - id: "rule.resolution.repo_default_required"
+    kind: "rule"
+    modal: "MUST"
+    label: "Repo default required"
+    text: >
+      Repository governance MUST define a non-empty repo_default_license string. This value is used when
+      doc.license is absent and no package default is provided.
+
+  # ---------------------------------------------------------------------------
+  # Rules: Rendering
+  # ---------------------------------------------------------------------------
+  - id: "rule.rendering.must_show_effective"
+    kind: "rule"
+    modal: "MUST"
+    label: "Renderers must show EffectiveLicense"
+    text: >
+      Any renderer used to publish or display a frame MUST include EffectiveLicense near the top of the
+      rendered output, along with an indication of whether it was explicit, package-default, or repo-default.
+
+  - id: "rule.rendering.should_show_note"
+    kind: "rule"
+    modal: "SHOULD"
+    label: "Renderers should show license notes"
+    text: >
+      If doc.license.note is present, renderers SHOULD include it near the license display.
+
+  # ---------------------------------------------------------------------------
+  # Violations
+  # ---------------------------------------------------------------------------
+  - id: "prop.required_violation_codes"
+    kind: "property"
+    label: "Required violation codes"
+    values:
+      - "IP.E.MISSING_REPO_DEFAULT_LICENSE"
+      - "IP.E.MISSING_EFFECTIVE_LICENSE"
+      - "IP.E.BAD_LICENSE_EXPR"
+      - "IP.E.LICENSE_ON_NONROOT"
+      - "IP.W.INHERITED_LICENSE"
+
+  - id: "rule.violations.stable"
+    kind: "rule"
+    modal: "MUST"
+    label: "Stable violations"
+    text: >
+      Implementations claiming conformance MUST emit the codes listed in prop.required_violation_codes
+      with stable semantics and deterministic ordering.
+
+  - id: "code.missing_repo_default"
+    kind: "rule"
+    modal: "MUST"
+    label: "IP.E.MISSING_REPO_DEFAULT_LICENSE"
+    text: >
+      Emit when repo_default_license is absent or empty at resolution time. details MUST include: frame graph_id.
+
+  - id: "code.missing_effective"
+    kind: "rule"
+    modal: "MUST"
+    label: "IP.E.MISSING_EFFECTIVE_LICENSE"
+    text: >
+      Emit when EffectiveLicense cannot be computed (e.g., doc.license absent, package default absent,
+      and repo_default_license missing/empty). details MUST include: frame graph_id.
+
+  - id: "code.bad_expr"
+    kind: "rule"
+    modal: "MUST"
+    label: "IP.E.BAD_LICENSE_EXPR"
+    text: >
+      Emit when doc.license is present but fails rule.fields.doc_license_format. details MUST include:
+      frame graph_id and the invalid doc.license string.
+
+  - id: "code.nonroot"
+    kind: "rule"
+    modal: "MUST"
+    label: "IP.E.LICENSE_ON_NONROOT"
+    text: >
+      Emit when any of the keys in prop.license_attr_keys are found on a non-root node. details MUST include:
+      frame graph_id, offending node id, and key.
+
+  - id: "code.inherited_warning"
+    kind: "rule"
+    modal: "MAY"
+    label: "IP.W.INHERITED_LICENSE"
+    text: >
+      Emit when EffectiveLicense was taken from package_default_license or repo_default_license (i.e.,
+      doc.license was not explicitly set). details SHOULD include: frame graph_id and source (package|repo).
+
+  # ---------------------------------------------------------------------------
+  # Examples
+  # ---------------------------------------------------------------------------
+  - id: "ex.1.explicit_spdx"
+    kind: "example"
+    label: "Explicit SPDX license"
+    text: |
+      root.attrs:
+        - { key: "doc.license", value: "CC-BY-4.0", vtype: "spdx" }
+        - { key: "doc.copyright", value: "© 2026 David Swanson" }
+
+  - id: "ex.2.inherit_repo_default"
+    kind: "example"
+    label: "Inherited repo default"
+    text: |
+      # doc.license omitted on the frame
+      repo_default_license: "CC-BY-4.0"
+      EffectiveLicense: "CC-BY-4.0"  # source: repo-default
+
+  - id: "ex.3.proprietary"
+    kind: "example"
+    label: "Proprietary sentinel"
+    text: |
+      root.attrs:
+        - { key: "doc.license", value: "Proprietary" }
+        - { key: "doc.license.note", value: "Do not redistribute without permission." }
+
+edges:
+  - { from: "law://_kernel/ip/doclicense-k1", to: "title.0", type: "contains" }
+  - { from: "law://_kernel/ip/doclicense-k1", to: "section.1.charter", type: "contains" }
+  - { from: "law://_kernel/ip/doclicense-k1", to: "section.2.model", type: "contains" }
+  - { from: "law://_kernel/ip/doclicense-k1", to: "section.3.fields", type: "contains" }
+  - { from: "law://_kernel/ip/doclicense-k1", to: "section.4.resolution", type: "contains" }
+  - { from: "law://_kernel/ip/doclicense-k1", to: "section.5.rendering", type: "contains" }
+  - { from: "law://_kernel/ip/doclicense-k1", to: "section.6.violations", type: "contains" }
+  - { from: "law://_kernel/ip/doclicense-k1", to: "section.7.examples", type: "contains" }
+
+  # Charter
+  - { from: "section.1.charter", to: "rule.charter.per_doc_license", type: "contains" }
+  - { from: "section.1.charter", to: "rule.charter.default_open", type: "contains" }
+
+  # Model
+  - { from: "section.2.model", to: "def.doc_license_attr", type: "contains" }
+  - { from: "section.2.model", to: "def.license_expression", type: "contains" }
+  - { from: "section.2.model", to: "def.effective_license", type: "contains" }
+  - { from: "section.2.model", to: "def.package_default", type: "contains" }
+  - { from: "section.2.model", to: "def.repo_default", type: "contains" }
+  - { from: "section.2.model", to: "prop.license_attr_keys", type: "contains" }
+  - { from: "section.2.model", to: "prop.non_spdx_sentinels", type: "contains" }
+  - { from: "section.2.model", to: "prop.license_regex_spdx_like", type: "contains" }
+  - { from: "section.2.model", to: "prop.default_repo_license_recommendation", type: "contains" }
+
+  # Fields
+  - { from: "section.3.fields", to: "rule.fields.root_only", type: "contains" }
+  - { from: "section.3.fields", to: "rule.fields.doc_license_format", type: "contains" }
+  - { from: "section.3.fields", to: "rule.fields.doc_license_note_format", type: "contains" }
+  - { from: "section.3.fields", to: "rule.fields.copyright_format", type: "contains" }
+
+  # Resolution
+  - { from: "section.4.resolution", to: "rule.resolution.deterministic", type: "contains" }
+  - { from: "section.4.resolution", to: "rule.resolution.no_implicit_fetch", type: "contains" }
+  - { from: "section.4.resolution", to: "rule.resolution.repo_default_required", type: "contains" }
+
+  # Rendering
+  - { from: "section.5.rendering", to: "rule.rendering.must_show_effective", type: "contains" }
+  - { from: "section.5.rendering", to: "rule.rendering.should_show_note", type: "contains" }
+
+  # Violations
+  - { from: "section.6.violations", to: "prop.required_violation_codes", type: "contains" }
+  - { from: "section.6.violations", to: "rule.violations.stable", type: "contains" }
+  - { from: "section.6.violations", to: "code.missing_repo_default", type: "contains" }
+  - { from: "section.6.violations", to: "code.missing_effective", type: "contains" }
+  - { from: "section.6.violations", to: "code.bad_expr", type: "contains" }
+  - { from: "section.6.violations", to: "code.nonroot", type: "contains" }
+  - { from: "section.6.violations", to: "code.inherited_warning", type: "contains" }
+
+  # Examples
+  - { from: "section.7.examples", to: "ex.1.explicit_spdx", type: "contains" }
+  - { from: "section.7.examples", to: "ex.2.inherit_repo_default", type: "contains" }
+  - { from: "section.7.examples", to: "ex.3.proprietary", type: "contains" }
+
+meta: []

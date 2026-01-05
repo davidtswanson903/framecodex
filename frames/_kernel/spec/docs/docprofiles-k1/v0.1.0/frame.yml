@@ -1,0 +1,318 @@
+graph_id: "spec://_kernel/docs/docprofiles-k1"
+version: "0.1.0"
+
+attrs:
+  - { key: "profile", value: "specframe-k1" }
+  - { key: "domain", value: "graphbrain.docprofiles" }
+  - { key: "depends_on", value: "spec://_kernel/gf/gf0-k1" }
+  - { key: "depends_on", value: "spec://_kernel/spec/specframe-k1" }
+
+nodes:
+  # --- Root spec node --------------------------------------------------------
+  - id: "spec://_kernel/docs/docprofiles-k1"
+    kind: "spec"
+    status: "normative"
+    profile: "specframe-k1"
+    title: "DocProfiles K1 — Document Profile Registry"
+    summary: >
+      A registry of document profiles (doc_profile) layered on top of SpecFrame K1.
+      Profiles are conventions: required sections, required properties, recommended
+      lint rules, and optional rendering hints.
+
+  # --- External references ---------------------------------------------------
+  - id: "ref.spec.gf0-k1"
+    kind: "spec_ref"
+    status: "informative"
+    target_graph_id: "spec://_kernel/gf/gf0-k1"
+    label: "GraphFrame GF0"
+    note: "Base graph substrate."
+
+  - id: "ref.spec.specframe-k1"
+    kind: "spec_ref"
+    status: "informative"
+    target_graph_id: "spec://_kernel/spec/specframe-k1"
+    label: "SpecFrame K1"
+    note: "Document spine: sections/terms/clauses/properties/examples."
+
+  # --- Sections --------------------------------------------------------------
+  - id: "section.1.overview"
+    kind: "section"
+    status: "normative"
+    order: 1
+    title: "Overview"
+
+  - id: "section.2.core_model"
+    kind: "section"
+    status: "normative"
+    order: 2
+    title: "Core Model"
+
+  - id: "section.3.profile_catalog"
+    kind: "section"
+    status: "normative"
+    order: 3
+    title: "Profile Catalog"
+
+  - id: "section.4.lint_rules"
+    kind: "section"
+    status: "informative"
+    order: 4
+    title: "Lint Rules"
+
+  - id: "section.5.rendering_hints"
+    kind: "section"
+    status: "informative"
+    order: 5
+    title: "Rendering Hints"
+
+  - id: "section.6.examples"
+    kind: "section"
+    status: "informative"
+    order: 6
+    title: "Examples"
+
+  # --- Terms ----------------------------------------------------------------
+  - id: "term.doc_profile"
+    kind: "term"
+    status: "normative"
+    label: "doc_profile"
+    text: >
+      A secondary profile selector used by tooling to apply conventions for a
+      particular document type while remaining a valid SpecFrame K1 graph.
+
+  - id: "term.profile_rule"
+    kind: "term"
+    status: "normative"
+    label: "ProfileRule"
+    text: >
+      A conventional rule attached to a doc_profile, typically expressed as
+      required sections, required properties, lint expectations, and rendering hints.
+
+  - id: "term.profile_id"
+    kind: "term"
+    status: "normative"
+    label: "ProfileId"
+    text: >
+      A stable identifier string for a doc_profile (e.g. 'software_spec-k1').
+
+  # --- Clauses: Overview / Core Model ---------------------------------------
+  - id: "clause.overview.intent"
+    kind: "clause"
+    status: "normative"
+    label: "intent"
+    text: >
+      DocProfiles are conventions layered on SpecFrame K1 to support consistent
+      authoring, deterministic rendering, and automated linting across many document types.
+
+  - id: "clause.core_model.profile_location"
+    kind: "clause"
+    status: "normative"
+    label: "profile-location"
+    text: >
+      A document selects a DocProfile by providing 'doc_profile' as an attribute on
+      the root 'spec' node (id == graph_id). Tooling MAY ignore unknown doc_profile values.
+
+  - id: "clause.core_model.profile_semantics"
+    kind: "clause"
+    status: "normative"
+    label: "profile-semantics"
+    text: >
+      A doc_profile MUST NOT change the underlying SpecFrame K1 validity rules.
+      It only adds conventions (required/recommended content and lint/render expectations).
+
+  - id: "clause.core_model.frame_metadata"
+    kind: "clause"
+    status: "informative"
+    label: "frame-metadata"
+    text: >
+      Frame-level tags such as 'domain', 'depends_on', and publishing hints SHOULD be stored
+      in GraphFrameK0.attrs. MetaGraphs are reserved for auxiliary structural subgraphs
+      (indexes/layout/nav) per GF0.
+
+  # --- Profile Terms + Constraint Properties --------------------------------
+
+  - id: "term.profile.standard-k1"
+    kind: "term"
+    status: "normative"
+    label: "standard-k1"
+    text: "Normative standards and laws: MUST/SHOULD language, conformance and compliance focus."
+
+  - id: "property.profile.standard-k1.required_sections"
+    kind: "property"
+    status: "normative"
+    label: "required_sections"
+    profile_id: "standard-k1"
+    required_sections:
+      - "section.1.overview"
+      - "section.scope"
+      - "section.definitions"
+      - "section.requirements"
+      - "section.conformance"
+
+  - id: "property.profile.standard-k1.required_properties"
+    kind: "property"
+    status: "informative"
+    label: "required_properties"
+    profile_id: "standard-k1"
+    required_properties:
+      - "property.versioning"
+      - "property.keywords"
+
+  - id: "term.profile.software_spec-k1"
+    kind: "term"
+    status: "normative"
+    label: "software_spec-k1"
+    text: "Software framework/module specs: APIs, data model, invariants, compatibility, tests."
+
+  - id: "property.profile.software_spec-k1.required_sections"
+    kind: "property"
+    status: "normative"
+    label: "required_sections"
+    profile_id: "software_spec-k1"
+    required_sections:
+      - "section.1.overview"
+      - "section.goals"
+      - "section.definitions"
+      - "section.architecture"
+      - "section.interfaces"
+      - "section.invariants"
+      - "section.testing"
+      - "section.versioning"
+
+  - id: "property.profile.software_spec-k1.required_properties"
+    kind: "property"
+    status: "informative"
+    label: "required_properties"
+    profile_id: "software_spec-k1"
+    required_properties:
+      - "property.api_surface"
+      - "property.invariants"
+      - "property.compat"
+
+  - id: "term.profile.hardware_spec-k1"
+    kind: "term"
+    status: "normative"
+    label: "hardware_spec-k1"
+    text: "Hardware specs: interfaces/pinout, electrical/mechanical constraints, tolerances, tests."
+
+  - id: "property.profile.hardware_spec-k1.required_sections"
+    kind: "property"
+    status: "normative"
+    label: "required_sections"
+    profile_id: "hardware_spec-k1"
+    required_sections:
+      - "section.1.overview"
+      - "section.scope"
+      - "section.interfaces"
+      - "section.constraints"
+      - "section.testing"
+
+  - id: "term.profile.math_theory-k1"
+    kind: "term"
+    status: "normative"
+    label: "math_theory-k1"
+    text: "Math/theory docs: definitions, axioms, theorems, proofs, corollaries, examples."
+
+  - id: "property.profile.math_theory-k1.conventions"
+    kind: "property"
+    status: "informative"
+    label: "conventions"
+    profile_id: "math_theory-k1"
+    clause_kinds:
+      - "axiom"
+      - "definition"
+      - "theorem"
+      - "lemma"
+      - "proof"
+      - "corollary"
+
+  - id: "term.profile.guide-k1"
+    kind: "term"
+    status: "normative"
+    label: "guide-k1"
+    text: "How-to guides: prerequisites, steps, pitfalls, verification."
+
+  - id: "property.profile.guide-k1.required_properties"
+    kind: "property"
+    status: "informative"
+    label: "required_properties"
+    profile_id: "guide-k1"
+    required_properties:
+      - "property.prereqs"
+      - "property.steps"
+      - "property.pitfalls"
+
+  - id: "term.profile.playbook-k1"
+    kind: "term"
+    status: "normative"
+    label: "playbook-k1"
+    text: "Operational playbooks: triggers, runbook steps, rollback, metrics, comms."
+
+  # --- Lint + Rendering rule placeholders -----------------------------------
+  - id: "clause.lint.baseline"
+    kind: "clause"
+    status: "informative"
+    label: "lint-baseline"
+    text: >
+      Tooling SHOULD lint for: (1) all normative nodes reachable from the spec root via 'contains',
+      (2) stable ordering (section.order then lexical fallback), (3) valid edge types and node kinds.
+
+  - id: "clause.rendering.baseline"
+    kind: "clause"
+    status: "informative"
+    label: "render-baseline"
+    text: >
+      Rendering is implementation-defined but SHOULD be deterministic: same input graph -> same output files.
+      Common render products: per-spec README, per-section pages, glossary from term nodes, and backlinks from refs.
+
+edges:
+  # Root structure
+  - { from: "spec://_kernel/docs/docprofiles-k1", to: "ref.spec.gf0-k1", type: "contains" }
+  - { from: "spec://_kernel/docs/docprofiles-k1", to: "ref.spec.specframe-k1", type: "contains" }
+  - { from: "spec://_kernel/docs/docprofiles-k1", to: "section.1.overview", type: "contains" }
+  - { from: "spec://_kernel/docs/docprofiles-k1", to: "section.2.core_model", type: "contains" }
+  - { from: "spec://_kernel/docs/docprofiles-k1", to: "section.3.profile_catalog", type: "contains" }
+  - { from: "spec://_kernel/docs/docprofiles-k1", to: "section.4.lint_rules", type: "contains" }
+  - { from: "spec://_kernel/docs/docprofiles-k1", to: "section.5.rendering_hints", type: "contains" }
+  - { from: "spec://_kernel/docs/docprofiles-k1", to: "section.6.examples", type: "contains" }
+
+  # Overview
+  - { from: "section.1.overview", to: "clause.overview.intent", type: "contains" }
+
+  # Core model
+  - { from: "section.2.core_model", to: "term.doc_profile", type: "contains" }
+  - { from: "section.2.core_model", to: "term.profile_rule", type: "contains" }
+  - { from: "section.2.core_model", to: "term.profile_id", type: "contains" }
+  - { from: "section.2.core_model", to: "clause.core_model.profile_location", type: "contains" }
+  - { from: "section.2.core_model", to: "clause.core_model.profile_semantics", type: "contains" }
+  - { from: "section.2.core_model", to: "clause.core_model.frame_metadata", type: "contains" }
+
+  - { from: "clause.core_model.profile_location", to: "term.doc_profile", type: "defines" }
+  - { from: "clause.core_model.profile_semantics", to: "term.profile_rule", type: "defines" }
+  - { from: "clause.core_model.profile_location", to: "term.profile_id", type: "defines" }
+
+  # Profile catalog
+  - { from: "section.3.profile_catalog", to: "term.profile.standard-k1", type: "contains" }
+  - { from: "term.profile.standard-k1", to: "property.profile.standard-k1.required_sections", type: "contains" }
+  - { from: "term.profile.standard-k1", to: "property.profile.standard-k1.required_properties", type: "contains" }
+
+  - { from: "section.3.profile_catalog", to: "term.profile.software_spec-k1", type: "contains" }
+  - { from: "term.profile.software_spec-k1", to: "property.profile.software_spec-k1.required_sections", type: "contains" }
+  - { from: "term.profile.software_spec-k1", to: "property.profile.software_spec-k1.required_properties", type: "contains" }
+
+  - { from: "section.3.profile_catalog", to: "term.profile.hardware_spec-k1", type: "contains" }
+  - { from: "term.profile.hardware_spec-k1", to: "property.profile.hardware_spec-k1.required_sections", type: "contains" }
+
+  - { from: "section.3.profile_catalog", to: "term.profile.math_theory-k1", type: "contains" }
+  - { from: "term.profile.math_theory-k1", to: "property.profile.math_theory-k1.conventions", type: "contains" }
+
+  - { from: "section.3.profile_catalog", to: "term.profile.guide-k1", type: "contains" }
+  - { from: "term.profile.guide-k1", to: "property.profile.guide-k1.required_properties", type: "contains" }
+
+  - { from: "section.3.profile_catalog", to: "term.profile.playbook-k1", type: "contains" }
+
+  # Lint + rendering
+  - { from: "section.4.lint_rules", to: "clause.lint.baseline", type: "contains" }
+  - { from: "section.5.rendering_hints", to: "clause.rendering.baseline", type: "contains" }
+
+meta: []

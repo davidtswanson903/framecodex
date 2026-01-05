@@ -1,0 +1,301 @@
+graph_id: "spec://_kernel/template/software-spec-k1"
+version: "0.1.0"
+
+attrs:
+  - { key: "domain", value: "your.domain.here" }
+  - { key: "depends_on", value: "spec://_kernel/docs/docprofiles-k1" }
+  - { key: "depends_on", value: "spec://_kernel/gf/gf0-k1" }
+  - { key: "depends_on", value: "spec://_kernel/spec/specframe-k1" }
+
+nodes:
+  # --- Root spec node --------------------------------------------------------
+  - id: "spec://_kernel/template/software-spec-k1"
+    kind: "spec"
+    status: "informative"
+    profile: "specframe-k1"
+    doc_profile: "software_spec-k1"
+    title: "Software Spec Template — K1"
+    summary: >
+      A starter template for writing software framework/module specifications using SpecFrame K1.
+      Fill in clauses and properties; keep structure stable for deterministic rendering.
+
+  # --- References ------------------------------------------------------------
+  - id: "ref.spec.docprofiles-k1"
+    kind: "spec_ref"
+    status: "informative"
+    target_graph_id: "spec://_kernel/docs/docprofiles-k1"
+    label: "DocProfiles K1"
+
+  - id: "ref.spec.gf0-k1"
+    kind: "spec_ref"
+    status: "informative"
+    target_graph_id: "spec://_kernel/gf/gf0-k1"
+    label: "GraphFrame GF0"
+
+  - id: "ref.spec.specframe-k1"
+    kind: "spec_ref"
+    status: "informative"
+    target_graph_id: "spec://_kernel/spec/specframe-k1"
+    label: "SpecFrame K1"
+
+  # --- Sections --------------------------------------------------------------
+  - id: "section.1.overview"
+    kind: "section"
+    status: "normative"
+    order: 1
+    title: "Overview"
+
+  - id: "section.2.goals"
+    kind: "section"
+    status: "normative"
+    order: 2
+    title: "Goals and Non-goals"
+
+  - id: "section.3.definitions"
+    kind: "section"
+    status: "normative"
+    order: 3
+    title: "Definitions"
+
+  - id: "section.4.architecture"
+    kind: "section"
+    status: "normative"
+    order: 4
+    title: "Architecture"
+
+  - id: "section.5.interfaces"
+    kind: "section"
+    status: "normative"
+    order: 5
+    title: "Interfaces"
+
+  - id: "section.6.data_model"
+    kind: "section"
+    status: "normative"
+    order: 6
+    title: "Data Model"
+
+  - id: "section.7.invariants"
+    kind: "section"
+    status: "normative"
+    order: 7
+    title: "Invariants"
+
+  - id: "section.8.security"
+    kind: "section"
+    status: "informative"
+    order: 8
+    title: "Security and Abuse Cases"
+
+  - id: "section.9.testing"
+    kind: "section"
+    status: "normative"
+    order: 9
+    title: "Testing and Verification"
+
+  - id: "section.10.versioning"
+    kind: "section"
+    status: "normative"
+    order: 10
+    title: "Versioning and Compatibility"
+
+  - id: "section.11.examples"
+    kind: "section"
+    status: "informative"
+    order: 11
+    title: "Examples"
+
+  # --- Terms (Definitions) ---------------------------------------------------
+  - id: "term.module"
+    kind: "term"
+    status: "normative"
+    label: "Module"
+    text: "TODO: define what counts as a module in this system."
+
+  - id: "term.kernel"
+    kind: "term"
+    status: "normative"
+    label: "Kernel"
+    text: "TODO: define kernel: pure transform or constrained component, per your framework."
+
+  - id: "term.interface"
+    kind: "term"
+    status: "normative"
+    label: "Interface"
+    text: "TODO: define interface: API surface, protocol, or boundary contract."
+
+  # --- Clauses ---------------------------------------------------------------
+  - id: "clause.overview.problem"
+    kind: "clause"
+    status: "normative"
+    label: "problem"
+    text: >
+      TODO: What problem does this framework solve? What constraints matter?
+
+  - id: "clause.overview.scope"
+    kind: "clause"
+    status: "normative"
+    label: "scope"
+    text: >
+      TODO: Define scope boundaries. Explicitly list out-of-scope items.
+
+  - id: "clause.goals.goals"
+    kind: "clause"
+    status: "normative"
+    label: "goals"
+    text: >
+      TODO: List goals as bullet points.
+
+  - id: "clause.goals.nongoals"
+    kind: "clause"
+    status: "normative"
+    label: "non-goals"
+    text: >
+      TODO: List non-goals (things intentionally not supported).
+
+  - id: "clause.architecture.components"
+    kind: "clause"
+    status: "normative"
+    label: "components"
+    text: >
+      TODO: Describe components and responsibilities. Prefer deterministic pipelines.
+
+  - id: "clause.architecture.dataflow"
+    kind: "clause"
+    status: "normative"
+    label: "dataflow"
+    text: >
+      TODO: Describe the primary dataflow and controlflow. Include invariants at boundaries.
+
+  - id: "clause.interfaces.api_contract"
+    kind: "clause"
+    status: "normative"
+    label: "api-contract"
+    text: >
+      TODO: Define your public API/protocols. Link to property.api_surface.
+
+  - id: "clause.data_model.schemas"
+    kind: "clause"
+    status: "normative"
+    label: "schemas"
+    text: >
+      TODO: Define data structures and serialization rules.
+
+  - id: "clause.invariants.list"
+    kind: "clause"
+    status: "normative"
+    label: "invariants"
+    text: >
+      TODO: List invariants. Each invariant should be testable.
+
+  - id: "clause.testing.strategy"
+    kind: "clause"
+    status: "normative"
+    label: "testing-strategy"
+    text: >
+      TODO: Define unit, integration, property-based tests, and golden fixtures.
+
+  - id: "clause.versioning.policy"
+    kind: "clause"
+    status: "normative"
+    label: "versioning"
+    text: >
+      TODO: Define versioning scheme, compatibility guarantees, and deprecation policy.
+
+  # --- Properties (tooling-facing structured payloads) -----------------------
+  - id: "property.api_surface"
+    kind: "property"
+    status: "normative"
+    label: "api_surface"
+    endpoints: []
+    events: []
+    error_model: "TODO"
+
+  - id: "property.invariants"
+    kind: "property"
+    status: "normative"
+    label: "invariants"
+    invariants: []
+
+  - id: "property.compat"
+    kind: "property"
+    status: "normative"
+    label: "compat"
+    semver: true
+    guarantees: []
+    breaking_changes: []
+
+  - id: "property.threat_model"
+    kind: "property"
+    status: "informative"
+    label: "threat_model"
+    abuse_cases: []
+    mitigations: []
+
+  # --- Examples --------------------------------------------------------------
+  - id: "example.hello_world"
+    kind: "example"
+    status: "informative"
+    label: "hello_world"
+    text: |
+      TODO: Provide a minimal end-to-end example.
+
+edges:
+  # Root contains
+  - { from: "spec://_kernel/template/software-spec-k1", to: "ref.spec.docprofiles-k1", type: "contains" }
+  - { from: "spec://_kernel/template/software-spec-k1", to: "ref.spec.gf0-k1", type: "contains" }
+  - { from: "spec://_kernel/template/software-spec-k1", to: "ref.spec.specframe-k1", type: "contains" }
+
+  - { from: "spec://_kernel/template/software-spec-k1", to: "section.1.overview", type: "contains" }
+  - { from: "spec://_kernel/template/software-spec-k1", to: "section.2.goals", type: "contains" }
+  - { from: "spec://_kernel/template/software-spec-k1", to: "section.3.definitions", type: "contains" }
+  - { from: "spec://_kernel/template/software-spec-k1", to: "section.4.architecture", type: "contains" }
+  - { from: "spec://_kernel/template/software-spec-k1", to: "section.5.interfaces", type: "contains" }
+  - { from: "spec://_kernel/template/software-spec-k1", to: "section.6.data_model", type: "contains" }
+  - { from: "spec://_kernel/template/software-spec-k1", to: "section.7.invariants", type: "contains" }
+  - { from: "spec://_kernel/template/software-spec-k1", to: "section.8.security", type: "contains" }
+  - { from: "spec://_kernel/template/software-spec-k1", to: "section.9.testing", type: "contains" }
+  - { from: "spec://_kernel/template/software-spec-k1", to: "section.10.versioning", type: "contains" }
+  - { from: "spec://_kernel/template/software-spec-k1", to: "section.11.examples", type: "contains" }
+
+  # Section contents
+  - { from: "section.1.overview", to: "clause.overview.problem", type: "contains" }
+  - { from: "section.1.overview", to: "clause.overview.scope", type: "contains" }
+
+  - { from: "section.2.goals", to: "clause.goals.goals", type: "contains" }
+  - { from: "section.2.goals", to: "clause.goals.nongoals", type: "contains" }
+
+  - { from: "section.3.definitions", to: "term.module", type: "contains" }
+  - { from: "section.3.definitions", to: "term.kernel", type: "contains" }
+  - { from: "section.3.definitions", to: "term.interface", type: "contains" }
+
+  - { from: "section.4.architecture", to: "clause.architecture.components", type: "contains" }
+  - { from: "section.4.architecture", to: "clause.architecture.dataflow", type: "contains" }
+
+  - { from: "section.5.interfaces", to: "clause.interfaces.api_contract", type: "contains" }
+  - { from: "section.5.interfaces", to: "property.api_surface", type: "contains" }
+
+  - { from: "section.6.data_model", to: "clause.data_model.schemas", type: "contains" }
+
+  - { from: "section.7.invariants", to: "clause.invariants.list", type: "contains" }
+  - { from: "section.7.invariants", to: "property.invariants", type: "contains" }
+
+  - { from: "section.8.security", to: "property.threat_model", type: "contains" }
+
+  - { from: "section.9.testing", to: "clause.testing.strategy", type: "contains" }
+
+  - { from: "section.10.versioning", to: "clause.versioning.policy", type: "contains" }
+  - { from: "section.10.versioning", to: "property.compat", type: "contains" }
+
+  - { from: "section.11.examples", to: "example.hello_world", type: "contains" }
+
+  # Semantic edges (optional but useful)
+  - { from: "clause.interfaces.api_contract", to: "property.api_surface", type: "refers_to" }
+  - { from: "clause.invariants.list", to: "property.invariants", type: "refers_to" }
+  - { from: "clause.versioning.policy", to: "property.compat", type: "refers_to" }
+
+  - { from: "clause.architecture.components", to: "term.module", type: "defines" }
+  - { from: "clause.architecture.components", to: "term.kernel", type: "defines" }
+  - { from: "clause.interfaces.api_contract", to: "term.interface", type: "defines" }
+
+meta: []

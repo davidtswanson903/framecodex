@@ -1,0 +1,530 @@
+graph_id: "spec://_kernel/render/renderframe-k1"
+version: "0.1.0"
+
+attrs:
+  - { key: "profile", value: "specframe-k1" }
+  - { key: "domain", value: "graphbrain.render" }
+  - { key: "depends_on", value: "spec://_kernel/gf/gf0-k1" }
+  - { key: "depends_on", value: "spec://_kernel/spec/specframe-k1" }
+
+nodes:
+  # --- Root spec node --------------------------------------------------------
+  - id: "spec://_kernel/render/renderframe-k1"
+    kind: "spec"
+    status: "normative"
+    profile: "specframe-k1"
+    title: "RenderFrame K1 — Text Rendering Plan MetaGraph Profile"
+    summary: >
+      RenderFrame K1 defines a GF0 MetaGraph profile for describing deterministic
+      rendering of a source graph into text. The output may later be interpreted as
+      Markdown, LaTeX, or any other text format; RenderFrame itself is format-agnostic.
+
+  # --- References ------------------------------------------------------------
+  - id: "ref.spec.gf0-k1"
+    kind: "spec_ref"
+    status: "informative"
+    target_graph_id: "spec://_kernel/gf/gf0-k1"
+    label: "GraphFrame K0 (GF0)"
+
+  - id: "ref.spec.specframe-k1"
+    kind: "spec_ref"
+    status: "informative"
+    target_graph_id: "spec://_kernel/spec/specframe-k1"
+    label: "SpecFrame K1"
+
+  # --- Sections --------------------------------------------------------------
+  - id: "section.1.overview"
+    kind: "section"
+    status: "normative"
+    order: 1
+    title: "Overview"
+
+  - id: "section.2.model"
+    kind: "section"
+    status: "normative"
+    order: 2
+    title: "Model"
+
+  - id: "section.3.node_kinds"
+    kind: "section"
+    status: "normative"
+    order: 3
+    title: "RenderFrame Node Kinds"
+
+  - id: "section.4.edge_types"
+    kind: "section"
+    status: "normative"
+    order: 4
+    title: "RenderFrame Edge Types"
+
+  - id: "section.5.attributes"
+    kind: "section"
+    status: "normative"
+    order: 5
+    title: "Required Attributes"
+
+  - id: "section.6.validation"
+    kind: "section"
+    status: "normative"
+    order: 6
+    title: "Validation Invariants"
+
+  - id: "section.7.integration"
+    kind: "section"
+    status: "informative"
+    order: 7
+    title: "Integration and Usage"
+
+  - id: "section.8.examples"
+    kind: "section"
+    status: "informative"
+    order: 8
+    title: "Examples"
+
+  # --- Terms ----------------------------------------------------------------
+  - id: "term.renderframe_k1"
+    kind: "term"
+    status: "normative"
+    label: "RenderFrameK1"
+    text: >
+      A RenderFrame is a GF0 graph intended to live as a MetaGraph under a source graph's
+      meta list. Its root node has kind='render_plan' and profile='renderframe-k1'.
+
+  - id: "term.render_plan"
+    kind: "term"
+    status: "normative"
+    label: "RenderPlan"
+    text: >
+      The root node of a RenderFrame. A plan declares selection scope, rule resolution,
+      and one or more render products.
+
+  - id: "term.render_product"
+    kind: "term"
+    status: "normative"
+    label: "RenderProduct"
+    text: >
+      A named output unit produced by a plan (e.g. one file, one string, one stream).
+      Products are made of ordered rules.
+
+  - id: "term.render_rule"
+    kind: "term"
+    status: "normative"
+    label: "RenderRule"
+    text: >
+      A rule binds a selector to an emitter. During traversal, applicable rules determine
+      how a source node is rendered to text.
+
+  - id: "term.selector"
+    kind: "term"
+    status: "normative"
+    label: "Selector"
+    text: >
+      A predicate object that matches source nodes (and optionally local edge context).
+      Selectors are intentionally simple and deterministic.
+
+  - id: "term.emitter"
+    kind: "term"
+    status: "normative"
+    label: "Emitter"
+    text: >
+      An emitter produces text by applying a template and optional transforms.
+
+  - id: "term.template"
+    kind: "term"
+    status: "normative"
+    label: "Template"
+    text: >
+      A text template with placeholders. Placeholder semantics are deterministic but
+      implementation-defined; missing fields MUST be handled by an explicit policy.
+
+  - id: "term.transform"
+    kind: "term"
+    status: "normative"
+    label: "Transform"
+    text: >
+      A pure text-to-text transform (escape, indent, wrap, join, etc.) referenced by emitters.
+
+  - id: "term.render_predicate"
+    kind: "term"
+    status: "normative"
+    label: "RenderPredicate"
+    text: >
+      A single match condition inside a selector, expressed as a short string DSL or a
+      structured list (implementation-defined, but must be deterministic).
+
+  # --- Properties: allowed kinds/edges in RenderFrames -----------------------
+  - id: "property.renderframe.node_kinds"
+    kind: "property"
+    status: "normative"
+    label: "Allowed RenderFrame node kinds"
+    node_kinds:
+      - render_plan
+      - render_product
+      - render_rule
+      - selector
+      - emitter
+      - template
+      - transform
+
+  - id: "property.renderframe.edge_types"
+    kind: "property"
+    status: "normative"
+    label: "Allowed RenderFrame edge types"
+    edge_types:
+      - contains
+      - selects
+      - emits
+      - uses
+      - extends
+      - overrides
+
+  - id: "property.renderframe.status_enum"
+    kind: "property"
+    status: "normative"
+    label: "RenderStatus enum"
+    status_values:
+      - normative
+      - informative
+      - experimental
+
+  # --- Clauses: Overview -----------------------------------------------------
+  - id: "clause.overview.intent"
+    kind: "clause"
+    status: "normative"
+    label: "Intent"
+    text: >
+      RenderFrame K1 specifies a portable, deterministic plan for rendering graphs into text.
+      The plan MAY tag outputs with a 'format' string (e.g. 'markdown', 'latex'), but the core
+      semantics are purely text-based.
+
+  - id: "clause.overview.meta_usage"
+    kind: "clause"
+    status: "normative"
+    label: "RenderFrames are MetaGraphs"
+    text: >
+      A RenderFrame is intended to be carried as a GF0 MetaGraph under the 'meta' list of a
+      source graph. This follows GF0's intent for meta: attach auxiliary views, layouts, and
+      indexes without changing the primary frame.
+
+  # --- Clauses: Model --------------------------------------------------------
+  - id: "clause.model.definition"
+    kind: "clause"
+    status: "normative"
+    label: "Definition"
+    text: >
+      A RenderFrame is any GF0 graph that satisfies:
+        (1) It is a valid GraphFrameK0 (graph_id/version/attrs/nodes/edges/meta present in canonical form);
+        (2) It contains exactly one root node with id==graph_id, kind=='render_plan';
+        (3) That root node has profile=='renderframe-k1'.
+
+  - id: "clause.model.scoping"
+    kind: "clause"
+    status: "normative"
+    label: "Scoping into parent graphs"
+    text: >
+      RenderFrames are structurally independent from their parent graphs. Any references from a
+      RenderFrame into the source graph MUST be expressed via attributes (e.g. parent_graph_id,
+      parent_node_id, source_root_id) or via explicit edge types with documented semantics.
+
+  - id: "clause.model.determinism"
+    kind: "clause"
+    status: "normative"
+    label: "Determinism"
+    text: >
+      For the same canonical source graph + the same canonical RenderFrame, an implementation MUST
+      produce identical text outputs. Where ordering is required, it MUST be derived from explicit
+      integer 'order' attributes when present, otherwise from stable lexical ordering of node IDs.
+
+  - id: "clause.model.rule_resolution"
+    kind: "clause"
+    status: "normative"
+    label: "Rule resolution"
+    text: >
+      Within a RenderProduct, rules are evaluated in deterministic order. For a given source node,
+      the first matching rule (by rule order) MUST be applied unless the product declares a different
+      explicit resolution mode (e.g. 'merge').
+
+  # --- Clauses: Node kind validation ----------------------------------------
+  - id: "clause.node_kinds.allowed"
+    kind: "clause"
+    status: "normative"
+    label: "Allowed node kinds"
+    text: >
+      Within a RenderFrame, NodeK0.kind MUST be one of the values in property.renderframe.node_kinds.
+      Unknown or misspelled kinds MUST be treated as hard validation failures.
+
+  # --- Clauses: Edge type validation ----------------------------------------
+  - id: "clause.edge_types.allowed"
+    kind: "clause"
+    status: "normative"
+    label: "Allowed edge types"
+    text: >
+      Within a RenderFrame, EdgeK0.type MUST be one of the values in property.renderframe.edge_types.
+      Unknown edge types MUST be treated as hard validation failures.
+
+  # --- Clauses: Required attributes per kind --------------------------------
+  - id: "clause.attrs.required"
+    kind: "clause"
+    status: "normative"
+    label: "Required attributes per node kind"
+    text: >
+      A RenderFrame validator MUST treat missing required attributes as a hard validation error.
+      Required attributes per kind are:
+        - render_plan    : title, status, summary, profile
+        - render_product : label, status
+        - render_rule    : label, status
+        - selector       : label, status
+        - emitter        : label, status
+        - template       : label, status, body
+        - transform      : label, status, op
+
+  - id: "clause.attrs.plan"
+    kind: "clause"
+    status: "normative"
+    label: "Attributes for render_plan nodes"
+    text: >
+      A node with kind=='render_plan' MUST provide:
+        - title   : short plan title,
+        - status  : RenderStatus,
+        - summary : short description,
+        - profile : 'renderframe-k1'.
+      It MAY also provide:
+        - format_hint : string tag (e.g. 'markdown', 'latex', 'text'),
+        - applies_to_doc_profile : string tag used by tooling,
+        - on_missing_field : 'empty' | 'error' (default: 'empty').
+
+  - id: "clause.attrs.product"
+    kind: "clause"
+    status: "normative"
+    label: "Attributes for render_product nodes"
+    text: >
+      A node with kind=='render_product' MUST provide:
+        - label  : short product name,
+        - status : RenderStatus.
+      It MAY provide:
+        - output_kind : 'file' | 'string' (default: 'string'),
+        - output_path : string (required if output_kind=='file'),
+        - source_root_id : string (parent graph node id) selecting a render root,
+        - resolution_mode : 'first_match' | 'merge' (default: 'first_match').
+
+  - id: "clause.attrs.selector"
+    kind: "clause"
+    status: "normative"
+    label: "Attributes for selector nodes"
+    text: >
+      A node with kind=='selector' MUST provide:
+        - label  : short selector name,
+        - status : RenderStatus.
+      It SHOULD provide:
+        - predicates : ordered list of RenderPredicate strings.
+      Selector predicate syntax is implementation-defined but MUST be deterministic.
+
+  - id: "clause.attrs.emitter"
+    kind: "clause"
+    status: "normative"
+    label: "Attributes for emitter nodes"
+    text: >
+      A node with kind=='emitter' MUST provide:
+        - label  : short emitter name,
+        - status : RenderStatus.
+      It SHOULD provide:
+        - template_id : node id of a template node in the same RenderFrame.
+      It MAY provide:
+        - pipeline : ordered list of transform node ids to apply to the emitted text.
+
+  - id: "clause.attrs.template"
+    kind: "clause"
+    status: "normative"
+    label: "Attributes for template nodes"
+    text: >
+      A node with kind=='template' MUST provide:
+        - label  : short template name,
+        - status : RenderStatus,
+        - body   : template text.
+      Templates MAY contain placeholders. Placeholder syntax is implementation-defined, but MUST be
+      deterministic and MUST define behavior for missing fields (see render_plan.on_missing_field).
+
+  - id: "clause.attrs.transform"
+    kind: "clause"
+    status: "normative"
+    label: "Attributes for transform nodes"
+    text: >
+      A node with kind=='transform' MUST provide:
+        - label  : short transform name,
+        - status : RenderStatus,
+        - op     : string naming a pure text transform operation.
+      It MAY provide:
+        - args : ordered list of string args (interpretation is op-specific).
+
+  # --- Clauses: Validation invariants ---------------------------------------
+  - id: "clause.validation.root"
+    kind: "clause"
+    status: "normative"
+    label: "Root plan node"
+    text: >
+      Each RenderFrame MUST contain exactly one node with:
+        - id == graph_id,
+        - kind == 'render_plan',
+        - profile == 'renderframe-k1'.
+
+  - id: "clause.validation.contains_tree"
+    kind: "clause"
+    status: "normative"
+    label: "Contains edges form a tree"
+    text: >
+      'contains' edges in a RenderFrame MUST form an acyclic tree (or forest) rooted at the
+      render_plan node. Cycles or multiple parents via 'contains' are hard validation failures.
+
+  - id: "clause.validation.edge_integrity"
+    kind: "clause"
+    status: "normative"
+    label: "Edge integrity"
+    text: >
+      All edges MUST reference existing node IDs (EdgeK0.from/to integrity). Missing endpoints are
+      hard validation failures.
+
+  - id: "clause.validation.reference_targets"
+    kind: "clause"
+    status: "normative"
+    label: "Reference targets"
+    text: >
+      For every 'selects' edge, the destination node MUST have kind=='selector'.
+      For every 'emits' edge, the destination node MUST have kind=='emitter'.
+      For every emitter.template_id, the referenced node MUST exist and have kind=='template'.
+      For every transform listed in an emitter pipeline, the referenced node MUST exist and have kind=='transform'.
+
+  # --- Clauses: Integration --------------------------------------------------
+  - id: "clause.integration.attach"
+    kind: "clause"
+    status: "informative"
+    label: "Attaching RenderFrames"
+    text: >
+      RenderFrames SHOULD be attached to a source graph via GF0.meta (as a MetaGraph). Implementations
+      MAY also store RenderFrames as standalone GF0 files and attach them at build time.
+
+  - id: "clause.integration.precedence"
+    kind: "clause"
+    status: "informative"
+    label: "Precedence and overrides"
+    text: >
+      If multiple RenderFrames apply, precedence SHOULD be deterministic: later MetaGraphs in the
+      source graph's meta list win, or explicit 'overrides' edges define precedence. If both exist,
+      explicit overrides SHOULD take precedence.
+
+  # --- Example ---------------------------------------------------------------
+  - id: "example.minimal_renderframe"
+    kind: "example"
+    status: "informative"
+    label: "minimal_renderframe"
+    text: |
+      Minimal RenderFrame instance (as a MetaGraph):
+        graph_id: "doc.my_spec::render::text"
+        version: "0.1.0"
+        attrs: []
+        nodes:
+          - id: "doc.my_spec::render::text"
+            kind: "render_plan"
+            profile: "renderframe-k1"
+            status: "normative"
+            title: "Default text render"
+            summary: "Renders each node via a kind->template rule set."
+          - id: "product.main"
+            kind: "render_product"
+            status: "normative"
+            label: "main"
+            output_kind: "string"
+          - id: "sel.any"
+            kind: "selector"
+            status: "normative"
+            label: "any"
+            predicates: ["node.kind != ''"]
+          - id: "tpl.default"
+            kind: "template"
+            status: "normative"
+            label: "default"
+            body: "[{{node.kind}}] {{node.id}}"
+          - id: "emit.default"
+            kind: "emitter"
+            status: "normative"
+            label: "default"
+            template_id: "tpl.default"
+          - id: "rule.any"
+            kind: "render_rule"
+            status: "normative"
+            label: "any"
+            order: 1
+        edges:
+          - { from: "doc.my_spec::render::text", to: "product.main", type: "contains" }
+          - { from: "doc.my_spec::render::text", to: "sel.any", type: "contains" }
+          - { from: "doc.my_spec::render::text", to: "tpl.default", type: "contains" }
+          - { from: "doc.my_spec::render::text", to: "emit.default", type: "contains" }
+          - { from: "product.main", to: "rule.any", type: "contains" }
+          - { from: "rule.any", to: "sel.any", type: "selects" }
+          - { from: "rule.any", to: "emit.default", type: "emits" }
+        meta: []
+
+edges:
+  # Root contains
+  - { from: "spec://_kernel/render/renderframe-k1", to: "ref.spec.gf0-k1", type: "contains" }
+  - { from: "spec://_kernel/render/renderframe-k1", to: "ref.spec.specframe-k1", type: "contains" }
+
+  - { from: "spec://_kernel/render/renderframe-k1", to: "section.1.overview", type: "contains" }
+  - { from: "spec://_kernel/render/renderframe-k1", to: "section.2.model", type: "contains" }
+  - { from: "spec://_kernel/render/renderframe-k1", to: "section.3.node_kinds", type: "contains" }
+  - { from: "spec://_kernel/render/renderframe-k1", to: "section.4.edge_types", type: "contains" }
+  - { from: "spec://_kernel/render/renderframe-k1", to: "section.5.attributes", type: "contains" }
+  - { from: "spec://_kernel/render/renderframe-k1", to: "section.6.validation", type: "contains" }
+  - { from: "spec://_kernel/render/renderframe-k1", to: "section.7.integration", type: "contains" }
+  - { from: "spec://_kernel/render/renderframe-k1", to: "section.8.examples", type: "contains" }
+
+  # Overview
+  - { from: "section.1.overview", to: "clause.overview.intent", type: "contains" }
+  - { from: "section.1.overview", to: "clause.overview.meta_usage", type: "contains" }
+  - { from: "section.1.overview", to: "term.renderframe_k1", type: "contains" }
+
+  # Model
+  - { from: "section.2.model", to: "clause.model.definition", type: "contains" }
+  - { from: "section.2.model", to: "clause.model.scoping", type: "contains" }
+  - { from: "section.2.model", to: "clause.model.determinism", type: "contains" }
+  - { from: "section.2.model", to: "clause.model.rule_resolution", type: "contains" }
+  - { from: "section.2.model", to: "term.render_plan", type: "contains" }
+  - { from: "section.2.model", to: "term.render_product", type: "contains" }
+  - { from: "section.2.model", to: "term.render_rule", type: "contains" }
+  - { from: "section.2.model", to: "term.selector", type: "contains" }
+  - { from: "section.2.model", to: "term.emitter", type: "contains" }
+  - { from: "section.2.model", to: "term.template", type: "contains" }
+  - { from: "section.2.model", to: "term.transform", type: "contains" }
+  - { from: "section.2.model", to: "term.render_predicate", type: "contains" }
+
+  # Node kinds
+  - { from: "section.3.node_kinds", to: "property.renderframe.node_kinds", type: "contains" }
+  - { from: "section.3.node_kinds", to: "clause.node_kinds.allowed", type: "contains" }
+
+  # Edge types
+  - { from: "section.4.edge_types", to: "property.renderframe.edge_types", type: "contains" }
+  - { from: "section.4.edge_types", to: "clause.edge_types.allowed", type: "contains" }
+
+  # Attributes
+  - { from: "section.5.attributes", to: "property.renderframe.status_enum", type: "contains" }
+  - { from: "section.5.attributes", to: "clause.attrs.required", type: "contains" }
+  - { from: "section.5.attributes", to: "clause.attrs.plan", type: "contains" }
+  - { from: "section.5.attributes", to: "clause.attrs.product", type: "contains" }
+  - { from: "section.5.attributes", to: "clause.attrs.selector", type: "contains" }
+  - { from: "section.5.attributes", to: "clause.attrs.emitter", type: "contains" }
+  - { from: "section.5.attributes", to: "clause.attrs.template", type: "contains" }
+  - { from: "section.5.attributes", to: "clause.attrs.transform", type: "contains" }
+
+  # Validation
+  - { from: "section.6.validation", to: "clause.validation.root", type: "contains" }
+  - { from: "section.6.validation", to: "clause.validation.contains_tree", type: "contains" }
+  - { from: "section.6.validation", to: "clause.validation.edge_integrity", type: "contains" }
+  - { from: "section.6.validation", to: "clause.validation.reference_targets", type: "contains" }
+
+  # Integration
+  - { from: "section.7.integration", to: "clause.integration.attach", type: "contains" }
+  - { from: "section.7.integration", to: "clause.integration.precedence", type: "contains" }
+
+  # Examples
+  - { from: "section.8.examples", to: "example.minimal_renderframe", type: "contains" }
+
+meta: []

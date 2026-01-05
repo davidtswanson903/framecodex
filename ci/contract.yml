@@ -1,0 +1,36 @@
+version: "0.1.0"
+
+# Minimal CI contract for RepoLaw K1.
+# Tools MUST operate deterministically and offline.
+
+gates:
+  - id: "validate_group"
+    description: "Parse DocGroup frames and emit a deterministic validation report artifact."
+    tool: "tools/validate_group/run"
+    outputs:
+      - "out/validate_group/report.json"
+
+  - id: "enforce_repo_law"
+    description: "Enforce law://repo/governance/repo-law-k1 against repository structure and frame layout."
+    tool: "tools/enforce_repo_law/run"
+    outputs:
+      - "out/enforce_repo_law/report.json"
+
+  - id: "validate_references"
+    description: "Validate that all in-repo frame references (depends_on/target_graph_id/edges.from) resolve via the canonical in-repo graph_id set."
+    tool: "tools/validate_references/run"
+    outputs:
+      - "out/validate_references/report.json"
+
+  # Conditional (enabled when output_mode=commit_docs; default per RepoLaw K1)
+  - id: "render_docs"
+    description: "Deterministically render docs/ from DocGroup and render frames; emit docs/MANIFEST.json."
+    tool: "tools/render_docs/run"
+    outputs:
+      - "docs/MANIFEST.json"
+
+  - id: "no_diff"
+    description: "Verify generated docs/ matches committed docs/ byte-for-byte (excluding permitted exceptions)."
+    tool: "tools/no_diff/run"
+    outputs:
+      - "out/no_diff/report.json"

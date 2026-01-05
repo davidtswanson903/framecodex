@@ -1,0 +1,7 @@
+# Repo governance pointers (deterministic; no network fetch implied)
+active_law: "law://repo/governance/repo-law-k1"
+active_law_version: "0.1.0"
+
+# Optional (leave unset until you create a RepoProfile frame)
+# active_profile: "profile://repo/governance/default"
+# active_profile_version: "0.1.0"

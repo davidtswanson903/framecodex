@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+repo_root="$(cd "$(dirname "$0")/../.." && pwd)"
+out_dir="$repo_root/out/validate_group"
+mkdir -p "$out_dir"
+
+report="$out_dir/report.json"
+
+# Bootstrap-only: deterministic DocGroup scan per RepoLaw K1.
+# Full GF0/profile validation is out of scope for this stub.
+
+frames=()
+while IFS= read -r p; do
+  frames+=("$p")
+done < <(
+  find "$repo_root/frames" -type f -path "*/v*/frame.yml" -print | LC_ALL=C sort
+)
+
+# Emit deterministic JSON report
+{
+  printf '{\n'
+  printf '  "tool": {"id": "validate_group", "version": "0.1.0"},\n'
+  printf '  "docgroup": {"frame_count": %s},\n' "${#frames[@]}"
+  printf '  "frames": [\n'
+  for i in "${!frames[@]}"; do
+    rel="${frames[$i]#"$repo_root/"}"
+    [ $i -gt 0 ] && printf ',\n'
+    printf '    {"path": "%s"}' "$rel"
+  done
+  printf '\n  ]\n'
+  printf '}\n'
+} > "$report"
+
+# Always succeed for the bootstrap stub.
+exit 0
