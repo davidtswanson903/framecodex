@@ -158,35 +158,37 @@ def render(g: Dict[str, Any]) -> str:
     refs.sort(key=lambda n: (n.label or "", n.id))
 
     parts: List[str] = []
-    parts.append(r"\\documentclass[11pt]{article}")
-    parts.append(r"\\usepackage[utf8]{inputenc}")
-    parts.append(r"\\usepackage[T1]{fontenc}")
-    parts.append(r"\\usepackage{geometry}")
-    parts.append(r"\\geometry{margin=1in}")
-    parts.append(r"\\usepackage{amsmath,amssymb,amsthm,mathtools}")
-    parts.append(r"\\usepackage{hyperref}")
-    parts.append(r"\\usepackage{enumitem}")
-    parts.append(r"\\usepackage{microtype}")
+    # NOTE: Use single backslashes in emitted LaTeX. Raw strings already avoid
+    # Python escaping; writing `\\` here would produce `\\` in the .tex output.
+    parts.append(r"\documentclass[11pt]{article}")
+    parts.append(r"\usepackage[utf8]{inputenc}")
+    parts.append(r"\usepackage[T1]{fontenc}")
+    parts.append(r"\usepackage{geometry}")
+    parts.append(r"\geometry{margin=1in}")
+    parts.append(r"\usepackage{amsmath,amssymb,amsthm,mathtools}")
+    parts.append(r"\usepackage{hyperref}")
+    parts.append(r"\usepackage{enumitem}")
+    parts.append(r"\usepackage{microtype}")
     parts.append("")
-    parts.append(r"\\title{" + latex_escape(title) + "}")
-    parts.append(r"\\author{}");
-    parts.append(r"\\date{}");
+    parts.append(r"\title{" + latex_escape(title) + r"}")
+    parts.append(r"\author{}")
+    parts.append(r"\date{}")
     parts.append("")
-    parts.append(r"\\begin{document}")
-    parts.append(r"\\maketitle")
+    parts.append(r"\begin{document}")
+    parts.append(r"\maketitle")
     parts.append("")
 
     if refs:
-        parts.append(r"\\section*{References}")
-        parts.append(r"\\begin{itemize}")
-        for r in refs:
-            parts.append(render_spec_ref(r))
-        parts.append(r"\\end{itemize}")
+        parts.append(r"\section*{References}")
+        parts.append(r"\begin{itemize}")
+        for rnode in refs:
+            parts.append(render_spec_ref(rnode))
+        parts.append(r"\end{itemize}")
         parts.append("")
 
     for sec in get_sections(nodes):
         sec_title = sec.title or sec.id
-        parts.append(r"\\section{" + latex_escape(sec_title) + "}")
+        parts.append(r"\section{" + latex_escape(sec_title) + r"}")
         children = contains_children(edges, sec.id)
         for cid in children:
             child = nodes.get(cid)
@@ -203,7 +205,7 @@ def render(g: Dict[str, Any]) -> str:
                 parts.append(r"% Unhandled kind: " + latex_escape(child.kind) + " " + latex_escape(child.id))
         parts.append("")
 
-    parts.append(r"\\end{document}")
+    parts.append(r"\end{document}")
     parts.append("")
     return "\n".join(parts)
 
