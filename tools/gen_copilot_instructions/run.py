@@ -372,7 +372,7 @@ def render_markdown(report: Dict[str, Any], *, max_chars: int) -> Tuple[str, Dic
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--out", default=str(REPO_ROOT / ".github" / "copilot-instructions.md"))
-    ap.add_argument("--max-chars", type=int, default=80000)
+    ap.add_argument("--max-chars", type=int, default=120000)
     args = ap.parse_args()
 
     out_path = Path(args.out)
@@ -382,6 +382,12 @@ def main() -> None:
     law_paths = {
         "RepoLaw-K1": REPO_ROOT / "frames" / "repo" / "law" / "governance" / "repo-law-k1" / "v0.1.0" / "frame.yml",
         "InlineMarkup-K1": REPO_ROOT / "frames" / "repo" / "law" / "text" / "inline-markup-k1" / "v0.1.0" / "frame.yml",
+    }
+
+    # Kernel specs (extra context for agents)
+    spec_paths = {
+        "GF0-K1": REPO_ROOT / "frames" / "_kernel" / "spec" / "gf" / "gf0-k1" / "v0.3.0" / "frame.yml",
+        "SpecFrame-K1": REPO_ROOT / "frames" / "_kernel" / "spec" / "spec" / "specframe-k1" / "v0.3.0" / "frame.yml",
     }
 
     for k in sorted(law_paths.keys()):
@@ -422,6 +428,27 @@ def main() -> None:
                 title="InlineMarkup-K1 (primer excerpt)",
                 section_ids=None,
                 max_chars=12000,
+            )
+        )
+
+    # IMPORTANT: include kernel spec context early (before tool excerpts)
+    if spec_paths["GF0-K1"].exists():
+        law_excerpts.append(
+            frame_excerpt(
+                spec_paths["GF0-K1"],
+                title="GF0-K1 (excerpt)",
+                section_ids=None,
+                max_chars=22000,
+            )
+        )
+
+    if spec_paths["SpecFrame-K1"].exists():
+        law_excerpts.append(
+            frame_excerpt(
+                spec_paths["SpecFrame-K1"],
+                title="SpecFrame-K1 (excerpt)",
+                section_ids=None,
+                max_chars=22000,
             )
         )
 

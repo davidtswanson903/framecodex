@@ -215,6 +215,226 @@ def f(x: int) -> int:
     return x + 1
 ```
 
+### GF0-K1 (excerpt)
+Source: `frames/_kernel/spec/gf/gf0-k1/v0.3.0/frame.yml`
+
+#### Overview
+
+#### GraphFrame Structure
+
+GraphFrameK0.attrs is an ordered slice of AttrK0 representing frame-level metadata (e.g. domain tags, doc build hints, repository routing hints, provenance). It MUST NOT be used to encode structural graph semantics; structural semantics are encoded only by nodes and edges. Duplicate keys are allowed and order is significant (list semantics).
+
+A GraphFrameK0 value MUST have the following top-level fields:
+  - graph_id: non-empty string identifying the frame;
+  - version: non-empty string identifying the frame's version (logical or semantic);
+  - attrs: list of AttrK0 values (possibly empty);
+  - nodes: list of NodeK0 values (possibly empty);
+  - edges: list of EdgeK0 values (possibly empty);
+  - meta: list of MetaGraph values (GraphFrameK0 instances), possibly empty.
+These fields MUST be present in the canonical form. Empty lists MUST be encoded as [] and MUST NOT be encoded as null or omitted.
+
+graph_id is a logical identifier for the frame. It MUST be stable within a given repository or namespace. Different versions of the same conceptual graph SHOULD share the same graph_id but use distinct version values.
+
+GraphFrameK0: Minimal graph container with fields {graph_id, version, attrs, nodes, edges, meta}, where nodes and edges follow NodeK0 and EdgeK0, and meta is a list of sub-GraphFrameK0 instances.
+
+#### NodeK0 Structure
+
+AttrK0 and MetricK0 collections MUST be represented as ordered slices, not maps. This ensures deterministic ordering and stable serialization across implementations.
+
+AttrK0 MUST at least contain:
+  - key: non-empty string;
+  - value: string (UTF-8).
+It MAY contain:
+  - vtype: optional string naming the logical type (e.g. "string", "int", "target_ref");
+  - desc: optional description string.
+
+MetricK0 MUST at least contain:
+  - name: non-empty string;
+  - value: numeric value (e.g. float64).
+It MAY contain:
+  - unit: optional string;
+  - desc: optional description.
+
+Node attrs and metrics MUST be stored as slices and MUST NOT be represented as maps in the canonical form. Keys and names MUST be non-empty. The interpretation of specific keys is delegated to higher-level specs (SpecFrame, TaskFrame, etc.).
+
+A NodeK0 MUST have:
+  - id: non-empty string, unique within the containing GraphFrameK0;
+  - kind: non-empty string describing the node's semantic role (e.g. spec, section, kernel);
+  - label: optional human-readable string;
+  - attrs: optional list of AttrK0;
+  - metrics: optional list of MetricK0.
+The set of allowed NodeK0.kind values is not constrained by GF0; higher-level specs (SpecFrame, TaskFrame, etc.) MUST define their own allowed kinds.
+
+AttrK0: Simple key–value attribute struct with optional type and description, stored in a deterministic slice.
+
+MetricK0: Simple name–value metric struct with optional unit and description, stored in a deterministic slice.
+
+NodeK0: Node in a GraphFrameK0 with an ID, kind, optional label, and optional attrs/metrics slices. Node IDs are unique within a given GraphFrameK0.
+
+#### EdgeK0 Structure
+
+An EdgeK0 MUST have:
+  - from: NodeK0 ID (string) in the same GraphFrameK0;
+  - to: NodeK0 ID (string) in the same GraphFrameK0;
+  - type: non-empty string describing the edge semantics (e.g. contains, depends_on);
+It MAY have:
+  - id: optional string identifier;
+  - attrs: optional list of AttrK0;
+  - metrics: optional list of MetricK0.
+GF0 does not constrain the set of EdgeK0.type values beyond non-empty strings; higher- level specs MUST define allowed edge types where needed.
+
+EdgeK0.from and EdgeK0.to MUST reference existing NodeK0 IDs in the same GraphFrameK0. Edges that reference missing nodes violate structural integrity.
+
+EdgeK0: Directed edge in a GraphFrameK0 with from, to, and type fields, and optional ID and attrs/metrics. from/to refer to NodeK0 IDs in the same frame.
+
+#### Fractal Meta Graphs
+
+The meta field of a GraphFrameK0 is a list of subgraphs, each of which is itself a GraphFrameK0 with the same fields {graph_id, version, attrs, nodes, edges, meta}. This recursive structure allows auxiliary views, indexes, or annotations to be attached without changing the primary frame.
+
+MetaGraphs MUST be structurally independent: their node IDs and edges are scoped within the subgraph. References from a MetaGraph into the parent graph MUST be expressed via attributes (e.g. parent_node_id) or well-defined edge types with explicit semantics.
+
+Common uses of meta include: alternative layout graphs, index structures, commentary layers, or regime annotations. Higher-level specs SHOULD document their usage of meta explicitly rather than overloading it.
+
+MetaGraph: Subgraph stored in the meta list of a GraphFrameK0. Each MetaGraph is itself a GraphFrameK0 and can carry auxiliary structure or views without changing the primary frame.
+
+#### Invariants and Validation
+
+A GraphFrameK0 validator MUST enforce clause.edgek0.integrity: for every EdgeK0, from and to MUST reference existing NodeK0 IDs in the same frame. Missing endpoints MUST cause validation failure.
+
+graph_id and version MUST be non-empty strings. Frames with empty graph_id or version MUST be rejected.
+
+Validation of a GraphFrameK0 MUST recursively validate each MetaGraph according to the same GF0 rules. Implementations MUST protect against unbounded recursion (e.g. cycles via references) and MAY impose a maximum meta depth.
+
+Within a single GraphFrameK0, all NodeK0 IDs MUST be unique. Duplicate node IDs MUST cause validation failure.
+
+#### Extension and Specialization
+
+Implementations MAY embed or derive GF0 graphs from canon.Graph values. However, GF0 is defined at the YAML/JSON frame layer and does not require a one-to-one mapping to canon.Graph. When such a mapping exists, its semantics SHOULD be specified in a separate SpecFrame.
+
+Higher-level schemas (SpecFrame, TaskFrame, EvidenceFrame, KernelCore, etc.) MUST specialize GF0 by constraining NodeK0.kind, EdgeK0.type, and attribute conventions, rather than redefining graph structure. GF0 remains the single canonical graph schema.
+
+### SpecFrame-K1 (excerpt)
+Source: `frames/_kernel/spec/spec/specframe-k1/v0.3.0/frame.yml`
+
+#### Scope and Intent
+
+SpecFrame K1 specifies the canonical schema for representing specifications as GraphFrame K0 graphs. A SpecFrame is any GF0 graph whose root node has kind = 'spec' and profile = 'specframe-k1'. All such graphs MUST conform to the node, edge, and attribute conventions defined in this spec.
+
+SpecFrame K1 is intended for: (a) human spec authors, (b) GraphBrain kernels that load, validate, and refactor specs, and (c) LLM workers that generate or update specs from code, docs, or other frames.
+
+#### Node Kinds
+
+Within a SpecFrame, NodeK0.kind MUST be one of:
+  - 'spec'      : the root specification node (exactly one per SpecFrame),
+  - 'section'   : top-level or nested sections grouping terms and clauses,
+  - 'term'      : definitions of key concepts,
+  - 'clause'    : normative or informative statements,
+  - 'property'  : small structured facts (enums, lists, thresholds),
+  - 'example'   : worked examples illustrating other nodes,
+  - 'spec_ref'  : references to other specs or frames.
+Any other value MUST be reported as a validation error.
+
+Each SpecFrame MUST contain exactly one node with:
+  - id == graph_id,
+  - kind == 'spec',
+  - status in {'normative', 'informative', 'experimental'}.
+This node is the root of the spec and is the unique entry point for reachability and top-level attributes.
+
+#### Edge Types
+
+'contains' edges encode the structural tree of the spec. The root 'spec' node MUST contain one or more 'section' nodes. Section nodes MAY contain other sections, terms, clauses, properties, and examples. Contains edges MUST form an acyclic tree (or forest) rooted at the spec node.
+
+Within a SpecFrame, EdgeK0.type MUST be one of:
+  - 'contains'   : structural containment / hierarchy,
+  - 'depends_on' : spec-level dependency on another node or spec,
+  - 'defines'    : term or clause defines another concept,
+  - 'refines'    : clause refines or tightens another clause,
+  - 'refers_to'  : non-normative reference to another node or spec,
+  - 'example_of' : examples illustrating a term or clause.
+Any other value MUST be reported as a validation error.
+
+#### Attributes
+
+A node with kind == 'clause' MUST provide:
+  - 'label' : short handle for the clause,
+  - 'status': SpecStatus.
+It SHOULD provide:
+  - 'text'  : full clause text in natural language.
+
+A node with kind == 'example' MUST provide:
+  - 'label' : short identifier for the example,
+  - 'status': SpecStatus (typically 'informative').
+It SHOULD provide:
+  - 'text'  : free-form example text or code snippet.
+
+A node with kind == 'property' MUST provide:
+  - 'label' : short name of the property,
+  - 'status': SpecStatus.
+Property nodes MAY carry arbitrary additional attributes (lists, enums, thresholds) that are interpreted by tooling.
+
+A SpecFrame validator MUST treat missing required attributes as a hard validation error. Required attributes per kind are:
+  - spec     : title, status, summary, profile
+  - section  : title, status
+  - term     : label, status
+  - clause   : label, status
+  - property : label, status
+  - example  : label, status
+  - spec_ref : target_graph_id
+
+A node with kind == 'section' MUST provide:
+  - 'title' : short section title,
+  - 'status': SpecStatus.
+It SHOULD provide:
+  - 'order' : integer for ordering sections within the spec.
+Sections MAY nest other sections via 'contains'.
+
+A node with kind == 'spec' MUST provide at least:
+  - 'title'   : short human-readable title,
+  - 'status'  : SpecStatus,
+  - 'summary' : short description of the spec's scope,
+  - 'profile' : string identifying the spec profile, e.g. 'specframe-k1'.
+The spec node MAY also include 'version_note', 'domain', and additional profile-specific attributes.
+
+A node with kind == 'spec_ref' MUST provide:
+  - 'target_graph_id' : canonical graph_id of the referenced spec or frame.
+It MAY provide:
+  - 'label' : short human-readable label,
+  - 'note'  : explanatory text about the reference.
+
+For all nodes in a SpecFrame, the status attribute MUST be one of:
+  - 'normative',
+  - 'informative',
+  - 'experimental'.
+
+A node with kind == 'term' MUST provide:
+  - 'label' : short name of the term,
+  - 'status': SpecStatus.
+The primary definition text MAY be stored in 'text'. Terms are usually linked via 'defines' edges from clauses that define them.
+
+#### Validation Invariants
+
+'contains' edges MUST form an acyclic tree (or forest) rooted at the spec node. Cycles or multiple parents for the same node via 'contains' are considered hard validation failures.
+
+A SpecFrame validator MUST reject any edge whose type attribute is not in the allowed set specified by property.edge_types. Unknown edge types are considered hard validation failures.
+
+A SpecFrame validator MUST reject any node whose kind attribute is not in the allowed set specified by property.node_kinds. Unknown or misspelled kinds are considered hard validation failures.
+
+All normative nodes in a SpecFrame SHOULD be reachable from the root spec node via one or more 'contains' edges. Unreachable normative nodes SHOULD be treated as errors or at least strong warnings by tooling.
+
+#### Integration and Usage
+
+In SpecFrames, frame-level metadata (publish routing, domain tags, dependency tags, audience tags) SHOULD be stored in GraphFrameK0.attrs. GraphFrameK0.meta MUST be used only for true MetaGraphs (aux layout/index/view graphs) as defined by GF0. A SpecFrame validator MUST NOT require any particular GraphFrameK0.attrs keys; attrs is tooling- facing metadata and does not affect the node/edge validation rules.
+
+Tooling MAY adopt the following conventional GraphFrameK0.attrs keys for SpecFrames:
+  - domain
+  - depends_on (repeatable)
+  - intended_consumer (repeatable)
+  - publish.root
+  - publish.path
+  - publish.slug
+
+GraphBrain and specgen SHOULD treat SpecFrame K1 as the canonical schema for specs. Specs for other domains (canon, CBF, GSKernel, TaskFrame, EvidenceFrame, KernelCore, regimes) SHOULD be represented as SpecFrames and validated against this schema so that they can be composed, diffed, and refactored uniformly.
+
 ### Tool excerpts (headers)
 The following are short excerpts from tool entrypoints for quick orientation.
 
