@@ -130,6 +130,9 @@ def render_block(b: Dict[str, Any]) -> List[str]:
         return [rf"\\paragraph*{{{title}}}", ""]
 
     if t == "paragraph":
+        bm = b.get("body_markup")
+        if isinstance(bm, dict) and bm.get("kind") == "inline-markup-k1":
+            return render_inline_markup_k1_tex(bm)
         txt = str(b.get("text", "")).strip()
         return [tex_escape(txt), ""] if txt else [""]
 

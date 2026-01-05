@@ -108,6 +108,9 @@ def render_block(b: Dict[str, Any]) -> List[str]:
         return out
 
     if t == "paragraph":
+        # Prefer MarkupIR in paragraphs too (not only clause/definition bodies).
+        if isinstance(b.get("body_markup"), dict) and b.get("body_markup", {}).get("kind") == "inline-markup-k1":
+            return [render_inline_markup_k1(b.get("body_markup") or {}), ""]
         txt = md_escape(str(b.get("text", "")))
         return [txt, ""] if txt else [""]
 

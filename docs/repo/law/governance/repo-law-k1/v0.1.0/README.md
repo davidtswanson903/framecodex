@@ -46,3 +46,10 @@
 
 ## Examples
 <a id="section-8-examples-3bd695e4"></a>
+
+FrameURL K1: law://_kernel/id/frameurl-k1
+
+ValidatorGroup K1: spec://_kernel/validator/validatorgroup-k1
+
+## RepoLaw K1
+<a id="title-0-52934cc7"></a>

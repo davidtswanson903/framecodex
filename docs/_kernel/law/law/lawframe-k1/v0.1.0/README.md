@@ -15,3 +15,6 @@
 
 ## Invariants
 <a id="section-3-invariants-c226e414"></a>
+
+## LawFrame K1
+<a id="title-0-52934cc7"></a>
