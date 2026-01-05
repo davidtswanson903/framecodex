@@ -343,6 +343,7 @@ def to_docir(g: Dict[str, Any], src_bytes: bytes) -> Dict[str, Any]:
                         "level": min(6, depth + 1),
                         "title": n.title or n.label or n.id,
                         "anchor": anchors[n.id],
+                        "text_format": node_fmt,
                     }
                 )
             elif n.kind == "title":
@@ -354,6 +355,7 @@ def to_docir(g: Dict[str, Any], src_bytes: bytes) -> Dict[str, Any]:
                         "level": min(6, depth + 1),
                         "title": n.text or n.title or n.label or n.id,
                         "anchor": anchors[n.id],
+                        "text_format": node_fmt,
                     }
                 )
             elif n.kind == "paragraph":
@@ -423,6 +425,7 @@ def to_docir(g: Dict[str, Any], src_bytes: bytes) -> Dict[str, Any]:
                         "label": n.label or n.id,
                         "status": n.status,
                         "anchor": anchors[n.id],
+                        "text_format": node_fmt,
                         "symbols": n.symbols or [],
                     }
                 )
@@ -449,9 +452,7 @@ def to_docir(g: Dict[str, Any], src_bytes: bytes) -> Dict[str, Any]:
                 {
                     "type": "heading",
                     "level": 2,
-                    "title": f"{kind}"
-                    if kind != "other"
-                    else "Other",
+                    "title": f"{kind}" if kind != "other" else "Other",
                     "anchor": stable_anchor(f"kind:{kind}"),
                 }
             )
@@ -517,6 +518,7 @@ def to_docir(g: Dict[str, Any], src_bytes: bytes) -> Dict[str, Any]:
                             "level": 3,
                             "title": n.text or n.title or n.label or n.id,
                             "anchor": anchors[n.id],
+                            "text_format": node_fmt,
                         }
                     )
                 elif n.kind == "property":
@@ -526,6 +528,7 @@ def to_docir(g: Dict[str, Any], src_bytes: bytes) -> Dict[str, Any]:
                             "label": n.label or n.id,
                             "status": n.status,
                             "anchor": anchors[n.id],
+                            "text_format": node_fmt,
                             "symbols": n.symbols or [],
                         }
                     )

@@ -86,6 +86,8 @@ nodes:
       - { sym: "C", desc: "Capacity budgets (bits/time/energy constraints)." }
       - { sym: "\\Gamma", desc: "Envelope/meta (versions, seeds, numeric modes, commits)." }
       - { sym: "\\mathcal{R}", desc: "Records (canonical map \\to bytes; hash/ledger optional)." }
+    attrs:
+      - { key: "text.format", value: "tex-block" }
 
   - id: "section.3.kernel"
     kind: "section"
@@ -99,12 +101,14 @@ nodes:
     label: "Systemic Kernel"
     summary: >
       A systemic kernel is the tuple
-      
+
       \\begin{equation}
         K_\\mu^\\Sigma \\;=\\; \\big(v,\\ \\chi,\\ \\Pi,\\ P_n,\\ \\Theta,\\ \\beta,\\ C,\\ \\Gamma\\big),
       \\end{equation}
-      
+
       where $v:U\\to \\mathbb{V}$ is a valuation map and $\\chi:\\mathbb{V}\\times\\Theta\\times\\beta\\to \\mathbf{2}$ is a decision gate.
+    attrs:
+      - { key: "text.format", value: "tex-block" }
 
   - id: "section.4.metrics_orders"
     kind: "section"
@@ -261,13 +265,15 @@ nodes:
     label: "Morphism F: Σ → Σ'"
     summary: >
       A morphism $F:\\Sigma\\to\\Sigma'$ is a pair $(\\phi_U,\\phi_V)$ with
-      
+
       \\begin{equation}
-        v' \\circ \\phi_U \\;=\\; \\phi_V \\circ v,\\qquad 
+        v' \\circ \\phi_U \\;=\\; \\phi_V \\circ v,\\qquad
         \\chi' \\circ (\\,\\phi_V\\times\\mathrm{id}\\,) \\;=\\; \\chi,
       \\end{equation}
-      
+
       that also maps contracts monotonically: $F(\\Theta,\\beta,C,\\Pi,P_n,\\Gamma)$ respects the relevant orders and preserves $(\\Sigma$-A1,...,A7).
+    attrs:
+      - { key: "text.format", value: "tex-block" }
 
   - id: "clause.morphism.eq"
     kind: "clause"
@@ -275,13 +281,15 @@ nodes:
     label: "Morphism preservation"
     text: >
       A morphism preserves valuation and decision structure by satisfying:
-      
+
       \\begin{equation}
-        v' \\circ \\phi_U \\;=\\; \\phi_V \\circ v,\\qquad 
+        v' \\circ \\phi_U \\;=\\; \\phi_V \\circ v,\\qquad
         \\chi' \\circ (\\,\\phi_V\\times\\mathrm{id}\\,) \\;=\\; \\chi.
       \\end{equation}
-      
+
       It also maps contract parameters monotonically and preserves (Σ-A1,...,A7).
+    attrs:
+      - { key: "text.format", value: "tex-block" }
 
   - id: "section.8.recipe"
     kind: "section"
@@ -295,7 +303,7 @@ nodes:
     label: "Recipe"
     text: >
       To realize $\\Sigma$ in any field:
-      
+
       1. Choose $U$, $\\mathbb{V}$, $v$, $\\chi$.
       2. Post $\\Theta,\\beta,C,\\Pi,P_n,\\Gamma$ and a wobble metric $w$.
       3. Establish (Σ-A1,...,A7) by construction and tests.

@@ -118,7 +118,12 @@ that also maps contracts monotonically: $F(\\Theta,\\beta,C,\\Pi,P_n,\\Gamma)$ r
 
 **Morphism preservation** _(normative)_
 
-A morphism preserves valuation and decision structure by satisfying: \\begin{equation} v' \\circ \\phi*U \\;=\\; \\phi*V \\circ v,\\qquad \\chi' \\circ (\\,\\phi_V\\times\\mathrm{id}\\,) \\;=\\; \\chi. \\end{equation} It also maps contract parameters monotonically and preserves (Σ-A1,...,A7).
+A morphism preserves valuation and decision structure by satisfying:
+\\begin{equation}
+  v' \\circ \\phi_U \\;=\\; \\phi_V \\circ v,\\qquad
+  \\chi' \\circ (\\,\\phi_V\\times\\mathrm{id}\\,) \\;=\\; \\chi.
+\\end{equation}
+It also maps contract parameters monotonically and preserves (Σ-A1,...,A7).
 
 ## Instantiation Recipe (Domain-Agnostic)
 <a id="section-8-recipe-2801220f"></a>

@@ -98,6 +98,10 @@ def _read_passthrough_block_text(b: Dict[str, Any]) -> str:
     return str(b.get("text", "") or b.get("body", ""))
 
 
+def _read_passthrough_heading_title(b: Dict[str, Any]) -> str:
+    return str(b.get("title", ""))
+
+
 def render_tex_inline(nodes: List[Dict[str, Any]]) -> str:
     """Render constrained publication inline nodes."""
 
@@ -132,6 +136,8 @@ def render_tex_inline(nodes: List[Dict[str, Any]]) -> str:
 
 
 def render_preamble(title: str) -> List[str]:
+    # NOTE: Title may contain TeX. For now we treat it as plain text and escape.
+    # If you want TeX titles, add an explicit, validated passthrough profile.
     t = tex_escape(title or "Document")
     return [
         r"\documentclass[11pt]{article}",
@@ -160,7 +166,12 @@ def render_block(b: Dict[str, Any]) -> List[str]:
 
     if t == "heading":
         level = int(b.get("level", 1))
-        title = tex_escape(str(b.get("title", "")))
+
+        if _is_tex_passthrough(b.get("text_format")):
+            title = _read_passthrough_heading_title(b).strip()
+        else:
+            title = tex_escape(str(b.get("title", "")))
+
         if level <= 1:
             return [rf"\section*{{{title}}}", ""]
         if level == 2:
@@ -181,7 +192,12 @@ def render_block(b: Dict[str, Any]) -> List[str]:
         return [tex_escape(txt), ""] if txt else [""]
 
     if t in ("definition", "clause"):
-        label = tex_escape(str(b.get("label", "")))
+        # Allow TeX-capable labels via explicit passthrough.
+        if _is_tex_passthrough(b.get("text_format")):
+            label = str(b.get("label", ""))
+        else:
+            label = tex_escape(str(b.get("label", "")))
+
         status = tex_escape(str(b.get("status", "")))
         head = rf"\textbf{{{label}}}" + (rf" \emph{{({status})}}" if status else "")
         out: List[str] = [head, ""]
@@ -211,8 +227,17 @@ def render_block(b: Dict[str, Any]) -> List[str]:
         if symbols:
             out.append(r"\begin{itemize}")
             for s in symbols:
-                sym = tex_escape(str(s.get("sym", "")))
-                desc = tex_escape(str(s.get("desc", "")))
+                sym_raw = str(s.get("sym", ""))
+                desc_raw = str(s.get("desc", ""))
+
+                # Symbols/descriptions are part of the TeX output; treat as plain text
+                # unless explicitly marked by the frame as TeX passthrough.
+                sym = sym_raw
+                desc = desc_raw
+                if not _is_tex_passthrough(b.get("text_format")):
+                    sym = tex_escape(sym_raw)
+                    desc = tex_escape(desc_raw)
+
                 if sym:
                     out.append(rf"  \item \({sym}\): {desc}")
                 else:
@@ -220,9 +245,6 @@ def render_block(b: Dict[str, Any]) -> List[str]:
             out.append(r"\end{itemize}")
             out.append("")
         return out
-
-    if t == "list_item":
-        return [r"\item " + tex_escape(str(b.get("text", "")))]
 
     return [rf"\begin{{quote}}\textbf{{unhandled block}}: {tex_escape(str(t))}\end{{quote}}", ""]
 
