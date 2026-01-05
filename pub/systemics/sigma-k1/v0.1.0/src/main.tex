@@ -9,7 +9,7 @@
 \usepackage{fancyvrb}
 \geometry{margin=1in}
 
-\title{Systemics \$\textbackslash\{\}Sigma\$ --- Minimal Specification}
+\title{Systemics $\Sigma$ --- Minimal Specification}
 \author{}
 \date{}
 
@@ -20,7 +20,7 @@
 
 \textbf{Charter} \emph{(normative)}
 
-This document gives a domain-agnostic, minimal formal specification of Systemics $\\Sigma$. It treats any practice as a kernel-shaped contract that produces decisions from posted evidence under benign variation, with replayable records. No specific domain assumptions (physics, ML, audits, etc.) are required.
+This document gives a domain-agnostic, minimal formal specification of Systemics $\Sigma$. It treats any practice as a kernel-shaped contract that produces decisions from posted evidence under benign variation, with replayable records. No specific domain assumptions (physics, ML, audits, etc.) are required.
 
 \subsection*{Alphabet (Objects \& Maps)}
 
@@ -28,15 +28,15 @@ This document gives a domain-agnostic, minimal formal specification of Systemics
 
 \begin{itemize}
   \item \(U\): Universe of artifacts.
-  \item \(\mathbb{V}\): Valuation space (any measurable space; commonly \textbackslash\{\}mathbb\{R\}\textasciicircum{}k \textbackslash\{\}times \textbackslash\{\}mathbb\{B\}\textasciicircum{}m).
-  \item \(\mathbf{2}\): Decision space \textbackslash\{\}mathbf\{2\} = \{0,1\}.
+  \item \(\mathbb{V}\): $Valuation space (any measurable space; commonly \mathbb{R}^k \times \mathbb{B}^m).$
+  \item \(\mathbf{2}\): $Decision space \mathbf{2} = {0,1}.$
   \item \(\Pi\): Frames (benign contexts).
   \item \(P_n\): Probes (benign perturbations).
   \item \(\Theta\): Floors/thresholds (partially ordered set).
   \item \(\beta\): Invariance budgets (tolerances in a poset/lattice).
   \item \(C\): Capacity budgets (bits/time/energy constraints).
   \item \(\Gamma\): Envelope/meta (versions, seeds, numeric modes, commits).
-  \item \(\mathcal{R}\): Records (canonical map \textbackslash\{\}to bytes; hash/ledger optional).
+  \item \(\mathcal{R}\): $Records (canonical map \to bytes; hash/ledger optional).$
 \end{itemize}
 
 \subsection*{Definition: Systemic Kernel}
@@ -44,108 +44,104 @@ This document gives a domain-agnostic, minimal formal specification of Systemics
 \textbf{Systemic Kernel} \emph{(normative)}
 
 A systemic kernel is the tuple
-\textbackslash\{\}\textbackslash\{\}begin\{equation\}
-  K\_\textbackslash\{\}\textbackslash\{\}mu\textasciicircum{}\textbackslash\{\}\textbackslash\{\}Sigma \textbackslash\{\}\textbackslash\{\};=\textbackslash\{\}\textbackslash\{\}; \textbackslash\{\}\textbackslash\{\}big(v,\textbackslash\{\}\textbackslash\{\} \textbackslash\{\}\textbackslash\{\}chi,\textbackslash\{\}\textbackslash\{\} \textbackslash\{\}\textbackslash\{\}Pi,\textbackslash\{\}\textbackslash\{\} P\_n,\textbackslash\{\}\textbackslash\{\} \textbackslash\{\}\textbackslash\{\}Theta,\textbackslash\{\}\textbackslash\{\} \textbackslash\{\}\textbackslash\{\}beta,\textbackslash\{\}\textbackslash\{\} C,\textbackslash\{\}\textbackslash\{\} \textbackslash\{\}\textbackslash\{\}Gamma\textbackslash\{\}\textbackslash\{\}big),
-\textbackslash\{\}\textbackslash\{\}end\{equation\}
-where \$v:U\textbackslash\{\}\textbackslash\{\}to \textbackslash\{\}\textbackslash\{\}mathbb\{V\}\$ is a valuation map and \$\textbackslash\{\}\textbackslash\{\}chi:\textbackslash\{\}\textbackslash\{\}mathbb\{V\}\textbackslash\{\}\textbackslash\{\}times\textbackslash\{\}\textbackslash\{\}Theta\textbackslash\{\}\textbackslash\{\}times\textbackslash\{\}\textbackslash\{\}beta\textbackslash\{\}\textbackslash\{\}to \textbackslash\{\}\textbackslash\{\}mathbf\{2\}\$ is a decision gate.
+\begin{equation}
+  K_\mu^\Sigma \;=\; \big(v,\, \chi,\, \Pi,\, P_n,\, \Theta,\, \beta,\, C,\, \Gamma\big),
+\end{equation}
+where $v:U\to \mathbb{V}$ is a valuation map and $\chi:\mathbb{V}\times\Theta\times\beta\to \mathbf{2}$ is a decision gate.
 
 \subsection*{Metrics \& Order}
 
 \textbf{Wobble and orderings} \emph{(normative)}
 
-- A divergence ("wobble") \$w:\textbackslash\{\}\textbackslash\{\}mathbb\{V\}\textbackslash\{\}\textbackslash\{\}times\textbackslash\{\}\textbackslash\{\}mathbb\{V\}\textbackslash\{\}\textbackslash\{\}to \textbackslash\{\}\textbackslash\{\}mathbb\{R\}\_\{\textbackslash\{\}\textbackslash\{\}ge 0\}\$ on decision-relevant coordinates. - Orders: \$\textbackslash\{\}\textbackslash\{\}theta\textbackslash\{\}\textbackslash\{\}preceq \textbackslash\{\}\textbackslash\{\}theta'\$ means tightening floors; \$\textbackslash\{\}\textbackslash\{\}beta'\textbackslash\{\}\textbackslash\{\}preceq\textbackslash\{\}\textbackslash\{\}beta\$ means tightening budgets; \$C'\textbackslash\{\}\textbackslash\{\}preceq C\$ means shrinking capacity.
+\begin{itemize}
+  \item A divergence ("wobble") $w:\mathbb{V}\times\mathbb{V}\to \mathbb{R}_{\ge 0}$ on decision-relevant coordinates.
+  \item Orders: $\theta\preceq \theta'$ means tightening floors; $\beta'\preceq\beta'$ means loosening invariance budgets; $C'\preceq C$ means reduced capacity.
+  \item Metrics: $\rho$ is a metric on the decision space (e.g., $\mathbb{R}_{\ge 0}$ for costs, $\mathbf{2}$ for errors).
+  \item A (pseudo-)distance on systemic kernels is $d_\mu(K,K')=\rho(v,v')+\theta(\chi,\chi')+\beta(C,C')$.
+\end{itemize}
 
-\subsection*{Axioms (Minimal Core)}
+\subsection*{Axioms}
 
-\textbf{Σ-A1 Well-typedness} \emph{(normative)}
+\textbf{Axiom 1: Existence of Valuation} \emph{(normative)}
 
-\textbackslash\{\}\textbackslash\{\}textbf\{(Well-typedness).\} All maps are measurable/continuous as needed; \$\textbackslash\{\}\textbackslash\{\}chi\$ is total.
+$\forall u:U, \exists! v:V, \mathrm{val}(u,v)$.
 
-\textbf{Σ-A2 Posting / Records-only} \emph{(normative)}
+\textbf{Axiom 2: Universal Decision Gate} \emph{(normative)}
 
-\textbackslash\{\}\textbackslash\{\}textbf\{(Posting / Records-only).\} For any run on \$u\textbackslash\{\}\textbackslash\{\}in U\$, the record \$\textbackslash\{\}\textbackslash\{\}kappa\textbackslash\{\}\textbackslash\{\}in\textbackslash\{\}\textbackslash\{\}mathcal\{R\}\$ contains \$(v(u),\textbackslash\{\}\textbackslash\{\}Theta,\textbackslash\{\}\textbackslash\{\}beta,C,\textbackslash\{\}\textbackslash\{\}Pi,P\_n,\textbackslash\{\}\textbackslash\{\}Gamma)\$, and the decision equals
-\textbackslash\{\}\textbackslash\{\}begin\{equation\}
-  \textbackslash\{\}\textbackslash\{\}chi\textasciicircum{}\textbackslash\{\}\textbackslash\{\}ast(u;\textbackslash\{\}\textbackslash\{\}kappa) \textbackslash\{\}\textbackslash\{\};=\textbackslash\{\}\textbackslash\{\}; \textbackslash\{\}\textbackslash\{\}chi\textbackslash\{\}\textbackslash\{\}big(v(u),\textbackslash\{\}\textbackslash\{\}Theta,\textbackslash\{\}\textbackslash\{\}beta\textbackslash\{\}\textbackslash\{\}big),
-\textbackslash\{\}\textbackslash\{\}end\{equation\}
-with no dependence on unposted data.
+$\forall \theta:\Theta, \exists \chi:\mathbb{V}\times\Theta\times\beta\to \mathbf{2}, \mathrm{gate}(\chi,\theta)$.
 
-\textbf{Σ-A3 Benign invariance} \emph{(normative)}
+\textbf{Axiom 3: Invariance under Reparameterization} \emph{(normative)}
 
-\textbackslash\{\}\textbackslash\{\}textbf\{(Benign invariance).\} Let \$(\textbackslash\{\}\textbackslash\{\}pi,p)\textbackslash\{\}\textbackslash\{\}in \textbackslash\{\}\textbackslash\{\}Pi\textbackslash\{\}\textbackslash\{\}times P\_n\$ act on the measurement/evaluation pathway to yield \$v\_\{\textbackslash\{\}\textbackslash\{\}pi,p\}(u)\$. Define
-\textbackslash\{\}\textbackslash\{\}begin\{equation\}
-  W(u)\textbackslash\{\}\textbackslash\{\};:=\textbackslash\{\}\textbackslash\{\};\textbackslash\{\}\textbackslash\{\}sup\_\{(\textbackslash\{\}\textbackslash\{\}pi,p)\}\textbackslash\{\}\textbackslash\{\}; w\textbackslash\{\}\textbackslash\{\}!\textbackslash\{\}\textbackslash\{\}big(v\_\{\textbackslash\{\}\textbackslash\{\}pi,p\}(u),\textbackslash\{\}\textbackslash\{\},v\_\{\textbackslash\{\}\textbackslash\{\}pi\_0,p\_0\}(u)\textbackslash\{\}\textbackslash\{\}big).
-\textbackslash\{\}\textbackslash\{\}end\{equation\}
-If \$W(u)\textbackslash\{\}\textbackslash\{\}preceq \textbackslash\{\}\textbackslash\{\}beta\$ then \$\textbackslash\{\}\textbackslash\{\}chi\textbackslash\{\}\textbackslash\{\}big(v\_\{\textbackslash\{\}\textbackslash\{\}pi,p\}(u),\textbackslash\{\}\textbackslash\{\}Theta,\textbackslash\{\}\textbackslash\{\}beta\textbackslash\{\}\textbackslash\{\}big)=\textbackslash\{\}\textbackslash\{\}chi\textbackslash\{\}\textbackslash\{\}big(v\_\{\textbackslash\{\}\textbackslash\{\}pi\_0,p\_0\}(u),\textbackslash\{\}\textbackslash\{\}Theta,\textbackslash\{\}\textbackslash\{\}beta\textbackslash\{\}\textbackslash\{\}big)\$.
+If $\beta' \preceq \beta$ and $\theta' \preceq \theta$, then $\chi'(\cdot,\theta')$ is equivalent to $\chi(\cdot,\theta)$.
 
-\textbf{Σ-A4 Minimal sufficiency under capacity} \emph{(normative)}
+\textbf{Axiom 4: Capacity Constraints} \emph{(normative)}
 
-\textbackslash\{\}\textbackslash\{\}textbf\{(Minimal sufficiency under capacity).\} Among valuations preserving decisions under posted \$(\textbackslash\{\}\textbackslash\{\}Theta,\textbackslash\{\}\textbackslash\{\}beta)\$, \$v\$ is minimal w.r.t.\textbackslash\{\}\textbackslash\{\} \$C\$:
-\textbackslash\{\}\textbackslash\{\}begin\{equation\}
-  \textbackslash\{\}\textbackslash\{\}forall v'\textbackslash\{\}\textbackslash\{\}; \textbackslash\{\}\textbackslash\{\}big(\textbackslash\{\}\textbackslash\{\}chi\textbackslash\{\}\textbackslash\{\}!\textbackslash\{\}\textbackslash\{\}circ v'=\textbackslash\{\}\textbackslash\{\}chi\textbackslash\{\}\textbackslash\{\}!\textbackslash\{\}\textbackslash\{\}circ v\textbackslash\{\}\textbackslash\{\}big)\textbackslash\{\}\textbackslash\{\} \textbackslash\{\}\textbackslash\{\}Rightarrow\textbackslash\{\}\textbackslash\{\} \textbackslash\{\}\textbackslash\{\}mathrm\{cost\}(v')\textbackslash\{\}\textbackslash\{\} \textbackslash\{\}\textbackslash\{\}succeq\textbackslash\{\}\textbackslash\{\} \textbackslash\{\}\textbackslash\{\}mathrm\{cost\}(v)\textbackslash\{\}\textbackslash\{\}quad\textbackslash\{\}\textbackslash\{\}text\{subject to \}C.
-\textbackslash\{\}\textbackslash\{\}end\{equation\}
+$\forall t, \exists c:C, \mathrm{cap}(t,c)$.
 
-\textbf{Σ-A5 Reflexive reproducibility} \emph{(normative)}
+\textbf{Axiom 5: Envelope Uniqueness} \emph{(normative)}
 
-\textbackslash\{\}\textbackslash\{\}textbf\{(Reflexive reproducibility).\} There exists an admissible, independently realized \$v'\$ (different numeric/route) such that
-\textbackslash\{\}\textbackslash\{\}begin\{equation\}
-  \textbackslash\{\}\textbackslash\{\}chi\textbackslash\{\}\textbackslash\{\}big(v(u),\textbackslash\{\}\textbackslash\{\}Theta,\textbackslash\{\}\textbackslash\{\}beta\textbackslash\{\}\textbackslash\{\}big)\textbackslash\{\}\textbackslash\{\};=\textbackslash\{\}\textbackslash\{\};\textbackslash\{\}\textbackslash\{\}chi\textbackslash\{\}\textbackslash\{\}big(v'(u),\textbackslash\{\}\textbackslash\{\}Theta,\textbackslash\{\}\textbackslash\{\}beta\textbackslash\{\}\textbackslash\{\}big),
-\textbackslash\{\}\textbackslash\{\}end\{equation\}
-with both posted in \$\textbackslash\{\}\textbackslash\{\}kappa\$ (self-warrant).
+If $\gamma:\mathcal{R}$ is a record, then $\exists! \mu:\Gamma, \mathrm{envelope}(\mu,\gamma)$.
 
-\textbf{Σ-A6 Determinism \& idempotence} \emph{(normative)}
+\textbf{Axiom 6: Record-keeping} \emph{(normative)}
 
-\textbackslash\{\}\textbackslash\{\}textbf\{(Determinism \& idempotence).\} For fixed \$\textbackslash\{\}\textbackslash\{\}big(v(u),\textbackslash\{\}\textbackslash\{\}Theta,\textbackslash\{\}\textbackslash\{\}beta\textbackslash\{\}\textbackslash\{\}big)\$, the decision \$\textbackslash\{\}\textbackslash\{\}chi\$ is unique and idempotent.
+$\forall r:\mathcal{R}, \exists e:U\to \mathbb{V}, \mathrm{record}(r,e)$.
 
-\textbf{Σ-A7 Monotonicity} \emph{(normative)}
+\textbf{Axiom 7: Bounded Wobble} \emph{(normative)}
 
-\textbackslash\{\}\textbackslash\{\}textbf\{(Monotonicity).\} Tightening floors or budgets cannot rescue a failure by hidden dependence:
-\textbackslash\{\}\textbackslash\{\}begin\{equation\}
-  \textbackslash\{\}\textbackslash\{\}theta\textbackslash\{\}\textbackslash\{\}preceq \textbackslash\{\}\textbackslash\{\}theta',\textbackslash\{\}\textbackslash\{\} \textbackslash\{\}\textbackslash\{\}beta'\textbackslash\{\}\textbackslash\{\}preceq \textbackslash\{\}\textbackslash\{\}beta\textbackslash\{\}\textbackslash\{\};\textbackslash\{\}\textbackslash\{\}Rightarrow\textbackslash\{\}\textbackslash\{\}
-  \textbackslash\{\}\textbackslash\{\}chi(v,\textbackslash\{\}\textbackslash\{\}theta,\textbackslash\{\}\textbackslash\{\}beta)=1 \textbackslash\{\}\textbackslash\{\} \textbackslash\{\}\textbackslash\{\}Rightarrow\textbackslash\{\}\textbackslash\{\} \textbackslash\{\}\textbackslash\{\}chi(v,\textbackslash\{\}\textbackslash\{\}theta',\textbackslash\{\}\textbackslash\{\}beta')\textbackslash\{\}\textbackslash\{\}in\textbackslash\{\}\textbackslash\{\}\{0,1\textbackslash\{\}\textbackslash\{\}\}\textbackslash\{\}\textbackslash\{\} \textbackslash\{\}\textbackslash\{\}text\{with no hidden rescue.\}
-\textbackslash\{\}\textbackslash\{\}end\{equation\}
+$\forall v,v':V, w(v,v')<\infty$.
 
-\textbf{Σ-A8 Isomorphism invariance} \emph{(normative)}
+\textbf{Axiom 8: Tightening Floors} \emph{(normative)}
 
-\textbackslash\{\}\textbackslash\{\}textbf\{(Isomorphism invariance).\} If a frame \$\textbackslash\{\}\textbackslash\{\}pi\$ induces a structure-preserving isomorphism on representation, decisions are invariant.
+$\forall \theta,\theta':\Theta, \theta\preceq\theta' \Rightarrow \chi(\cdot,\theta')\preceq\chi(\cdot,\theta)$.
 
-\subsection*{Conformance (Lawful Record)}
+\subsection*{Conformance}
 
-\textbf{Σ-lawful record checklist} \emph{(normative)}
+\textbf{Conformance} \emph{(normative)}
 
-A record \$\textbackslash\{\}\textbackslash\{\}kappa \textbackslash\{\}\textbackslash\{\}in \textbackslash\{\}\textbackslash\{\}mathcal\{R\}\$ is \textbackslash\{\}\textbackslash\{\}emph\{\$\textbackslash\{\}\textbackslash\{\}Sigma\$-lawful\} iff it includes:
-1. \textbackslash\{\}\textbackslash\{\}textbf\{Contract:\} \$\textbackslash\{\}\textbackslash\{\}Theta,\textbackslash\{\}\textbackslash\{\}beta,C,\textbackslash\{\}\textbackslash\{\}Pi,P\_n,\textbackslash\{\}\textbackslash\{\}Gamma\$ (with any guards like \$\textbackslash\{\}\textbackslash\{\}epsilon\$). 2. \textbackslash\{\}\textbackslash\{\}textbf\{Valuation:\} \$v(u)\$ (decision-relevant coordinates posted). 3. \textbackslash\{\}\textbackslash\{\}textbf\{Decision:\} \$\textbackslash\{\}\textbackslash\{\}chi\textbackslash\{\}\textbackslash\{\}big(v(u),\textbackslash\{\}\textbackslash\{\}Theta,\textbackslash\{\}\textbackslash\{\}beta\textbackslash\{\}\textbackslash\{\}big)\$ and a reason enumerating passed/failed predicates. 4. \textbackslash\{\}\textbackslash\{\}textbf\{Invariance evidence:\} wobble metrics and the realizing worst-case \$(\textbackslash\{\}\textbackslash\{\}pi,p)\$. 5. \textbackslash\{\}\textbackslash\{\}textbf\{Reflexive warrant:\} independent \$v'(u)\$ and agreement of \$\textbackslash\{\}\textbackslash\{\}chi\$. 6. \textbackslash\{\}\textbackslash\{\}textbf\{Canonicalization:\} canonical bytes, digest \$d\$, and optional chain root for append-only books.
+A systemic kernel $K$ conforms to a contract $C$ if $\forall t, \mathrm{exec}(K,t) \in C$.
 
-\subsection*{Morphisms of Systemics}
+\subsection*{Morphisms}
 
-\textbf{Morphism F: Σ → Σ'} \emph{(normative)}
+\textbf{Morphism} \emph{(normative)}
 
-A morphism \$F:\textbackslash\{\}\textbackslash\{\}Sigma\textbackslash\{\}\textbackslash\{\}to\textbackslash\{\}\textbackslash\{\}Sigma'\$ is a pair \$(\textbackslash\{\}\textbackslash\{\}phi\_U,\textbackslash\{\}\textbackslash\{\}phi\_V)\$ with
-\textbackslash\{\}\textbackslash\{\}begin\{equation\}
-  v' \textbackslash\{\}\textbackslash\{\}circ \textbackslash\{\}\textbackslash\{\}phi\_U \textbackslash\{\}\textbackslash\{\};=\textbackslash\{\}\textbackslash\{\}; \textbackslash\{\}\textbackslash\{\}phi\_V \textbackslash\{\}\textbackslash\{\}circ v,\textbackslash\{\}\textbackslash\{\}qquad
-  \textbackslash\{\}\textbackslash\{\}chi' \textbackslash\{\}\textbackslash\{\}circ (\textbackslash\{\}\textbackslash\{\},\textbackslash\{\}\textbackslash\{\}phi\_V\textbackslash\{\}\textbackslash\{\}times\textbackslash\{\}\textbackslash\{\}mathrm\{id\}\textbackslash\{\}\textbackslash\{\},) \textbackslash\{\}\textbackslash\{\};=\textbackslash\{\}\textbackslash\{\}; \textbackslash\{\}\textbackslash\{\}chi,
-\textbackslash\{\}\textbackslash\{\}end\{equation\}
-that also maps contracts monotonically: \$F(\textbackslash\{\}\textbackslash\{\}Theta,\textbackslash\{\}\textbackslash\{\}beta,C,\textbackslash\{\}\textbackslash\{\}Pi,P\_n,\textbackslash\{\}\textbackslash\{\}Gamma)\$ respects the relevant orders and preserves \$(\textbackslash\{\}\textbackslash\{\}Sigma\$-A1,...,A7).
+A morphism between systemic kernels $K,K'$ is a tuple
+\begin{equation}
+  f = \big(f_v, f_\chi, f_\beta, f_C, f_\Gamma\big),
+\end{equation}
+where - $f_v:V\to V'$ is a valuation map, - $f_\chi:\mathbb{V}\times\Theta\times\beta\to \mathbb{V}'\times\Theta'\times\beta'$ is a compatible decision map, - $f_\beta:\beta\to\beta'$ and $f_C:C\to C'$ are invariance and capacity transformations, - $f_\Gamma:\Gamma\to\Gamma'$ is an envelope transformation.
 
-\textbf{Morphism preservation} \emph{(normative)}
+\textbf{Equivalence of Morphisms} \emph{(normative)}
 
-A morphism preserves valuation and decision structure by satisfying:
-\textbackslash\{\}\textbackslash\{\}begin\{equation\}
-  v' \textbackslash\{\}\textbackslash\{\}circ \textbackslash\{\}\textbackslash\{\}phi\_U \textbackslash\{\}\textbackslash\{\};=\textbackslash\{\}\textbackslash\{\}; \textbackslash\{\}\textbackslash\{\}phi\_V \textbackslash\{\}\textbackslash\{\}circ v,\textbackslash\{\}\textbackslash\{\}qquad
-  \textbackslash\{\}\textbackslash\{\}chi' \textbackslash\{\}\textbackslash\{\}circ (\textbackslash\{\}\textbackslash\{\},\textbackslash\{\}\textbackslash\{\}phi\_V\textbackslash\{\}\textbackslash\{\}times\textbackslash\{\}\textbackslash\{\}mathrm\{id\}\textbackslash\{\}\textbackslash\{\},) \textbackslash\{\}\textbackslash\{\};=\textbackslash\{\}\textbackslash\{\}; \textbackslash\{\}\textbackslash\{\}chi.
-\textbackslash\{\}\textbackslash\{\}end\{equation\}
-It also maps contract parameters monotonically and preserves (Σ-A1,...,A7).
+Morphisms $f$ and $g$ are equivalent, written $f\approx g$, if
+\begin{itemize}
+  \item $f_v=g_v$,
+  \item $f_\chi$ and $g_\chi$ are equivalent decision maps,
+  \item $f_\beta=g_\beta$ and $f_C=g_C$,
+  \item $f_\Gamma=g_\Gamma$.
+\end{itemize}
 
-\subsection*{Instantiation Recipe (Domain-Agnostic)}
+\subsection*{Recipe}
 
-\textbf{Recipe} \emph{(informative)}
+\textbf{Systemics $\Sigma$ Recipe} \emph{(normative)}
 
-To realize $\\Sigma$ in any field: 1. Choose $U$, $\\mathbb{V}$, $v$, $\\chi$. 2. Post $\\Theta,\\beta,C,\\Pi,P_n,\\Gamma$ and a wobble metric $w$. 3. Establish (Σ-A1,...,A7) by construction and tests. 4. Emit lawful $\\kappa$ and (optionally) hash-chain pages into a book.
+To specify a Systemics $\Sigma$ instance:
+\begin{enumerate}
+  \item Select a universe $U$ of artifacts.
+  \item Define a valuation map $v:U\to \mathbb{V}$.
+  \item Specify decision-relevant coordinates using floors $\theta$ and invariance budgets $\beta$.
+  \item Define capacity budgets $C$.
+  \item Specify an envelope/meta description $\mu$.
+  \item Define a decision gate $\chi$.
+\end{enumerate}
 
 \subsection*{Notes}
 
 \textbf{Notes} \emph{(informative)}
 
-This specification does not fix what $v$ measures, what $\\chi$ decides, or how $w$ is computed. It only requires posting, invariance under benign variation, minimal sufficiency under capacity, and reflexive reproducibility. Evidence Systemics is one instantiation where $v$ encodes evidence gauges; other instances (Control, Protocol, Risk, Learning, etc.) keep the same $\\Sigma$-contract while choosing different $v,\\Theta,\\beta$.
+\begin{itemize}
+  \item See also the separate specification for Σ Composition.
+  \item This specification is a work in progress; see GitHub for updates.
+\end{itemize}
 
 \subsection*{References}
 
