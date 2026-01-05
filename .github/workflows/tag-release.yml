@@ -1,0 +1,113 @@
+name: tag-release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install tectonic (PDF build tool)
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          if command -v tectonic >/dev/null 2>&1; then
+            tectonic --version
+            exit 0
+          fi
+
+          echo "Attempting tectonic install via apt-get..."
+          sudo apt-get update -y
+          if sudo apt-get install -y tectonic; then
+            tectonic --version
+            exit 0
+          fi
+
+          echo "apt-get install tectonic failed; falling back to pinned binary download"
+
+          # Pin the version to keep builds reproducible.
+          TECTONIC_VERSION="0.15.0"
+          ARCH="x86_64"
+          OS="unknown-linux-gnu"
+          URL="https://github.com/tectonic-typesetting/tectonic/releases/download/tectonic%40${TECTONIC_VERSION}/tectonic-${TECTONIC_VERSION}-${ARCH}-${OS}.tar.gz"
+
+          tmpdir="$(mktemp -d)"
+          trap 'rm -rf "$tmpdir"' EXIT
+
+          curl -fsSL "$URL" -o "$tmpdir/tectonic.tgz"
+          tar -xzf "$tmpdir/tectonic.tgz" -C "$tmpdir"
+
+          sudo install -m 0755 "$tmpdir/tectonic" /usr/local/bin/tectonic
+          tectonic --version
+
+      - name: Run core repo gates
+        shell: bash
+        run: |
+          set -euo pipefail
+          export GIT_PAGER=cat
+          export PAGER=cat
+          export GIT_TERMINAL_PROMPT=0
+
+          # Keep tag builds deterministic and non-hanging.
+          ./tools/run_with_timeout/run --seconds 600 -- ./tools/enforce_repo_law/run
+          ./tools/run_with_timeout/run --seconds 600 -- ./tools/validate_group/run
+          ./tools/run_with_timeout/run --seconds 600 -- ./tools/validate_references/run
+
+      - name: Build publication artifacts (LaTeX + PDF + MANIFEST)
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          build_one() {
+            local frame="$1"
+            local outbase="$2"
+            local name="$3"
+
+            mkdir -p "$outbase/src" "$outbase/out"
+
+            ./tools/render_latex_spec/run --in "$frame" --out "$outbase/src"
+            ./tools/pub_build_pdf/run --src "$outbase/src" --out "$outbase/out" --name "$name"
+            ./tools/pub_manifest/run --frame "$frame" --src "$outbase/src" --pdf "$outbase/out/${name}.pdf" --out "$outbase/MANIFEST.json"
+          }
+
+          build_one "frames/domains/spec/systemics/sigma-k1/v0.1.0/frame.yml" "pub/systemics/sigma-k1/v0.1.0" "sigma-k1-v0.1.0"
+          build_one "frames/domains/spec/systemics/sigma-composition-k1/v0.1.0/frame.yml" "pub/systemics/sigma-composition-k1/v0.1.0" "sigma-composition-k1-v0.1.0"
+
+      - name: Package release assets
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          mkdir -p dist
+
+          # Bundle all publication outputs for the tag.
+          tar -czf "dist/pub-${GITHUB_REF_NAME}.tar.gz" pub
+
+          # Convenience: separate PDFs bundle.
+          find pub -type f -name '*.pdf' -print0 | tar -czf "dist/pubs-pdf-${GITHUB_REF_NAME}.tar.gz" --null -T -
+
+          # Add a simple listing.
+          (
+            cd pub
+            find . -type f -maxdepth 8 | sort
+          ) > "dist/pub-filelist-${GITHUB_REF_NAME}.txt"
+
+      - name: Create GitHub Release and upload assets
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.ref_name }}
+          name: ${{ github.ref_name }}
+          generate_release_notes: true
+          files: |
+            dist/*
+            pub/**/out/*.pdf
+            pub/**/MANIFEST.json
+            pub/**/out/SHA256SUMS
