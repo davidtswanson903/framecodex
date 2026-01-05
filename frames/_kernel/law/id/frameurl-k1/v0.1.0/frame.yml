@@ -97,23 +97,29 @@ nodes:
     kind: "definition"
     status: "normative"
     label: "Segment"
-    text: >
+    text: |
       A single FrameURL path component. Segment charset is restricted for determinism and portability.
+    attrs:
+      - { key: "text.format", value: "md-inline" }
 
   - id: "def.name"
     kind: "definition"
     status: "normative"
     label: "Name"
-    text: >
+    text: |
       The final segment of a FrameURL. Name is semantically the artifact identifier within its package path.
+    attrs:
+      - { key: "text.format", value: "md-inline" }
 
   - id: "def.pkg"
     kind: "definition"
     status: "normative"
     label: "Package Path (pkg)"
-    text: >
+    text: |
       The ordered list of segments that define where a frame lives in the fractal tree.
-      For FrameURL, pkg == [scope] + [segment...name] (excluding scheme).
+      For FrameURL, `pkg == [scope] + [segment...name]` (excluding `scheme`).
+    attrs:
+      - { key: "text.format", value: "md-inline" }
 
   # ---------------------------------------------------------------------------
   # Properties / enums / patterns
@@ -165,7 +171,7 @@ nodes:
     kind: "property"
     status: "normative"
     label: "Root node invariant"
-    value: "Each frame MUST contain a root node where node.id == graph_id."
+    value: "Each frame **MUST** contain a root node where `node.id == graph_id`."
 
   # ---------------------------------------------------------------------------
   # Rules: Charter
@@ -193,9 +199,11 @@ nodes:
     status: "normative"
     modal: "MUST"
     label: "Root node id equals graph_id"
-    text: >
-      Each frame MUST contain exactly one root node where node.id == graph_id. The root node MUST
+    text: |
+      Each frame **MUST** contain exactly one root node where `node.id == graph_id`. The root node **MUST**
       be treated as the canonical identity-bearing node.
+    attrs:
+      - { key: "text.format", value: "md-inline" }
 
   # ---------------------------------------------------------------------------
   # Rules: Grammar
@@ -205,31 +213,37 @@ nodes:
     status: "normative"
     modal: "MUST"
     label: "Strict FrameURL grammar"
-    text: >
-      FrameURL MUST match: <scheme>://<scope>/<segment>.../<name>
+    text: |
+      FrameURL **MUST** match: `<scheme>://<scope>/<segment>.../<name>`
       where:
-        - scheme is one of prop.scheme_enum
-        - scope and all segments (including name) match prop.segment_regex
-        - forbidden segments prop.forbidden_segments are disallowed
-        - there is at least one segment after scope (i.e., name exists)
+        - `scheme` is one of `prop.scheme_enum`
+        - `scope` and all segments (including `name`) match `prop.segment_regex`
+        - forbidden segments from `prop.forbidden_segments` are disallowed
+        - there is at least one segment after `scope` (i.e., `name` exists)
+    attrs:
+      - { key: "text.format", value: "md-block" }
 
   - id: "rule.grammar.no_query_fragment"
     kind: "rule"
     status: "normative"
     modal: "MUST"
     label: "No query or fragment"
-    text: >
-      FrameURL MUST NOT contain '?', '#', or any query/fragment component. The identifier is purely
+    text: |
+      FrameURL **MUST NOT** contain `?`, `#`, or any query/fragment component. The identifier is purely
       hierarchical.
+    attrs:
+      - { key: "text.format", value: "md-inline" }
 
   - id: "rule.grammar.no_percent_encoding"
     kind: "rule"
     status: "normative"
     modal: "MUST"
     label: "No percent-encoding"
-    text: >
-      FrameURL MUST NOT use percent-encoding. All segments must be representable using the restricted
+    text: |
+      FrameURL **MUST NOT** use percent-encoding. All segments must be representable using the restricted
       segment charset.
+    attrs:
+      - { key: "text.format", value: "md-inline" }
 
   # ---------------------------------------------------------------------------
   # Rules: Normalization
@@ -239,34 +253,42 @@ nodes:
     status: "normative"
     modal: "MUST"
     label: "Lowercase only"
-    text: >
-      FrameURL MUST be lowercase ASCII only. Uppercase letters are forbidden.
+    text: |
+      FrameURL **MUST** be lowercase ASCII only. Uppercase letters are forbidden.
+    attrs:
+      - { key: "text.format", value: "md-inline" }
 
   - id: "rule.norm.no_whitespace"
     kind: "rule"
     status: "normative"
     modal: "MUST"
     label: "No whitespace"
-    text: >
-      FrameURL MUST NOT contain whitespace. Leading/trailing whitespace MUST be treated as invalid
+    text: |
+      FrameURL **MUST NOT** contain whitespace. Leading/trailing whitespace **MUST** be treated as invalid
       (not auto-trimmed).
+    attrs:
+      - { key: "text.format", value: "md-inline" }
 
   - id: "rule.norm.canonical_slashes"
     kind: "rule"
     status: "normative"
     modal: "MUST"
     label: "Canonical slashes"
-    text: >
-      FrameURL MUST use exactly one '://' delimiter and '/' as the only segment separator.
-      Repeated slashes '//' in the path portion are forbidden.
+    text: |
+      FrameURL **MUST** use exactly one `://` delimiter and `/` as the only segment separator.
+      Repeated slashes `//` in the path portion are forbidden.
+    attrs:
+      - { key: "text.format", value: "md-inline" }
 
   - id: "rule.norm.scheme_validation"
     kind: "rule"
     status: "normative"
     modal: "MUST"
     label: "Scheme validation"
-    text: >
-      scheme MUST be in prop.scheme_enum. Unknown schemes are invalid.
+    text: |
+      `scheme` **MUST** be in `prop.scheme_enum`. Unknown schemes are invalid.
+    attrs:
+      - { key: "text.format", value: "md-inline" }
 
   # ---------------------------------------------------------------------------
   # Rules: Filesystem projection
@@ -276,38 +298,50 @@ nodes:
     status: "normative"
     modal: "MUST"
     label: "Canonical path projection"
-    text: >
-      The canonical relative filesystem path for a frame is a pure function of (graph_id, version):
-        frames/<scope>/<scheme>/<segments...>/<name>/v<version>/frame.yml
-      where scope and segments are derived from parsing graph_id.
+    text: |
+      The canonical relative filesystem path for a frame is a pure function of (`graph_id`, `version`):
+      
+      ```
+      frames/<scope>/<scheme>/<segments...>/<name>/v<version>/frame.yml
+      ```
+      
+      where `scope` and `segments` are derived from parsing `graph_id`.
+    attrs:
+      - { key: "text.format", value: "md-block" }
 
   - id: "rule.path.must_match_on_disk"
     kind: "rule"
     status: "normative"
     modal: "MUST"
     label: "On-disk path must match projection"
-    text: >
-      If a repository uses FrameURL K1 as its on-disk convention, each frame file MUST be located at
-      the canonical projected path derived from (graph_id, version). Deviations are invalid.
+    text: |
+      If a repository uses FrameURL K1 as its on-disk convention, each frame file **MUST** be located at
+      the canonical projected path derived from (`graph_id`, `version`). Deviations are invalid.
+    attrs:
+      - { key: "text.format", value: "md-inline" }
 
   - id: "rule.path.version_folder"
     kind: "rule"
     status: "normative"
     modal: "MUST"
     label: "Version folder format"
-    text: >
-      The version folder name MUST be 'v' + version (prop.version_folder_prefix), with no additional
-      decoration. Example: v1.2.0.
+    text: |
+      The version folder name **MUST** be `v` + `version` (`prop.version_folder_prefix`), with no additional
+      decoration. Example: `v1.2.0`.
+    attrs:
+      - { key: "text.format", value: "md-inline" }
 
   - id: "rule.path.leaf_filename"
     kind: "rule"
     status: "normative"
     modal: "MUST"
     label: "Leaf filename"
-    text: >
-      The leaf filename MUST be prop.leaf_filename ('frame.yml') for canonical projection.
-      Repositories MAY provide a compatibility mode that also accepts <graph_id_sanitized>.yml, but
+    text: |
+      The leaf filename **MUST** be `prop.leaf_filename` (`frame.yml`) for canonical projection.
+      Repositories **MAY** provide a compatibility mode that also accepts `<graph_id_sanitized>.yml`, but
       canonical projection remains authoritative.
+    attrs:
+      - { key: "text.format", value: "md-inline" }
 
   # ---------------------------------------------------------------------------
   # Rules: Reference resolution
@@ -317,17 +351,21 @@ nodes:
     status: "normative"
     modal: "MUST"
     label: "FrameRef must be a canonical FrameURL"
-    text: >
-      A FrameRef consumed by tools MUST be a canonical FrameURL.
+    text: |
+      A FrameRef consumed by tools **MUST** be a canonical FrameURL.
+    attrs:
+      - { key: "text.format", value: "md-inline" }
 
   - id: "rule.ref.no_external_fetch"
     kind: "rule"
     status: "normative"
     modal: "MUST"
     label: "No external fetch"
-    text: >
-      Reference normalization MUST be offline. Implementations MUST NOT fetch or infer missing frames
+    text: |
+      Reference normalization **MUST** be offline. Implementations **MUST NOT** fetch or infer missing frames
       from network sources unless explicitly provided by the caller.
+    attrs:
+      - { key: "text.format", value: "md-inline" }
 
   # ---------------------------------------------------------------------------
   # Required violation codes (minimum)
@@ -351,36 +389,44 @@ nodes:
     status: "normative"
     modal: "MUST"
     label: "Stable codes"
-    text: >
-      Implementations claiming conformance MUST emit the violation codes listed in
-      prop.required_violation_codes with stable semantics.
+    text: |
+      Implementations claiming conformance **MUST** emit the violation codes listed in
+      `prop.required_violation_codes` with stable semantics.
+    attrs:
+      - { key: "text.format", value: "md-inline" }
 
   - id: "rule.code.bad_frameurl"
     kind: "rule"
     status: "normative"
     modal: "MUST"
     label: "ID.E.BAD_FRAMEURL"
-    text: >
-      Emit when graph_id fails FrameURL parsing under rule.grammar.strict_form or rule.grammar.no_query_fragment
-      or rule.grammar.no_percent_encoding or rule.norm.*. details MUST include: graph_id.
+    text: |
+      Emit when `graph_id` fails FrameURL parsing under `rule.grammar.strict_form` or `rule.grammar.no_query_fragment`
+      or `rule.grammar.no_percent_encoding` or `rule.norm.*`. `details` **MUST** include: `graph_id`.
+    attrs:
+      - { key: "text.format", value: "md-inline" }
 
   - id: "rule.code.path_mismatch"
     kind: "rule"
     status: "normative"
     modal: "MUST"
     label: "ID.E.PATH_MISMATCH"
-    text: >
-      Emit when an on-disk frame path does not equal the canonical projection under rule.path.projection_function.
-      details MUST include: graph_id, version, expected_path, actual_path.
+    text: |
+      Emit when an on-disk frame path does not equal the canonical projection under `rule.path.projection_function`.
+      `details` **MUST** include: `graph_id`, `version`, `expected_path`, `actual_path`.
+    attrs:
+      - { key: "text.format", value: "md-inline" }
 
   - id: "rule.code.unknown_reference"
     kind: "rule"
     status: "normative"
     modal: "MUST"
     label: "ID.E.UNKNOWN_REFERENCE"
-    text: >
+    text: |
       Emit when a FrameRef is not a valid FrameURL.
-      details MUST include: reference.
+      `details` **MUST** include: `reference`.
+    attrs:
+      - { key: "text.format", value: "md-inline" }
 
   # ---------------------------------------------------------------------------
   # Examples
