@@ -1,0 +1,21 @@
+{
+  "title": "framecodex",
+  "upload_type": "software",
+  "description": "Framecodex: a deterministic, FrameURL-only GF0 frames corpus with rendered specs and governance laws.",
+  "creators": [
+    {
+      "name": "Swanson, David",
+      "affiliation": "Independent Researcher",
+      "orcid": "0009-0003-0580-6476"
+    }
+  ],
+  "license": "CC-BY-4.0",
+  "keywords": ["frames", "specification", "systemics", "gf0", "frameurl", "deterministic"],
+  "related_identifiers": [
+    {
+      "relation": "isSupplementTo",
+      "identifier": "https://github.com/davidtswanson903/framecodex",
+      "scheme": "url"
+    }
+  ]
+}

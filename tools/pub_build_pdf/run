@@ -1,0 +1,78 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Build a PDF from a LaTeX bundle.
+#
+# Prefer `tectonic` (single-binary, good for CI); fall back to `latexmk` if present.
+#
+# Usage:
+#   tools/pub_build_pdf/run --src <dir> --out <dir> --name <basename>
+
+SRC=""
+OUT=""
+NAME="document"
+
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --src) SRC="$2"; shift 2;;
+    --out) OUT="$2"; shift 2;;
+    --name) NAME="$2"; shift 2;;
+    *) echo "Unknown arg: $1" >&2; exit 2;;
+  esac
+done
+
+if [[ -z "$SRC" || -z "$OUT" ]]; then
+  echo "Missing --src or --out" >&2
+  exit 2
+fi
+
+mkdir -p "$OUT"
+
+TMP="$(mktemp -d)"
+trap 'rm -rf "$TMP"' EXIT
+
+cp -R "$SRC"/* "$TMP"/
+
+build_with_tectonic() {
+  if ! command -v tectonic >/dev/null 2>&1; then
+    return 1
+  fi
+
+  (
+    cd "$TMP"
+    # `--print` avoids extra chatter; `--outdir` keeps outputs together.
+    tectonic --print --synctex -Z shell-escape main.tex >/dev/null
+  )
+
+  # tectonic writes main.pdf in the working dir
+  [[ -f "$TMP/main.pdf" ]]
+}
+
+build_with_latexmk() {
+  if ! command -v latexmk >/dev/null 2>&1; then
+    return 1
+  fi
+
+  (
+    cd "$TMP"
+    latexmk -pdf -interaction=nonstopmode -halt-on-error -file-line-error main.tex >/dev/null
+  )
+
+  [[ -f "$TMP/main.pdf" ]]
+}
+
+if build_with_tectonic; then
+  :
+elif build_with_latexmk; then
+  :
+else
+  echo "Neither tectonic nor latexmk found. In CI install tectonic (recommended)." >&2
+  exit 1
+fi
+
+cp "$TMP/main.pdf" "$OUT/${NAME}.pdf"
+
+(
+  cd "$OUT"
+  shasum -a 256 "${NAME}.pdf" > SHA256SUMS
+)

@@ -1,0 +1,17 @@
+version: "0.1.0"
+
+# Publication registry: external (Zenodo) identifiers live here so frames can remain stable.
+# Populate record_id / DOIs after first Zenodo deposit (manual or automated).
+
+pub_docs:
+  spec://domains/systemics/sigma-k1:
+    record_id: ""
+    concept_doi: ""
+    latest_version_doi: ""
+    latest_pub_version: "0.1.0"
+
+  spec://domains/systemics/sigma-composition-k1:
+    record_id: ""
+    concept_doi: ""
+    latest_version_doi: ""
+    latest_pub_version: "0.1.0"

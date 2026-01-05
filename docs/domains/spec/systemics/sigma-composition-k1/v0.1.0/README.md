@@ -43,8 +43,9 @@
     ```yml
     label: Posted decision combinator
     status: normative
-    text: 'For product kernel K1 ⊗ K2, the decision aggregation comb: 2×2→2 (e.g., AND/OR) MUST
-      be posted as part of the record/contract.
+    text: 'For parallel/product composition K1 ⊗ K2, both kernels evaluate and decisions are aggregated
+      via a posted combinator comb: 2 × 2 → 2 (e.g., AND/OR). The choice of comb MUST be posted
+      as part of the record/contract.
 
       '
     ```
@@ -65,8 +66,10 @@
     ```yml
     label: Posted adapter requirement
     status: normative
-    text: 'For K1 then K2, any adapter/bridge f used to produce the second valuation MUST be posted
-      as part of the record/contract, so downstream decisions remain records-only.
+    text: 'For serial composition with K1^Σ = (v1, χ1, …) and K2^Σ = (v2, χ2, …), any adapter
+      f used to produce the second valuation MUST be posted as part of the record/contract. In
+      particular, if v2 is defined from u and the upstream decision by: v2(u) = f(u, χ1(v1(u),
+      Θ1, β1)), then f MUST be included in posted data so downstream decisions remain records-only.
 
       '
     ```
@@ -76,8 +79,9 @@
     ```yml
     label: Monotone contract combination
     status: normative
-    text: 'Serial composition is lawful only if combined (Θ,β,C) are formed via a monotone operator
-      ⊕ (domain-chosen) and Σ-A1..Σ-A7 remain satisfied for the composite.
+    text: 'The composite kernel K2 ∘ K1 is lawful only if (Σ-A1 … Σ-A7) hold for the composite
+      and if the combined contracts (Θ, β, C) are formed via a monotone operator ⊕ (domain-chosen),
+      i.e. tightening in any component must not rely on hidden slack.
 
       '
     ```
@@ -87,8 +91,8 @@
     ```yml
     label: Pages and books
     status: normative
-    text: 'A page is a lawful record κ for one window; a book is an ordered sequence (optionally
-      hash-chained) of pages. Chaining preserves replay and does not alter decisions.
+    text: 'A page is a lawful record κ for one window. A book is an ordered sequence of pages;
+      optionally, pages may be hash-chained. Chaining preserves replay and does not alter decisions.
 
       '
     ```

@@ -10,7 +10,7 @@
     ```yml
     label: Σ-A1 Well-typedness
     status: normative
-    text: 'All maps are well-defined (measurable/continuous as needed); χ is total on V×Θ×β.
+    text: 'All maps are measurable/continuous as needed; χ is total on V × Θ × β.
 
       '
     ```
@@ -21,7 +21,7 @@
     label: Σ-A2 Posting / Records-only
     status: normative
     text: 'For any run on u ∈ U, the record κ ∈ R contains (v(u), Θ, β, C, Π, P_n, Γ), and the
-      decision is determined with no dependence on unposted data: χ*(u; κ) = χ(v(u), Θ, β).
+      decision equals χ*(u; κ) = χ(v(u), Θ, β), with no dependence on unposted data.
 
       '
     ```
@@ -31,10 +31,9 @@
     ```yml
     label: Σ-A3 Benign invariance
     status: normative
-    text: 'Let (π, p) ∈ Π × P_n act on the measurement/evaluation pathway to yield v_{π,p}(u).
-      Define worst-case wobble relative to a baseline (π0, p0) by: W(u) := sup_{(π,p)} w(v_{π,p}(u),
-      v_{π0,p0}(u)). If W(u) ⪯ β then χ(v_{π,p}(u), Θ, β) = χ(v_{π0,p0}(u), Θ, β) for all benign
-      (π,p).
+    text: 'Let (π,p) ∈ Π × P_n act on the measurement/evaluation pathway to yield v_{π,p}(u).
+      Define W(u) := sup_{(π,p)} w(v_{π,p}(u), v_{π0,p0}(u)). If W(u) ⪯ β then for all benign
+      (π,p), χ(v_{π,p}(u), Θ, β) = χ(v_{π0,p0}(u), Θ, β).
 
       '
     ```
@@ -44,9 +43,8 @@
     ```yml
     label: Σ-A4 Minimal sufficiency under capacity
     status: normative
-    text: 'Among valuations preserving decisions under posted (Θ, β), v is minimal with respect
-      to capacity cost subject to C: for all v'', (χ ∘ v'' = χ ∘ v) ⇒ cost(v'') ⪰ cost(v), subject
-      to C.
+    text: 'Among valuations preserving decisions under posted (Θ, β), v is minimal w.r.t. capacity
+      cost subject to C: for all v'', (χ ∘ v'' = χ ∘ v) ⇒ cost(v'') ⪰ cost(v), subject to C.
 
       '
     ```
@@ -56,8 +54,8 @@
     ```yml
     label: Σ-A5 Reflexive reproducibility
     status: normative
-    text: 'There exists an admissible, independently realized valuation v'' (different numeric
-      route/implementation) such that χ(v(u), Θ, β) = χ(v''(u), Θ, β), with both posted in κ (self-warrant).
+    text: 'There exists an admissible, independently realized v'' (different numeric/route) such
+      that χ(v(u), Θ, β) = χ(v''(u), Θ, β), with both posted in κ (self-warrant).
 
       '
     ```
@@ -78,8 +76,8 @@
     label: Σ-A7 Monotonicity
     status: normative
     text: 'Tightening floors or budgets cannot rescue a failure by hidden dependence. For θ ⪯
-      θ'' and β'' ⪯ β, any pass at (θ'', β'') must be explainable using only posted record data;
-      tightening must not create a pass whose justification depends on unposted slack.
+      θ'' and β'' ⪯ β, χ(v, θ, β) = 1 implies χ(v, θ'', β'') ∈ {0,1} with no hidden rescue: tightening
+      must not create a pass whose justification depends on data not posted in the record.
 
       '
     ```
@@ -124,9 +122,9 @@
     ```yml
     label: Wobble and orderings
     status: normative
-    text: 'Σ assumes a divergence / wobble metric w: V × V → R_{≥0} on decision-relevant coordinates.
-      Orders are written as: θ ⪯ θ'' meaning tightening floors; β'' ⪯ β meaning tightening budgets;
-      and C'' ⪯ C meaning shrinking capacity.
+    text: 'Σ assumes a divergence ("wobble") w: V × V → R_{≥0} on decision-relevant coordinates.
+      Orders: θ ⪯ θ'' means tightening floors; β'' ⪯ β means tightening budgets; C'' ⪯ C means
+      shrinking capacity.
 
       '
     ```
@@ -136,8 +134,8 @@
     ```yml
     label: Morphism preservation
     status: normative
-    text: 'Morphisms preserve valuation/decision structure by commuting with v and χ: v'' ∘ φ_U
-      = φ_V ∘ v and χ'' ∘ (φ_V × id) = χ. They also map contract parameters monotonically, preserving
+    text: 'A morphism preserves valuation and decision structure by satisfying: v'' ∘ φ_U = φ_V
+      ∘ v, χ'' ∘ (φ_V × id) = χ. It also maps contract parameters monotonically and preserves
       Σ-A1..Σ-A7.
 
       '
@@ -176,9 +174,9 @@
     symbols:
     - desc: universe of artifacts
       sym: U
-    - desc: valuation space (measurable space; commonly R^k × B^m)
+    - desc: valuation space (any measurable space; commonly R^k × B^m)
       sym: V
-    - desc: decision space {0,1}
+    - desc: decision space 2 := {0,1}
       sym: '2'
     - desc: frames / benign contexts
       sym: Π
@@ -309,8 +307,9 @@
     ```yml
     label: 'Morphism F: Σ → Σ'''
     status: normative
-    summary: 'A morphism F: Σ → Σ'' is a pair (φ_U, φ_V) with v'' ∘ φ_U = φ_V ∘ v and χ'' ∘ (φ_V
-      × id) = χ, that also maps contracts monotonically so that Σ axioms remain satisfied.
+    summary: 'A morphism F: Σ → Σ'' is a pair (φ_U, φ_V) such that the following commutation laws
+      hold: v'' ∘ φ_U = φ_V ∘ v, and χ'' ∘ (φ_V × id) = χ. A morphism also maps contracts monotonically
+      so that Σ axioms remain satisfied.
 
       '
     ```

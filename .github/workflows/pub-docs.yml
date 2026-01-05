@@ -1,0 +1,93 @@
+name: pub-docs
+
+on:
+  workflow_dispatch: {}
+  push:
+    branches: [main]
+    paths:
+      - "frames/**"
+      - "tools/**"
+      - "governance/**"
+      - "pub/**"
+      - ".github/workflows/pub-docs.yml"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install tectonic (PDF build tool)
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          if command -v tectonic >/dev/null 2>&1; then
+            tectonic --version
+            exit 0
+          fi
+
+          echo "Attempting tectonic install via apt-get..."
+          sudo apt-get update -y
+          if sudo apt-get install -y tectonic; then
+            tectonic --version
+            exit 0
+          fi
+
+          echo "apt-get install tectonic failed; falling back to pinned binary download"
+
+          # Pin the version to keep builds reproducible.
+          TECTONIC_VERSION="0.15.0"
+          ARCH="x86_64"
+          OS="unknown-linux-gnu"
+          URL="https://github.com/tectonic-typesetting/tectonic/releases/download/tectonic%40${TECTONIC_VERSION}/tectonic-${TECTONIC_VERSION}-${ARCH}-${OS}.tar.gz"
+
+          tmpdir="$(mktemp -d)"
+          trap 'rm -rf "$tmpdir"' EXIT
+
+          curl -fsSL "$URL" -o "$tmpdir/tectonic.tgz"
+          tar -xzf "$tmpdir/tectonic.tgz" -C "$tmpdir"
+
+          # The tarball contains `tectonic` at top-level.
+          sudo install -m 0755 "$tmpdir/tectonic" /usr/local/bin/tectonic
+          tectonic --version
+
+      - name: Run core repo gates
+        shell: bash
+        run: |
+          set -euo pipefail
+          export GIT_PAGER=cat
+          export PAGER=cat
+          export GIT_TERMINAL_PROMPT=0
+
+          ./tools/enforce_repo_law/run
+          ./tools/validate_group/run
+          ./tools/validate_references/run
+
+      - name: Build publication artifacts (LaTeX + PDF + MANIFEST)
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          build_one() {
+            local frame="$1"
+            local outbase="$2"
+            local name="$3"
+
+            mkdir -p "$outbase/src" "$outbase/out"
+
+            ./tools/render_latex_spec/run --in "$frame" --out "$outbase/src"
+            ./tools/pub_build_pdf/run --src "$outbase/src" --out "$outbase/out" --name "$name"
+            ./tools/pub_manifest/run --frame "$frame" --src "$outbase/src" --pdf "$outbase/out/${name}.pdf" --out "$outbase/MANIFEST.json"
+          }
+
+          build_one "frames/domains/spec/systemics/sigma-k1/v0.1.0/frame.yml" "pub/systemics/sigma-k1/v0.1.0" "sigma-k1-v0.1.0"
+          build_one "frames/domains/spec/systemics/sigma-composition-k1/v0.1.0/frame.yml" "pub/systemics/sigma-composition-k1/v0.1.0" "sigma-composition-k1-v0.1.0"
+
+      - name: Upload pub artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: pub-artifacts
+          path: |
+            pub/**
+            out/**

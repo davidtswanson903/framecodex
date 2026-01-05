@@ -1,0 +1,9 @@
+cff-version: 1.2.0
+message: "If you use this repository, please cite it."
+title: "framecodex"
+type: software
+authors:
+  - family-names: Swanson
+    given-names: David
+license: CC-BY-4.0
+repository-code: "https://github.com/davidtswanson903/framecodex"

@@ -25,6 +25,13 @@ nodes:
       - { key: "doc.license", value: "CC-BY-4.0", vtype: "spdx" }
       - { key: "doc.tags", value: "[\"systemics\",\"sigma\",\"composition\"]", vtype: "json" }
 
+      - { key: "pub.kind", value: "spec-paper" }
+      - { key: "pub.track", value: "zenodo-record" }
+      - { key: "pub.version", value: "0.1.0" }
+      - { key: "pub.latex.profile", value: "render://latex/spec-paper-k1" }
+      - { key: "pub.bundle.path", value: "pub/systemics/sigma-composition-k1/v0.1.0" }
+      - { key: "pub.citation.key", value: "spec.systemics.sigma-composition-k1" }
+
   - id: "ref.specframe"
     kind: "spec_ref"
     status: "informative"

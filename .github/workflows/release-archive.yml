@@ -1,0 +1,38 @@
+name: release-archive
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run repo gates (time-bounded)
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          ./tools/run_with_timeout/run --seconds 120 --out out/logs/enforce_repo_law.log -- ./tools/enforce_repo_law/run
+          ./tools/run_with_timeout/run --seconds 120 --out out/logs/validate_group.log -- ./tools/validate_group/run
+          ./tools/run_with_timeout/run --seconds 120 --out out/logs/validate_references.log -- ./tools/validate_references/run
+          ./tools/run_with_timeout/run --seconds 300 --out out/logs/render_docs.log -- ./tools/render_docs/run
+          ./tools/run_with_timeout/run --seconds 120 --out out/logs/no_diff.log -- ./tools/no_diff/run
+
+      - name: Verify citation and Zenodo metadata files exist
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -f CITATION.cff
+          test -f .zenodo.json
+
+      - name: Upload release manifest artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-artifacts
+          path: |
+            docs/MANIFEST.json
+            out/**/report.json
+            out/logs/*.log
