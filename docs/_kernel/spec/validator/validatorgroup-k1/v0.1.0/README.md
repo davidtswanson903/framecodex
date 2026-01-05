@@ -67,7 +67,7 @@ Each stage **MAY** add violations. A stage **MAY** be skipped for a graph if pre
 
 **Stage: links** _(normative)_
 
-links performs cross-graph checks using only graphs that passed gf0*struct and have unique graph*id: - For SpecFrames: every spec*ref.target*graph*id MUST exist as a graph*id in the DocGroup. - Additional link rules MAY be implemented, but MUST be deterministic and MUST have stable codes. Links stage MUST NOT attempt network fetch or external resolution unless the caller explicitly provides those graphs in the DocGroup.
+`links` performs cross-graph checks using only graphs that passed `gf0_struct` and have unique `graph_id`: - For SpecFrames: every `spec_ref.target_graph_id` **MUST** exist as a `graph_id` in the DocGroup. - Additional link rules **MAY** be implemented, but **MUST** be deterministic and **MUST** have stable codes. Links stage **MUST NOT** attempt network fetch or external resolution unless the caller explicitly provides those graphs in the DocGroup.
 
 **Stage: profile\_detect** _(normative)_
 
@@ -75,7 +75,7 @@ links performs cross-graph checks using only graphs that passed gf0*struct and h
 
 **Stage: renderframe\_k1** _(normative)_
 
-renderframe*k1 validates graphs detected as RenderFrames: - allowed node kinds and edge types for RenderFrameK1; - exactly one render*plan root node with id==graph*id and profile=='renderframe-k1'; - 'contains' edges form an acyclic tree rooted at the render*plan node; - rule edges and reference targets are well-typed (selects->selector, emits->emitter, etc.). (RenderFrameK1's detailed rules are defined by spec://_kernel/render/renderframe-k1; this stage MUST implement them when that spec is available in the DocGroup.)
+`renderframe_k1` validates graphs detected as RenderFrames by checking: - allowed node kinds and edge types for RenderFrameK1 - exactly one `render_plan` root node (where id equals graph*id and profile equals renderframe-k1) - `contains` edges forming an acyclic tree rooted at the render*plan node - rule edges and reference targets are well-typed (selects→selector, emits→emitter, etc.) RenderFrameK1's detailed rules are defined by `spec://_kernel/render/renderframe-k1`. This stage **MUST** implement them when that spec is available in the DocGroup.
 
 **Stage: specframe\_k1** _(normative)_
 
