@@ -183,9 +183,25 @@ def render_tex(docir: Dict[str, Any]) -> str:
     lines.extend(render_preamble(title))
 
     in_itemize = False
+    skipped_title_heading = False
+
     for b in docir.get("blocks", []):
         if not isinstance(b, dict):
             continue
+
+        # Avoid duplicate top-level heading:
+        # DocIR commonly emits a first level-1 heading that equals the document title,
+        # but we already render `\title{...}` + `\maketitle` in the preamble.
+        if not skipped_title_heading and b.get("type") == "heading":
+            try:
+                level = int(b.get("level", 1))
+            except Exception:
+                level = 1
+            if level <= 1:
+                htitle = str(b.get("title", ""))
+                if title and htitle.strip() == title.strip():
+                    skipped_title_heading = True
+                    continue
 
         # Ensure list items are wrapped in an itemize.
         if b.get("type") == "list_item" and not in_itemize:
