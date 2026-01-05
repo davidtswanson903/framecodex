@@ -169,6 +169,22 @@ def render_inline_markup_k1_tex(ast: Dict[str, Any]) -> List[str]:
     return out
 
 
+def _wrap_tex_macros_in_math(text: str) -> str:
+    """Wrap TeX macros in a text string with $...$ math delimiters.
+    
+    Heuristic: if text contains backslash commands like \mathbb{}, \times, etc.,
+    wrap it in math mode. This is conservative and may over-wrap.
+    """
+    if not text or "\\" not in text:
+        return text
+    
+    # Check if text looks like it has TeX macros
+    if re.search(r"\\(mathbb|mathbf|mathcal|mathrm|mathnormal|alpha|beta|gamma|Gamma|delta|Delta|theta|Theta|lambda|Lambda|sigma|Sigma|pi|Pi|rho|tau|phi|chi|psi|omega|Omega|times|to|mapsto|in|notin|preceq|succeq|le|ge|subset|supset|cap|cup|otimes|oplus|cdot|div|infty|partial|nabla|int|sum|prod|lim)", text):
+        return "$" + text + "$"
+    
+    return text
+
+
 def _render_inline_block_or_plain(value: Any) -> str:
     """Render a field that can be either plain text or InlineMarkup-K1 AST."""
 
@@ -216,7 +232,7 @@ def render_preamble(title: str) -> List[str]:
     # Policy (minimal, deterministic):
     # - Split on $...$ pairs (non-nested).
     # - Outside math: escape as plain text.
-    # - Inside math: normalize unicode and emit inside \(...\) without further escaping.
+    # - Inside math: normalize unicode and emit inside $...$ without further escaping.
     def render_title_mixed(s: str) -> str:
         s = s or ""
         parts: List[str] = []
@@ -227,7 +243,8 @@ def render_preamble(title: str) -> List[str]:
                 frag = "".join(buf)
                 buf = []
                 if in_math:
-                    parts.append(r"\\(" + normalize_tex_unicode(frag) + r"\\)")
+                    # Emit as $...$ (standard LaTeX math mode)
+                    parts.append("$" + normalize_tex_unicode(frag) + "$")
                 else:
                     parts.append(tex_escape(frag))
                 in_math = not in_math
@@ -328,7 +345,9 @@ def render_block(b: Dict[str, Any]) -> List[str]:
                 # In tex-* mode treat symbol fields as raw TeX.
                 if _is_tex_passthrough(b.get("text_format")):
                     sym_math = sym_raw
-                    desc_rendered = str(s.get("desc", "") or "")
+                    desc_raw = str(s.get("desc", "") or "")
+                    # If desc contains TeX macros, wrap in math mode where needed
+                    desc_rendered = _wrap_tex_macros_in_math(desc_raw)
                 else:
                     sym_math = normalize_tex_unicode(sym_raw)
                     # Prefer markup-aware descriptions when present.
