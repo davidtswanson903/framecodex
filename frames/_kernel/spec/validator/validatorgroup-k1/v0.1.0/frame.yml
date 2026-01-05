@@ -373,113 +373,148 @@ nodes:
     kind: "clause"
     status: "normative"
     label: "Canonical sorting rules"
-    text: >
+    text: |
       To ensure identical outputs across implementations:
-        - Graph processing order MUST be ascending lexicographic order of graph_id.
-        - Within a graph, node lookup order MUST be ascending lexicographic order of node.id.
-        - Edge lookup order MUST be ascending lexicographic order of (edge.type, edge.from, edge.to, edge.id).
-      All violation lists MUST be sorted by the canonical violation ordering (clause.determinism.violation_order).
+        - Graph processing order **MUST** be ascending lexicographic order of `graph_id`.
+        - Within a graph, node lookup order **MUST** be ascending lexicographic order of `node.id`.
+        - Edge lookup order **MUST** be ascending lexicographic order of (`edge.type`, `edge.from`, `edge.to`, `edge.id`).
+      All violation lists **MUST** be sorted by the canonical violation ordering (see `clause.determinism.violation_order`).
+    attrs:
+      - key: "text.format"
+        value: "md-block"
 
   - id: "clause.determinism.violation_order"
     kind: "clause"
     status: "normative"
     label: "Canonical violation ordering"
-    text: >
-      Violations MUST be sorted ascending by the tuple:
-        (severity_rank, code, stage, location.graph_id, meta_path_join, node_id, edge_key, details_join)
+    text: |
+      Violations **MUST** be sorted ascending by the tuple:
+      `(severity_rank, code, stage, location.graph_id, meta_path_join, node_id, edge_key, details_join)`
+      
       where:
-        - severity_rank(error)=0, severity_rank(warning)=1
-        - meta_path_join is meta_path joined by ' > ' (empty string if none)
-        - node_id and edge_key are empty string if absent
-        - details_join is details joined as 'k=v' pairs in order with ';' separators
+        - `severity_rank(error) = 0`, `severity_rank(warning) = 1`
+        - `meta_path_join` is `meta_path` joined by ` > ` (empty string if none)
+        - `node_id` and `edge_key` are empty string if absent
+        - `details_join` is details joined as `k=v` pairs in order with `;` separators
+    attrs:
+      - key: "text.format"
+        value: "md-block"
 
   - id: "clause.determinism.details_order"
     kind: "clause"
     status: "normative"
     label: "Details ordering"
-    text: >
-      Violation.details MUST be an ordered list of {key,value} pairs and MUST be sorted by key
-      ascending lexicographic order, with stable tie-breaker by value ascending lexicographic order,
+    text: |
+      `Violation.details` **MUST** be an ordered list of `{key, value}` pairs and **MUST** be sorted by `key` 
+      ascending lexicographic order, with stable tie-breaker by `value` ascending lexicographic order, 
       unless a specific code explicitly requires a different order.
+    attrs:
+      - key: "text.format"
+        value: "md-inline"
 
   - id: "clause.determinism.limits"
     kind: "clause"
     status: "normative"
     label: "Safety limits"
-    text: >
-      Implementations MUST protect against unbounded recursion and pathological inputs by enforcing:
-        - max_meta_depth: default 16 (caller may lower or raise; if exceeded, emit GF0.E.META_DEPTH_EXCEEDED)
-        - max_nodes_per_graph: default 1,000,000 (if exceeded, emit GF0.E.GRAPH_TOO_LARGE)
-        - max_edges_per_graph: default 2,000,000 (if exceeded, emit GF0.E.GRAPH_TOO_LARGE)
-      Limits MUST be applied deterministically and reported via stable codes.
+    text: |
+      Implementations **MUST** protect against unbounded recursion and pathological inputs by enforcing:
+        - `max_meta_depth`: default 16 (caller may lower or raise; if exceeded, emit `GF0.E.META_DEPTH_EXCEEDED`)
+        - `max_nodes_per_graph`: default 1,000,000 (if exceeded, emit `GF0.E.GRAPH_TOO_LARGE`)
+        - `max_edges_per_graph`: default 2,000,000 (if exceeded, emit `GF0.E.GRAPH_TOO_LARGE`)
+      Limits **MUST** be applied deterministically and reported via stable codes.
+    attrs:
+      - key: "text.format"
+        value: "md-block"
 
   # --- Clauses: Report model -------------------------------------------------
   - id: "clause.report.model"
     kind: "clause"
     status: "normative"
     label: "ValidationReportK1 model"
-    text: >
-      The validator produces a ValidationReportK1 object with fields:
-        - version: fixed string 'validatorgroup-k1@0.1.0'
-        - ok: boolean
-        - violations: ordered list of Violation objects
-      ok MUST be true iff violations contains no entries with severity == 'error'.
+    text: |
+      The validator produces a `ValidationReportK1` object with fields:
+        - `version`: fixed string `validatorgroup-k1@0.1.0`
+        - `ok`: boolean
+        - `violations`: ordered list of Violation objects
+      
+      `ok` **MUST** be true iff `violations` contains no entries with `severity == error`.
+    attrs:
+      - key: "text.format"
+        value: "md-block"
 
   - id: "clause.report.violation_model"
     kind: "clause"
     status: "normative"
     label: "Violation model"
-    text: >
-      A Violation object MUST have:
-        - severity: 'error' | 'warning'
-        - code: stable string code (see section.6)
-        - stage: one of property.stage_enum.stage_values
-        - location: Location object
-        - details: ordered list of {key,value} pairs (not a map)
-      A Violation MAY have:
-        - message: non-canonical human-readable string (MUST be ignored for canonical equivalence)
+    text: |
+      A `Violation` object **MUST** have:
+        - `severity`: `error` or `warning`
+        - `code`: stable string code (see `section.6`)
+        - `stage`: one of `property.stage_enum.stage_values`
+        - `location`: Location object
+        - `details`: ordered list of `{key, value}` pairs (not a map)
+      
+      A `Violation` **MAY** have:
+        - `message`: non-canonical human-readable string (**MUST** be ignored for canonical equivalence)
+    attrs:
+      - key: "text.format"
+        value: "md-block"
 
   - id: "clause.report.location_model"
     kind: "clause"
     status: "normative"
     label: "Location model"
-    text: >
-      A Location object MUST have:
-        - graph_id: string
-        - meta_path: ordered list of string graph_ids from outermost graph to the graph where the violation occurred
-      It MAY have:
-        - node_id: string
-        - edge_key: string (canonical edge key 'type|from|to|id', with empty id allowed)
+    text: |
+      A `Location` object **MUST** have:
+        - `graph_id`: string
+        - `meta_path`: ordered list of string `graph_id`s from outermost graph to the graph where the violation occurred
+      
+      It **MAY** have:
+        - `node_id`: string
+        - `edge_key`: string (canonical edge key in the form `type|from|to|id`, with empty `id` allowed)
+    attrs:
+      - key: "text.format"
+        value: "md-block"
 
   - id: "clause.report.canonical_json"
     kind: "clause"
     status: "normative"
     label: "Canonical JSON serialization"
-    text: >
+    text: |
       Canonical equivalence is defined by canonical JSON serialization of the report:
         - UTF-8 encoding
         - Object keys are sorted lexicographically (byte order of UTF-8)
         - Arrays preserve their specified order
         - No insignificant whitespace is permitted
-        - Newlines in strings MUST be '\n' (LF)
-      message fields, if present, MUST be excluded from canonical serialization.
+        - Newlines in strings **MUST** be `\n` (LF)
+      
+      `message` fields, if present, **MUST** be excluded from canonical serialization.
+    attrs:
+      - key: "text.format"
+        value: "md-block"
 
   - id: "clause.report.fingerprint"
     kind: "clause"
     status: "informative"
     label: "Fingerprint"
-    text: >
-      Implementations MAY provide a 'fingerprint' value computed as SHA-256 over the canonical JSON bytes
+    text: |
+      Implementations **MAY** provide a `fingerprint` value computed as SHA-256 over the canonical JSON bytes
       as a convenience for fast equivalence checks.
+    attrs:
+      - key: "text.format"
+        value: "md-inline"
 
   # --- Clauses: Codes --------------------------------------------------------
   - id: "clause.codes.requirement"
     kind: "clause"
     status: "normative"
     label: "Stable codes"
-    text: >
-      Codes MUST be stable across versions of implementations that claim conformance to this spec.
-      Codes MUST NOT include implementation-specific details (paths, line numbers, stack traces).
+    text: |
+      Codes **MUST** be stable across versions of implementations that claim conformance to this spec.
+      Codes **MUST NOT** include implementation-specific details (paths, line numbers, stack traces).
+    attrs:
+      - key: "text.format"
+        value: "md-inline"
 
   - id: "property.required_codes"
     kind: "property"
@@ -509,82 +544,112 @@ nodes:
     kind: "clause"
     status: "normative"
     label: "GF0.E.MISSING_FIELD"
-    text: >
+    text: |
       Emitted when any required GF0 top-level field is missing in canonical form.
-      details MUST include: field_name.
+      `details` **MUST** include: `field_name`.
+    attrs:
+      - key: "text.format"
+        value: "md-inline"
 
   - id: "clause.codes.gf0_empty_id_ver"
     kind: "clause"
     status: "normative"
     label: "GF0.E.EMPTY_GRAPH_ID_OR_VERSION"
-    text: >
-      Emitted when graph_id or version is empty string.
-      details MUST include: which ('graph_id'|'version').
+    text: |
+      Emitted when `graph_id` or `version` is empty string.
+      `details` **MUST** include: `which` (either `graph_id` or `version`).
+    attrs:
+      - key: "text.format"
+        value: "md-inline"
 
   - id: "clause.codes.gf0_dup_node"
     kind: "clause"
     status: "normative"
     label: "GF0.E.DUP_NODE_ID"
-    text: >
-      Emitted when two or more nodes share the same id within one frame.
-      details MUST include: node_id.
+    text: |
+      Emitted when two or more nodes share the same `id` within one frame.
+      `details` **MUST** include: `node_id`.
+    attrs:
+      - key: "text.format"
+        value: "md-inline"
 
   - id: "clause.codes.gf0_bad_edge"
     kind: "clause"
     status: "normative"
     label: "GF0.E.BAD_EDGE_ENDPOINT"
-    text: >
+    text: |
       Emitted when an edge endpoint references a missing node.
-      details MUST include: edge_key, missing_endpoint ('from'|'to'), missing_node_id.
+      `details` **MUST** include: `edge_key`, `missing_endpoint` (either `from` or `to`), `missing_node_id`.
+    attrs:
+      - key: "text.format"
+        value: "md-inline"
 
   - id: "clause.codes.spec_bad_kind"
     kind: "clause"
     status: "normative"
     label: "SPEC.E.BAD_NODE_KIND"
-    text: >
-      Emitted when a SpecFrame contains a node with kind not in the SpecFrame allowed set.
-      details MUST include: node_id, node_kind.
+    text: |
+      Emitted when a SpecFrame contains a node with `kind` not in the SpecFrame allowed set.
+      `details` **MUST** include: `node_id`, `node_kind`.
+    attrs:
+      - key: "text.format"
+        value: "md-inline"
 
   - id: "clause.codes.spec_bad_edge_type"
     kind: "clause"
     status: "normative"
     label: "SPEC.E.BAD_EDGE_TYPE"
-    text: >
-      Emitted when a SpecFrame contains an edge with type not in the SpecFrame allowed set.
-      details MUST include: edge_key, edge_type.
+    text: |
+      Emitted when a SpecFrame contains an edge with `type` not in the SpecFrame allowed set.
+      `details` **MUST** include: `edge_key`, `edge_type`.
+    attrs:
+      - key: "text.format"
+        value: "md-inline"
 
   - id: "clause.codes.spec_contains_cycle"
     kind: "clause"
     status: "normative"
     label: "SPEC.E.CONTAINS_CYCLE_OR_MULTIPARENT"
-    text: >
-      Emitted when 'contains' edges are cyclic or a node has multiple 'contains' parents.
-      details MUST include: node_id.
-      details MAY include: parent_ids (ordered list of parents), cycle_hint (string).
+    text: |
+      Emitted when `contains` edges are cyclic or a node has multiple `contains` parents.
+      `details` **MUST** include: `node_id`.
+      `details` **MAY** include: `parent_ids` (ordered list of parents), `cycle_hint` (string).
+    attrs:
+      - key: "text.format"
+        value: "md-inline"
 
   - id: "clause.codes.spec_missing_attr"
     kind: "clause"
     status: "normative"
     label: "SPEC.E.MISSING_REQUIRED_ATTR"
-    text: >
-      Emitted when a required attribute per SpecFrame node kind is missing.
-      details MUST include: node_id, node_kind, attr_name.
+    text: |
+      Emitted when a required attribute per SpecFrame node `kind` is missing.
+      `details` **MUST** include: `node_id`, `node_kind`, `attr_name`.
+    attrs:
+      - key: "text.format"
+        value: "md-inline"
 
   - id: "clause.codes.link_missing_target_graph"
     kind: "clause"
     status: "normative"
     label: "LINK.E.MISSING_TARGET_GRAPH"
-    text: >
-      Emitted when a spec_ref.target_graph_id does not exist in the DocGroup.
-      details MUST include: node_id, target_graph_id.
+    text: |
+      Emitted when a `spec_ref.target_graph_id` does not exist in the DocGroup.
+      `details` **MUST** include: `node_id`, `target_graph_id`.
+    attrs:
+      - key: "text.format"
+        value: "md-inline"
 
   - id: "clause.codes.link_unreachable_normative"
     kind: "clause"
     status: "normative"
     label: "LINK.W.UNREACHABLE_NORMATIVE"
-    text: >
-      Emitted (as warning by default) when a normative node is unreachable from the SpecFrame root via 'contains'.
-      details MUST include: node_id.
+    text: |
+      Emitted (as warning by default) when a normative node is unreachable from the SpecFrame root via `contains`.
+      `details` **MUST** include: `node_id`.
+    attrs:
+      - key: "text.format"
+        value: "md-inline"
 
   # --- Examples --------------------------------------------------------------
   - id: "example.minimal_report"
