@@ -17,9 +17,12 @@ nodes:
     title: "FrameMeta K1 — Common Per-Frame Metadata Fields"
     summary: >
       Defines a common, frame-level metadata surface for GF0 frames (author, created/updated,
-      contact, tags, etc.). Metadata is expressed via AttrK0 on the root node (id==graph_id).
+      contact, tags, etc.). Metadata is expressed via `AttrK0` on the root node (`id==graph_id`).
       This law defines keys, encoding, and stable violation codes; repo profiles may choose
       which fields are required.
+    attrs:
+      - key: "text.format"
+        value: "md-block"
 
     law_id: "frame-meta-k1"
     law_version: "0.1.0"
@@ -150,6 +153,9 @@ nodes:
     summary: >
       We constrain structured values to JSON arrays (not objects) to keep determinism simple
       across implementations.
+    attrs:
+      - key: "text.format"
+        value: "md-inline"
     value: "^\\[[^\\s].*\\]$"
 
   - id: "prop.contact_entry_recommendation"
@@ -170,143 +176,197 @@ nodes:
     modal: "MUST"
     label: "Metadata stored as AttrK0"
     text: >
-      Frame-level metadata MUST be represented using AttrK0 on NodeK0.attrs. AttrK0 is a simple
+      Frame-level metadata **MUST** be represented using `AttrK0` on `NodeK0.attrs`. `AttrK0` is a simple
       key–value struct stored in a deterministic slice.
+    attrs:
+      - key: "text.format"
+        value: "md-inline"
 
   - id: "rule.storage.root_only"
     kind: "rule"
     modal: "MUST"
     label: "Metadata keys live on root node only"
     text: >
-      All keys listed in prop.standard_keys MUST be declared only on the root node where node.id == graph_id.
+      All keys listed in `prop.standard_keys` **MUST** be declared only on the root node where `node.id == graph_id`.
       Declaring these keys on non-root nodes is invalid.
+    attrs:
+      - key: "text.format"
+        value: "md-inline"
 
   - id: "rule.storage.attrs_slice_not_map"
     kind: "rule"
     modal: "MUST"
     label: "Attrs remain slices"
     text: >
-      Implementations MUST preserve attrs as ordered slices and MUST NOT canonicalize them into maps,
+      Implementations **MUST** preserve `attrs` as ordered slices and **MUST NOT** canonicalize them into maps,
       even when interpreting metadata keys.
+    attrs:
+      - key: "text.format"
+        value: "md-inline"
 
   - id: "rule.keys.prefix"
     kind: "rule"
     modal: "SHOULD"
     label: "doc.* prefix"
     text: >
-      Frame-level metadata keys SHOULD use the doc.* namespace (prop.meta_key_prefix). Repos MAY define
-      additional namespaces, but doc.* is reserved for this law.
+      Frame-level metadata keys **SHOULD** use the `doc.*` namespace (`prop.meta_key_prefix`). Repos **MAY** define
+      additional namespaces, but `doc.*` is reserved for this law.
+    attrs:
+      - key: "text.format"
+        value: "md-inline"
 
   - id: "rule.keys.author_shorthand"
     kind: "rule"
     modal: "MAY"
     label: "doc.author shorthand"
     text: >
-      doc.author MAY be used as a shorthand for a single author. If both doc.author and doc.authors
-      are present, doc.authors is authoritative and doc.author SHOULD be treated as redundant.
+      `doc.author` **MAY** be used as a shorthand for a single author. If both `doc.author` and `doc.authors`
+      are present, `doc.authors` is authoritative and `doc.author` **SHOULD** be treated as redundant.
+    attrs:
+      - key: "text.format"
+        value: "md-inline"
 
   - id: "rule.keys.authors_format"
     kind: "rule"
     modal: "MUST"
     label: "doc.authors format"
     text: >
-      If doc.authors is present, its value MUST be a JSON array string (prop.json_array_string_regex)
-      whose elements are non-empty strings. vtype SHOULD be 'json'.
+      If `doc.authors` is present, its value **MUST** be a JSON array string (`prop.json_array_string_regex`)
+      whose elements are non-empty strings. `vtype` **SHOULD** be `'json'`.
+    attrs:
+      - key: "text.format"
+        value: "md-inline"
 
   - id: "rule.keys.contact_format"
     kind: "rule"
     modal: "MUST"
     label: "doc.contact format"
     text: >
-      If doc.contact is present, its value MUST be a JSON array string (prop.json_array_string_regex)
-      whose elements are non-empty strings. vtype SHOULD be 'json'.
+      If `doc.contact` is present, its value **MUST** be a JSON array string (`prop.json_array_string_regex`)
+      whose elements are non-empty strings. `vtype` **SHOULD** be `'json'`.
+    attrs:
+      - key: "text.format"
+        value: "md-inline"
 
   - id: "rule.keys.created_format"
     kind: "rule"
     modal: "MUST"
     label: "doc.created format"
     text: >
-      If doc.created is present, it MUST match prop.rfc3339_regex. vtype SHOULD be 'rfc3339'.
+      If `doc.created` is present, it **MUST** match `prop.rfc3339_regex`. `vtype` **SHOULD** be `'rfc3339'`.
+    attrs:
+      - key: "text.format"
+        value: "md-inline"
 
   - id: "rule.keys.updated_format"
     kind: "rule"
     modal: "MUST"
     label: "doc.updated format"
     text: >
-      If doc.updated is present, it MUST match prop.rfc3339_regex. vtype SHOULD be 'rfc3339'.
+      If `doc.updated` is present, it **MUST** match `prop.rfc3339_regex`. `vtype` **SHOULD** be `'rfc3339'`.
+    attrs:
+      - key: "text.format"
+        value: "md-inline"
 
   - id: "rule.keys.updated_not_before_created"
     kind: "rule"
     modal: "SHOULD"
     label: "updated should not precede created"
     text: >
-      If both doc.created and doc.updated are present and parseable as RFC3339, doc.updated SHOULD NOT be
-      earlier than doc.created. Tooling MAY warn or error based on repo policy.
+      If both `doc.created` and `doc.updated` are present and parseable as RFC3339, `doc.updated` **SHOULD NOT** be
+      earlier than `doc.created`. Tooling **MAY** warn or error based on repo policy.
+    attrs:
+      - key: "text.format"
+        value: "md-inline"
 
   - id: "rule.keys.tags_format"
     kind: "rule"
     modal: "MUST"
     label: "doc.tags format"
     text: >
-      If doc.tags is present, its value MUST be a JSON array string (prop.json_array_string_regex)
-      whose elements are non-empty strings. vtype SHOULD be 'json'.
+      If `doc.tags` is present, its value **MUST** be a JSON array string (`prop.json_array_string_regex`)
+      whose elements are non-empty strings. `vtype` **SHOULD** be `'json'`.
+    attrs:
+      - key: "text.format"
+        value: "md-inline"
 
   - id: "rule.keys.keywords_format"
     kind: "rule"
     modal: "MUST"
     label: "doc.keywords format"
     text: >
-      If doc.keywords is present, its value MUST be a JSON array string (prop.json_array_string_regex)
-      whose elements are non-empty strings. vtype SHOULD be 'json'.
+      If `doc.keywords` is present, its value **MUST** be a JSON array string (`prop.json_array_string_regex`)
+      whose elements are non-empty strings. `vtype` **SHOULD** be `'json'`.
+    attrs:
+      - key: "text.format"
+        value: "md-inline"
 
   - id: "rule.keys.audience_enum"
     kind: "rule"
     modal: "SHOULD"
     label: "doc.audience recommended enum"
     text: >
-      If doc.audience is present, its value SHOULD be one of prop.audience_enum. Repo policy MAY tighten
-      this to MUST.
+      If `doc.audience` is present, its value **SHOULD** be one of `prop.audience_enum`. Repo policy **MAY** tighten
+      this to **MUST**.
+    attrs:
+      - key: "text.format"
+        value: "md-inline"
 
   - id: "rule.keys.license_delegation"
     kind: "rule"
     modal: "MUST"
     label: "doc.license governed elsewhere"
     text: >
-      doc.license semantics and validation are governed by DocLicense K1 (ref.doclicense). This law only
-      reserves the key within prop.standard_keys.
+      `doc.license` semantics and validation are governed by `DocLicense K1` (`ref.doclicense`). This law only
+      reserves the key within `prop.standard_keys`.
+    attrs:
+      - key: "text.format"
+        value: "md-inline"
 
   - id: "rule.encoding.unique_keys"
     kind: "rule"
     modal: "MUST"
     label: "No duplicate doc.* keys on root"
     text: >
-      On the root node, each key listed in prop.standard_keys MUST appear at most once in attrs. Duplicate
-      keys are invalid (even though attrs are slices).
+      On the root node, each key listed in `prop.standard_keys` **MUST** appear at most once in `attrs`. Duplicate
+      keys are invalid (even though `attrs` are slices).
+    attrs:
+      - key: "text.format"
+        value: "md-inline"
 
   - id: "rule.encoding.value_is_string"
     kind: "rule"
     modal: "MUST"
     label: "AttrK0 values remain strings"
     text: >
-      AttrK0.value MUST remain a UTF-8 string; structured content (authors/tags/contact) MUST be encoded
+      `AttrK0.value` **MUST** remain a UTF-8 string; structured content (authors/tags/contact) **MUST** be encoded
       as JSON array strings per this law.
+    attrs:
+      - key: "text.format"
+        value: "md-inline"
 
   - id: "rule.resolution.effective_metadata"
     kind: "rule"
     modal: "MAY"
     label: "Effective metadata resolution (optional)"
     text: >
-      Tooling MAY compute EffectiveMetadata for missing keys using repo-provided defaults (e.g., default
-      author/contact), but MUST NOT change the stored frame content when doing so. Defaults MUST be
+      Tooling **MAY** compute `EffectiveMetadata` for missing keys using repo-provided defaults (e.g., default
+      author/contact), but **MUST NOT** change the stored frame content when doing so. Defaults **MUST** be
       provided offline by repository governance.
+    attrs:
+      - key: "text.format"
+        value: "md-inline"
 
   - id: "rule.resolution.no_network"
     kind: "rule"
     modal: "MUST"
     label: "No network fetch"
     text: >
-      Implementations MUST NOT fetch external sources (Git history, APIs, remote services) to fill or
-      validate doc.* metadata unless explicitly provided as inputs by the caller.
+      Implementations **MUST NOT** fetch external sources (Git history, APIs, remote services) to fill or
+      validate `doc.*` metadata unless explicitly provided as inputs by the caller.
+    attrs:
+      - key: "text.format"
+        value: "md-inline"
 
   # ---------------------------------------------------------------------------
   # Violations
@@ -328,56 +388,77 @@ nodes:
     modal: "MUST"
     label: "Stable violations"
     text: >
-      Implementations claiming conformance MUST emit the codes listed in prop.required_violation_codes
+      Implementations claiming conformance **MUST** emit the codes listed in `prop.required_violation_codes`
       with stable semantics and deterministic ordering.
+    attrs:
+      - key: "text.format"
+        value: "md-inline"
 
   - id: "code.nonroot"
     kind: "rule"
     modal: "MUST"
     label: "META.E.NONROOT_META_KEY"
     text: >
-      Emit when any key in prop.standard_keys is found on a non-root node. details MUST include:
-      graph_id, node_id, key.
+      Emit when any key in `prop.standard_keys` is found on a non-root node. `details` **MUST** include:
+      `graph_id`, `node_id`, `key`.
+    attrs:
+      - key: "text.format"
+        value: "md-inline"
 
   - id: "code.dupkey"
     kind: "rule"
     modal: "MUST"
     label: "META.E.DUPLICATE_META_KEY"
     text: >
-      Emit when the root node contains duplicate occurrences of any key in prop.standard_keys. details
-      MUST include: graph_id, key, count.
+      Emit when the root node contains duplicate occurrences of any key in `prop.standard_keys`. `details`
+      **MUST** include: `graph_id`, `key`, `count`.
+    attrs:
+      - key: "text.format"
+        value: "md-inline"
 
   - id: "code.bad_rfc3339"
     kind: "rule"
     modal: "MUST"
     label: "META.E.BAD_RFC3339"
     text: >
-      Emit when doc.created or doc.updated is present but does not match prop.rfc3339_regex. details MUST
-      include: graph_id, key, value.
+      Emit when `doc.created` or `doc.updated` is present but does not match `prop.rfc3339_regex`. `details` **MUST**
+      include: `graph_id`, `key`, `value`.
+    attrs:
+      - key: "text.format"
+        value: "md-inline"
 
   - id: "code.bad_json_array"
     kind: "rule"
     modal: "MUST"
     label: "META.E.BAD_JSON_ARRAY"
     text: >
-      Emit when doc.authors/doc.contact/doc.tags/doc.keywords is present but is not a JSON array string or
-      contains empty elements. details MUST include: graph_id, key, value.
+      Emit when `doc.authors`/`doc.contact`/`doc.tags`/`doc.keywords` is present but is not a JSON array string or
+      contains empty elements. `details` **MUST** include: `graph_id`, `key`, `value`.
+    attrs:
+      - key: "text.format"
+        value: "md-inline"
 
   - id: "warn.missing_recommended"
     kind: "rule"
     modal: "MAY"
     label: "META.W.MISSING_RECOMMENDED_KEY"
     text: >
-      Emit when a key in prop.recommended_keys_minset is missing from the root node. details SHOULD include:
-      graph_id, missing_key.
+      Emit when a key in `prop.recommended_keys_minset` is missing from the root node. `details` **SHOULD** include:
+      `graph_id`, `missing_key`.
+    attrs:
+      - key: "text.format"
+        value: "md-inline"
 
   - id: "warn.updated_before_created"
     kind: "rule"
     modal: "MAY"
     label: "META.W.UPDATED_BEFORE_CREATED"
     text: >
-      Emit when both doc.created and doc.updated are present, parseable, and doc.updated < doc.created.
-      details SHOULD include: graph_id, created, updated.
+      Emit when both `doc.created` and `doc.updated` are present, parseable, and `doc.updated < doc.created`.
+      `details` **SHOULD** include: `graph_id`, `created`, `updated`.
+    attrs:
+      - key: "text.format"
+        value: "md-inline"
 
   # ---------------------------------------------------------------------------
   # Examples
@@ -387,21 +468,31 @@ nodes:
     status: "informative"
     label: "Minimal recommended metadata"
     text: |
+      ```yaml
       attrs:
         - { key: "doc.authors", value: "[\"David Swanson\"]", vtype: "json" }
         - { key: "doc.created", value: "2026-01-04T12:00:00-06:00", vtype: "rfc3339" }
         - { key: "doc.updated", value: "2026-01-04T12:00:00-06:00", vtype: "rfc3339" }
         - { key: "doc.license", value: "CC-BY-4.0", vtype: "spdx" }
+      ```
+    attrs:
+      - key: "text.format"
+        value: "md-block"
 
   - id: "ex.2.tags_contact"
     kind: "example"
     status: "informative"
     label: "Tags + contact"
     text: |
+      ```yaml
       attrs:
         - { key: "doc.tags", value: "[\"gf0\",\"governance\",\"rendering\"]", vtype: "json" }
         - { key: "doc.contact", value: "[\"email:you@example.com\",\"handle:@plainstack\"]", vtype: "json" }
         - { key: "doc.audience", value: "public" }
+      ```
+    attrs:
+      - key: "text.format"
+        value: "md-block"
 
 edges:
   - { from: "law://_kernel/meta/frame-meta-k1", to: "title.0", type: "contains" }
