@@ -27,37 +27,43 @@
 
 **Intent** _(normative)_
 
-ValidatorGroup K1 exists to ensure that independent implementations validate the same DocGroup and produce identical canonical results, enabling deterministic CI, refactors, and generator pipelines.
+`ValidatorGroup K1` exists to ensure that independent implementations validate the same
+`DocGroup` and produce identical canonical results, enabling deterministic CI, refactors,
+and generator pipelines.
 
 **Non-goals** _(normative)_
 
-This spec does not mandate any particular programming language, IO mechanism, file layout, or CLI UX. It does not mandate performance characteristics beyond bounded recursion.
+This spec does not mandate any particular programming language, IO mechanism, file layout,
+or CLI UX. It does not mandate performance characteristics beyond bounded recursion.
 
 ## Inputs and Canonicalization
 <a id="section-2-inputs-ffc16fdb"></a>
 
 **graph\_id uniqueness across DocGroup** _(normative)_
 
-Within a DocGroup, graph*id values SHOULD be unique. If duplicates exist: - the validator MUST emit at least one violation per duplicated graph*id, and - the validator MUST NOT arbitrarily choose one duplicate as canonical. Deterministic behavior rule: graphs with duplicated graph_id MUST be validated for GF0 structural integrity, but MUST be excluded from higher-level profile validation and excluded from cross-graph linking, to avoid nondeterministic resolution.
+Within a `DocGroup`, `graph_id` values **SHOULD** be unique. If duplicates exist: - the validator **MUST** emit at least one violation per duplicated `graph_id`, and - the validator **MUST NOT** arbitrarily choose one duplicate as canonical. Deterministic behavior rule: graphs with duplicated `graph_id` **MUST** be validated for GF0 structural integrity, but **MUST** be excluded from higher-level profile validation and excluded from cross-graph linking, to avoid nondeterministic resolution.
 
 **GraphRecord input model** _(normative)_
 
-A validator consumes a DocGroup expressed as a list of GraphRecords: - graph: a GF0 GraphFrameK0 value - source*id: optional string (e.g. file path, URL, label) source*id MUST NOT affect the canonical validation result.
+A validator consumes a `DocGroup` expressed as a list of `GraphRecord`s: - `graph`: a GF0 `GraphFrameK0` value - `source_id`: optional string (e.g., file path, URL, label) `source_id` **MUST NOT** affect the canonical validation result.
 
 **Meta recursion** _(normative)_
 
-Validation MUST recursively validate each MetaGraph using the same GF0 rules, subject to a maximum meta depth (see clause.determinism.limits). MetaGraphs MUST be treated as structurally independent; parent references, if any, are purely attribute/semantics level.
+Validation **MUST** recursively validate each `MetaGraph` using the same GF0 rules, subject to
+a maximum `meta` depth (see `clause.determinism.limits`). `MetaGraph`s **MUST** be treated as
+structurally independent; parent references, if any, are purely attribute/semantics level.
 
 ## Validation Stages
 <a id="section-3-stages-0349f45b"></a>
 
 **Stage definition** _(normative)_
 
-Validation proceeds in the stage order specified by property.stage_order. Each stage MAY add violations. A stage MAY be skipped for a graph if prerequisites fail.
+Validation proceeds in the stage order specified by `property.stage_order`.
+Each stage **MAY** add violations. A stage **MAY** be skipped for a graph if prerequisites fail.
 
 **Stage: gf0\_struct** _(normative)_
 
-gf0*struct performs structural validation of each graph (and recursively its MetaGraphs): - required top-level fields are present and correctly typed; - graph*id and version are non-empty strings; - NodeK0 IDs are unique within the frame; - EdgeK0 endpoints refer to existing NodeK0 IDs in the same frame. Any failure in gf0_struct MUST emit an error severity violation for that graph.
+`gf0_struct` performs structural validation of each graph (and recursively its `MetaGraph`s): - required top-level fields are present and correctly typed; - `graph_id` and `version` are non-empty strings; - `NodeK0` IDs are unique within the frame; - `EdgeK0` endpoints refer to existing `NodeK0` IDs in the same frame. Any failure in `gf0_struct` **MUST** emit an error severity violation for that graph.
 
 **Stage: links** _(normative)_
 
@@ -65,7 +71,7 @@ links performs cross-graph checks using only graphs that passed gf0*struct and h
 
 **Stage: profile\_detect** _(normative)_
 
-profile*detect deterministically identifies which higher-level validators apply to a graph. Detection MUST be based only on the graph's own content (not filename or environment). Minimum required detection rules: - SpecFrameK1 applies if the graph contains exactly one node with id==graph*id, kind=='spec', and profile=='specframe-k1'. - RenderFrameK1 applies if the graph contains exactly one node with id==graph*id, kind=='render*plan', and profile=='renderframe-k1'. If a graph matches multiple profile rules, the validator MUST emit an error and MUST NOT proceed to the conflicting profile validators.
+`profile_detect` deterministically identifies which higher-level validators apply to a graph. Detection **MUST** be based only on the graph's own content (not filename or environment). Minimum required detection rules: - `SpecFrameK1` applies if the graph contains exactly one node with `id==graph_id`, `kind=='spec'`, and `profile=='specframe-k1'`. - `RenderFrameK1` applies if the graph contains exactly one node with `id==graph_id`, `kind=='render_plan'`, and `profile=='renderframe-k1'`. If a graph matches multiple profile rules, the validator **MUST** emit an error and **MUST NOT** proceed to the conflicting profile validators.
 
 **Stage: renderframe\_k1** _(normative)_
 
@@ -73,7 +79,7 @@ renderframe*k1 validates graphs detected as RenderFrames: - allowed node kinds a
 
 **Stage: specframe\_k1** _(normative)_
 
-specframe_k1 validates graphs detected as SpecFrames: - NodeK0.kind is within the allowed SpecFrame kinds set; - EdgeK0.type is within the allowed SpecFrame edge types set; - 'contains' edges form an acyclic tree (or forest) rooted at the spec node; - required attributes per node kind are present. Missing required attributes MUST be treated as errors.
+`specframe_k1` validates graphs detected as `SpecFrame`s: - `NodeK0.kind` is within the allowed `SpecFrame` kinds set; - `EdgeK0.type` is within the allowed `SpecFrame` edge types set; - `'contains'` edges form an acyclic tree (or forest) rooted at the spec node; - required attributes per node kind are present. Missing required attributes **MUST** be treated as errors.
 
 **Stage enum** _(normative)_
 

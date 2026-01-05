@@ -219,98 +219,125 @@ nodes:
     kind: "clause"
     status: "normative"
     label: "Intent"
-    text: >
-      ValidatorGroup K1 exists to ensure that independent implementations validate the same
-      DocGroup and produce identical canonical results, enabling deterministic CI, refactors,
+    text: |
+      `ValidatorGroup K1` exists to ensure that independent implementations validate the same
+      `DocGroup` and produce identical canonical results, enabling deterministic CI, refactors,
       and generator pipelines.
+    attrs:
+      - key: "text.format"
+        value: "md-inline"
 
   - id: "clause.scope.non_goals"
     kind: "clause"
     status: "normative"
     label: "Non-goals"
-    text: >
+    text: |
       This spec does not mandate any particular programming language, IO mechanism, file layout,
       or CLI UX. It does not mandate performance characteristics beyond bounded recursion.
+    attrs:
+      - key: "text.format"
+        value: "md-inline"
 
   # --- Clauses: Inputs -------------------------------------------------------
   - id: "clause.inputs.graphrecord"
     kind: "clause"
     status: "normative"
     label: "GraphRecord input model"
-    text: >
-      A validator consumes a DocGroup expressed as a list of GraphRecords:
-        - graph: a GF0 GraphFrameK0 value
-        - source_id: optional string (e.g. file path, URL, label)
-      source_id MUST NOT affect the canonical validation result.
+    text: |
+      A validator consumes a `DocGroup` expressed as a list of `GraphRecord`s:
+        - `graph`: a GF0 `GraphFrameK0` value
+        - `source_id`: optional string (e.g., file path, URL, label)
+      `source_id` **MUST NOT** affect the canonical validation result.
+    attrs:
+      - key: "text.format"
+        value: "md-block"
 
   - id: "clause.inputs.graph_id_uniqueness_across_group"
     kind: "clause"
     status: "normative"
     label: "graph_id uniqueness across DocGroup"
-    text: >
-      Within a DocGroup, graph_id values SHOULD be unique. If duplicates exist:
-        - the validator MUST emit at least one violation per duplicated graph_id, and
-        - the validator MUST NOT arbitrarily choose one duplicate as canonical.
-      Deterministic behavior rule: graphs with duplicated graph_id MUST be validated for GF0
-      structural integrity, but MUST be excluded from higher-level profile validation and
+    text: |
+      Within a `DocGroup`, `graph_id` values **SHOULD** be unique. If duplicates exist:
+        - the validator **MUST** emit at least one violation per duplicated `graph_id`, and
+        - the validator **MUST NOT** arbitrarily choose one duplicate as canonical.
+      Deterministic behavior rule: graphs with duplicated `graph_id` **MUST** be validated for GF0
+      structural integrity, but **MUST** be excluded from higher-level profile validation and
       excluded from cross-graph linking, to avoid nondeterministic resolution.
+    attrs:
+      - key: "text.format"
+        value: "md-block"
 
   - id: "clause.inputs.meta_recursion"
     kind: "clause"
     status: "normative"
     label: "Meta recursion"
-    text: >
-      Validation MUST recursively validate each MetaGraph using the same GF0 rules, subject to
-      a maximum meta depth (see clause.determinism.limits). MetaGraphs MUST be treated as
+    text: |
+      Validation **MUST** recursively validate each `MetaGraph` using the same GF0 rules, subject to
+      a maximum `meta` depth (see `clause.determinism.limits`). `MetaGraph`s **MUST** be treated as
       structurally independent; parent references, if any, are purely attribute/semantics level.
+    attrs:
+      - key: "text.format"
+        value: "md-inline"
 
   # --- Clauses: Stages -------------------------------------------------------
   - id: "clause.stages.definition"
     kind: "clause"
     status: "normative"
     label: "Stage definition"
-    text: >
-      Validation proceeds in the stage order specified by property.stage_order.
-      Each stage MAY add violations. A stage MAY be skipped for a graph if prerequisites fail.
+    text: |
+      Validation proceeds in the stage order specified by `property.stage_order`.
+      Each stage **MAY** add violations. A stage **MAY** be skipped for a graph if prerequisites fail.
+    attrs:
+      - key: "text.format"
+        value: "md-inline"
 
   - id: "clause.stages.gf0_struct"
     kind: "clause"
     status: "normative"
     label: "Stage: gf0_struct"
-    text: >
-      gf0_struct performs structural validation of each graph (and recursively its MetaGraphs):
+    text: |
+      `gf0_struct` performs structural validation of each graph (and recursively its `MetaGraph`s):
         - required top-level fields are present and correctly typed;
-        - graph_id and version are non-empty strings;
-        - NodeK0 IDs are unique within the frame;
-        - EdgeK0 endpoints refer to existing NodeK0 IDs in the same frame.
-      Any failure in gf0_struct MUST emit an error severity violation for that graph.
+        - `graph_id` and `version` are non-empty strings;
+        - `NodeK0` IDs are unique within the frame;
+        - `EdgeK0` endpoints refer to existing `NodeK0` IDs in the same frame.
+      Any failure in `gf0_struct` **MUST** emit an error severity violation for that graph.
+    attrs:
+      - key: "text.format"
+        value: "md-block"
 
   - id: "clause.stages.profile_detect"
     kind: "clause"
     status: "normative"
     label: "Stage: profile_detect"
-    text: >
-      profile_detect deterministically identifies which higher-level validators apply to a graph.
-      Detection MUST be based only on the graph's own content (not filename or environment).
+    text: |
+      `profile_detect` deterministically identifies which higher-level validators apply to a graph.
+      Detection **MUST** be based only on the graph's own content (not filename or environment).
       Minimum required detection rules:
-        - SpecFrameK1 applies if the graph contains exactly one node with id==graph_id, kind=='spec',
-          and profile=='specframe-k1'.
-        - RenderFrameK1 applies if the graph contains exactly one node with id==graph_id,
-          kind=='render_plan', and profile=='renderframe-k1'.
-      If a graph matches multiple profile rules, the validator MUST emit an error and MUST NOT
+        - `SpecFrameK1` applies if the graph contains exactly one node with `id==graph_id`, `kind=='spec'`,
+          and `profile=='specframe-k1'`.
+        - `RenderFrameK1` applies if the graph contains exactly one node with `id==graph_id`,
+          `kind=='render_plan'`, and `profile=='renderframe-k1'`.
+      If a graph matches multiple profile rules, the validator **MUST** emit an error and **MUST NOT**
       proceed to the conflicting profile validators.
+    attrs:
+      - key: "text.format"
+        value: "md-block"
 
   - id: "clause.stages.specframe"
     kind: "clause"
     status: "normative"
     label: "Stage: specframe_k1"
-    text: >
-      specframe_k1 validates graphs detected as SpecFrames:
-        - NodeK0.kind is within the allowed SpecFrame kinds set;
-        - EdgeK0.type is within the allowed SpecFrame edge types set;
-        - 'contains' edges form an acyclic tree (or forest) rooted at the spec node;
+    text: |
+      `specframe_k1` validates graphs detected as `SpecFrame`s:
+        - `NodeK0.kind` is within the allowed `SpecFrame` kinds set;
+        - `EdgeK0.type` is within the allowed `SpecFrame` edge types set;
+        - `'contains'` edges form an acyclic tree (or forest) rooted at the spec node;
         - required attributes per node kind are present.
-      Missing required attributes MUST be treated as errors.
+      Missing required attributes **MUST** be treated as errors.
+    attrs:
+      - key: "text.format"
+        value: "md-block"
 
   - id: "clause.stages.renderframe"
     kind: "clause"
