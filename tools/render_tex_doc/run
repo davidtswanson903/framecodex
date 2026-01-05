@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Render DocIR JSON into a LaTeX bundle (main.tex).
+# Usage:
+#   tools/render_tex_doc/run --in <docir.json> --out-dir <latex_dir>
+
+HERE="$(cd "$(dirname "$0")" && pwd)"
+exec "$HERE/run.py" "$@"

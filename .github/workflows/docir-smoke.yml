@@ -8,6 +8,7 @@ on:
       - "frames/**"
       - "tools/render_docir/**"
       - "tools/render_md_doc/**"
+      - "tools/render_tex_doc/**"
       - ".github/workflows/docir-smoke.yml"
 
 jobs:
@@ -16,23 +17,28 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Render DocIR and Markdown (smoke)
+      - name: Render DocIR, Markdown, and LaTeX (smoke)
         shell: bash
         run: |
           set -euo pipefail
 
-          mkdir -p out/docir out/docs
+          mkdir -p out/docir out/docs out/tex
 
           ./tools/render_docir/run --in frames/domains/spec/systemics/sigma-k1/v0.1.0/frame.yml --out out/docir/sigma-k1.json
           ./tools/render_md_doc/run --in out/docir/sigma-k1.json --out out/docs/sigma-k1.md
+          ./tools/render_tex_doc/run --in out/docir/sigma-k1.json --out-dir out/tex/sigma-k1
+          test -f out/tex/sigma-k1/main.tex
 
           ./tools/render_docir/run --in frames/domains/spec/systemics/sigma-composition-k1/v0.1.0/frame.yml --out out/docir/sigma-composition-k1.json
           ./tools/render_md_doc/run --in out/docir/sigma-composition-k1.json --out out/docs/sigma-composition-k1.md
+          ./tools/render_tex_doc/run --in out/docir/sigma-composition-k1.json --out-dir out/tex/sigma-composition-k1
+          test -f out/tex/sigma-composition-k1/main.tex
 
-      - name: Upload rendered Markdown (artifact)
+      - name: Upload rendered outputs (artifact)
         uses: actions/upload-artifact@v4
         with:
-          name: docir-md
+          name: docir-projections
           path: |
             out/docir/*.json
             out/docs/*.md
+            out/tex/**

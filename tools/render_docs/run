@@ -5,7 +5,95 @@ repo_root="$(cd "$(dirname "$0")/../.." && pwd)"
 mkdir -p "$repo_root/docs" "$repo_root/out/render_docs"
 
 # Deterministically render docs for all canonical frames in frames/**/v*/frame.yml.
-"$repo_root/tools/render_simple_md/run" >/dev/null
+# New pipeline: GF0/SpecFrame -> DocIR -> Markdown.
+python3 - <<'PY'
+import json
+from pathlib import Path
+
+root = Path('.').resolve()
+frames = sorted(root.glob('frames/**/v*/frame.yml'))
+
+def frameurl_path(graph_id: str) -> str:
+    # frameurl-ish: <scheme>://<scope>/<segments...> -> <scope>/<scheme>/<segments...>
+    if '://' not in graph_id:
+        return graph_id
+    scheme, rest = graph_id.split('://', 1)
+    scope = rest.split('/', 1)[0]
+    tail = rest.split('/', 1)[1] if '/' in rest else ''
+    return f"{scope}/{scheme}/{tail}".rstrip('/')
+
+outputs = []
+fails = []
+
+docs_root = root / 'docs'
+out_docir = root / 'out' / 'render_docs' / 'docir'
+out_md = root / 'out' / 'render_docs' / 'md'
+out_docir.mkdir(parents=True, exist_ok=True)
+out_md.mkdir(parents=True, exist_ok=True)
+
+for p in frames:
+    rel = p.relative_to(root).as_posix()
+    try:
+        import yaml  # type: ignore
+        data = yaml.safe_load(p.read_text(encoding='utf-8'))
+        if not isinstance(data, dict):
+            continue
+
+        gid = data.get('graph_id')
+        ver = data.get('version')
+
+        # fallback: first node id and root-node version
+        if not isinstance(gid, str) or not gid:
+            nodes0 = data.get('nodes') if isinstance(data.get('nodes'), list) else []
+            for n in nodes0:
+                if isinstance(n, dict) and isinstance(n.get('id'), str) and n.get('id'):
+                    gid = n.get('id')
+                    break
+        if not isinstance(ver, str) or not ver:
+            nodes0 = data.get('nodes') if isinstance(data.get('nodes'), list) else []
+            if isinstance(gid, str) and gid:
+                for n in nodes0:
+                    if isinstance(n, dict) and n.get('id') == gid and isinstance(n.get('version'), str) and n.get('version'):
+                        ver = n.get('version')
+                        break
+
+        if not isinstance(gid, str) or not gid or not isinstance(ver, str) or not ver:
+            raise ValueError('missing graph_id/version')
+
+        safe = frameurl_path(gid).replace('/', '__')
+        docir_path = out_docir / f"{safe}__v{ver}.json"
+        md_path = out_md / f"{safe}__v{ver}.md"
+
+        # Run tools via the repo's wrappers for consistent env/shebang behavior.
+        import subprocess
+        subprocess.run([str(root / 'tools' / 'render_docir' / 'run'), '--in', str(p), '--out', str(docir_path)], check=True)
+        subprocess.run([str(root / 'tools' / 'render_md_doc' / 'run'), '--in', str(docir_path), '--out', str(md_path)], check=True)
+
+        out_path = docs_root / frameurl_path(gid) / f"v{ver}" / 'README.md'
+        out_path.parent.mkdir(parents=True, exist_ok=True)
+        out_path.write_text(md_path.read_text(encoding='utf-8'), encoding='utf-8', newline='\n')
+
+        outputs.append({
+            'graph_id': gid,
+            'version': ver,
+            'input': rel,
+            'docir': docir_path.relative_to(root).as_posix(),
+            'output': out_path.relative_to(root).as_posix(),
+        })
+    except Exception as e:
+        fails.append({'path': rel, 'error': str(e)})
+
+report = {
+    'tool': {'id': 'render_docs', 'version': '0.3.0'},
+    'ok': len(fails) == 0,
+    'outputs': sorted(outputs, key=lambda x: (x['graph_id'], x['version'], x['output'])),
+    'failures': fails,
+}
+(root / 'out' / 'render_docs' / 'report.json').write_text(json.dumps(report, indent=2, sort_keys=True) + '\n', encoding='utf-8')
+
+if fails:
+    raise SystemExit(1)
+PY
 
 # Deterministically emit MANIFEST.json describing outputs.
 python3 - <<'PY'
@@ -13,12 +101,11 @@ import json
 from pathlib import Path
 
 root = Path('.').resolve()
-out = root / 'out' / 'render_simple_md' / 'report.json'
-report = json.loads(out.read_text(encoding='utf-8'))
+report = json.loads((root / 'out' / 'render_docs' / 'report.json').read_text(encoding='utf-8'))
 
 manifest = {
-  "manifest_version": "0.1.0",
-  "generated_by": {"tool": "render_docs", "version": "0.2.0"},
+  "manifest_version": "0.2.0",
+  "generated_by": {"tool": "render_docs", "version": report.get('tool', {}).get('version', 'unknown')},
   "active": {
     "law": {"graph_id": "law://repo/governance/repo-law-k1", "version": "0.1.0"}
   },

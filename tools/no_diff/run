@@ -5,20 +5,105 @@ repo_root="$(cd "$(dirname "$0")/../.." && pwd)"
 out_dir="$repo_root/out/no_diff"
 mkdir -p "$out_dir"
 
-# Bootstrap: since render_docs is deterministic placeholder, we just assert MANIFEST exists.
+# Reproducibility gate:
+# (A) Render *projections* twice into scratch dirs and assert byte-for-byte identity.
+# (B) Render the repo's docs/**/README.md twice (in scratch repos) and assert identity.
+
+work1="$out_dir/work1"
+work2="$out_dir/work2"
+rm -rf "$work1" "$work2"
+mkdir -p "$work1" "$work2"
+
+render_all() {
+  local w="$1"
+  mkdir -p "$w/docir" "$w/md" "$w/tex"
+
+  local frame1="$repo_root/frames/domains/spec/systemics/sigma-k1/v0.1.0/frame.yml"
+  local frame2="$repo_root/frames/domains/spec/systemics/sigma-composition-k1/v0.1.0/frame.yml"
+
+  "$repo_root/tools/render_docir/run" --in "$frame1" --out "$w/docir/sigma-k1-v0.1.0.json"
+  "$repo_root/tools/render_md_doc/run" --in "$w/docir/sigma-k1-v0.1.0.json" --out "$w/md/sigma-k1-v0.1.0.md"
+  "$repo_root/tools/render_tex_doc/run" --in "$w/docir/sigma-k1-v0.1.0.json" --out-dir "$w/tex/sigma-k1-v0.1.0"
+
+  "$repo_root/tools/render_docir/run" --in "$frame2" --out "$w/docir/sigma-composition-k1-v0.1.0.json"
+  "$repo_root/tools/render_md_doc/run" --in "$w/docir/sigma-composition-k1-v0.1.0.json" --out "$w/md/sigma-composition-k1-v0.1.0.md"
+  "$repo_root/tools/render_tex_doc/run" --in "$w/docir/sigma-composition-k1-v0.1.0.json" --out-dir "$w/tex/sigma-composition-k1-v0.1.0"
+}
+
+digest_tree() {
+  local w="$1"
+  ( cd "$w" && find . -type f -print0 | LC_ALL=C sort -z | xargs -0 shasum -a 256 )
+}
+
+# (A) Projection determinism
+render_all "$work1"
+render_all "$work2"
+
+d1="$out_dir/digests-1.txt"
+d2="$out_dir/digests-2.txt"
+digest_tree "$work1" > "$d1"
+digest_tree "$work2" > "$d2"
+
 ok=true
-if [ ! -f "$repo_root/docs/MANIFEST.json" ]; then
+note="ok"
+if ! diff -u "$d1" "$d2" >/dev/null; then
   ok=false
+  note="Outputs differ between runs (non-deterministic projections)"
+  diff -u "$d1" "$d2" > "$out_dir/diff.txt" || true
+fi
+
+# (B) docs/** determinism (render_docs)
+# Use two clean copies of the repo (excluding .git) to avoid clobbering the working tree.
+repo1="$out_dir/repo1"
+repo2="$out_dir/repo2"
+rm -rf "$repo1" "$repo2"
+mkdir -p "$repo1" "$repo2"
+
+copy_repo() {
+  local dst="$1"
+  ( cd "$repo_root" && tar -czf - --exclude .git --exclude out --exclude site . ) | ( cd "$dst" && tar -xzf - )
+}
+
+copy_repo "$repo1"
+copy_repo "$repo2"
+
+(
+  cd "$repo1"
+  ./tools/render_docs/run >/dev/null
+)
+(
+  cd "$repo2"
+  ./tools/render_docs/run >/dev/null
+)
+
+# Hash only the generated docs tree and its manifest.
+# (If you want to include more generated material later, expand these paths.)
+docs_d1="$out_dir/docs-digests-1.txt"
+docs_d2="$out_dir/docs-digests-2.txt"
+(
+  cd "$repo1"
+  find docs -type f \( -name 'README.md' -o -name 'MANIFEST.json' \) -print0 | LC_ALL=C sort -z | xargs -0 shasum -a 256
+) > "$docs_d1"
+(
+  cd "$repo2"
+  find docs -type f \( -name 'README.md' -o -name 'MANIFEST.json' \) -print0 | LC_ALL=C sort -z | xargs -0 shasum -a 256
+) > "$docs_d2"
+
+if ! diff -u "$docs_d1" "$docs_d2" >/dev/null; then
+  ok=false
+  note="docs/** README.md differ between runs (non-deterministic docs generation)"
+  diff -u "$docs_d1" "$docs_d2" > "$out_dir/docs-diff.txt" || true
 fi
 
 cat > "$out_dir/report.json" <<JSON
 {
-  "tool": {"id": "no_diff", "version": "0.1.0"},
+  "tool": {"id": "no_diff", "version": "0.3.0"},
   "ok": $ok,
-  "note": "Bootstrap stub: replace with byte-for-byte docs tree comparison."
+  "note": "${note}"
 }
 JSON
 
 if [ "$ok" != "true" ]; then
+  echo "$note" >&2
   exit 1
 fi

@@ -63,7 +63,7 @@ jobs:
           ./tools/run_with_timeout/run --seconds 600 --out out/tag-release/logs/validate_group.txt -- ./tools/validate_group/run
           ./tools/run_with_timeout/run --seconds 600 --out out/tag-release/logs/validate_references.txt -- ./tools/validate_references/run
 
-      - name: Build publication artifacts (LaTeX + PDF + MANIFEST)
+      - name: Build publication artifacts (DocIR → LaTeX + PDF + MANIFEST)
         shell: bash
         run: |
           set -euo pipefail
@@ -73,9 +73,10 @@ jobs:
             local outbase="$2"
             local name="$3"
 
-            mkdir -p "$outbase/src" "$outbase/out"
+            mkdir -p "$outbase/src" "$outbase/out" out/docir
 
-            ./tools/render_latex_spec/run --in "$frame" --out "$outbase/src"
+            ./tools/render_docir/run --in "$frame" --out "out/docir/${name}.json"
+            ./tools/render_tex_doc/run --in "out/docir/${name}.json" --out-dir "$outbase/src"
             ./tools/pub_build_pdf/run --src "$outbase/src" --out "$outbase/out" --name "$name"
             ./tools/pub_manifest/run --frame "$frame" --src "$outbase/src" --pdf "$outbase/out/${name}.pdf" --out "$outbase/MANIFEST.json"
           }
