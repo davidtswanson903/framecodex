@@ -51,6 +51,6 @@ Composition MUST preserve reflexive reproducibility and replayability obligation
 ## References
 <a id="refs-e812cd2d"></a>
 
-- GraphFrame K0 (GF0) ()
-- SpecFrame K1 ()
-- Systemics Σ — Minimal Specification ()
+- GraphFrame K0 (GF0) (spec://\_kernel/gf/gf0-k1)
+- SpecFrame K1 (spec://\_kernel/spec/specframe-k1)
+- Systemics Σ — Minimal Specification (spec://domains/systemics/sigma-k1)
