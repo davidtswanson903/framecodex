@@ -112,35 +112,44 @@ nodes:
     kind: "clause"
     status: "normative"
     label: "GraphFrameK0 Fields"
-    text: >
-      A GraphFrameK0 value MUST have the following top-level fields:
-        - graph_id: non-empty string identifying the frame;
-        - version: non-empty string identifying the frame's version (logical or semantic);
-        - attrs: list of AttrK0 values (possibly empty);
-        - nodes: list of NodeK0 values (possibly empty);
-        - edges: list of EdgeK0 values (possibly empty);
-        - meta: list of MetaGraph values (GraphFrameK0 instances), possibly empty.
-      These fields MUST be present in the canonical form. Empty lists MUST be encoded as []
-      and MUST NOT be encoded as null or omitted.
+    text: |
+      A GraphFrameK0 value **MUST** have the following top-level fields:
+        - `graph_id`: non-empty string identifying the frame;
+        - `version`: non-empty string identifying the frame's version (logical or semantic);
+        - `attrs`: list of AttrK0 values (possibly empty);
+        - `nodes`: list of NodeK0 values (possibly empty);
+        - `edges`: list of EdgeK0 values (possibly empty);
+        - `meta`: list of MetaGraph values (GraphFrameK0 instances), possibly empty.
+      These fields **MUST** be present in the canonical form. Empty lists **MUST** be encoded as `[]`
+      and **MUST NOT** be encoded as null or omitted.
+    attrs:
+      - key: "text.format"
+        value: "md-block"
 
   - id: "clause.graphframe.identity"
     kind: "clause"
     status: "normative"
     label: "Graph Identity"
-    text: >
-      graph_id is a logical identifier for the frame. It MUST be stable within a given
-      repository or namespace. Different versions of the same conceptual graph SHOULD share
-      the same graph_id but use distinct version values.
+    text: |
+      `graph_id` is a logical identifier for the frame. It **MUST** be stable within a given
+      repository or namespace. Different versions of the same conceptual graph **SHOULD** share
+      the same `graph_id` but use distinct `version` values.
+    attrs:
+      - key: "text.format"
+        value: "md-inline"
 
   - id: "clause.graphframe.attrs"
     kind: "clause"
     status: "normative"
     label: "Graph-level attributes"
-    text: >
-      GraphFrameK0.attrs is an ordered slice of AttrK0 representing frame-level metadata
-      (e.g. domain tags, doc build hints, repository routing hints, provenance). It MUST NOT
+    text: |
+      `GraphFrameK0.attrs` is an ordered slice of `AttrK0` representing frame-level metadata
+      (e.g., domain tags, doc build hints, repository routing hints, provenance). It **MUST NOT**
       be used to encode structural graph semantics; structural semantics are encoded only by
       nodes and edges. Duplicate keys are allowed and order is significant (list semantics).
+    attrs:
+      - key: "text.format"
+        value: "md-inline"
 
   # --- Clauses: NodeK0 ---
 
@@ -148,24 +157,30 @@ nodes:
     kind: "clause"
     status: "normative"
     label: "NodeK0 Fields"
-    text: >
-      A NodeK0 MUST have:
-        - id: non-empty string, unique within the containing GraphFrameK0;
-        - kind: non-empty string describing the node's semantic role (e.g. spec, section, kernel);
-        - label: optional human-readable string;
-        - attrs: optional list of AttrK0;
-        - metrics: optional list of MetricK0.
-      The set of allowed NodeK0.kind values is not constrained by GF0; higher-level specs
-      (SpecFrame, TaskFrame, etc.) MUST define their own allowed kinds.
+    text: |
+      A `NodeK0` **MUST** have:
+        - `id`: non-empty string, unique within the containing `GraphFrameK0`;
+        - `kind`: non-empty string describing the node's semantic role (e.g., `spec`, `section`, `kernel`);
+        - `label`: optional human-readable string;
+        - `attrs`: optional list of `AttrK0`;
+        - `metrics`: optional list of `MetricK0`.
+      The set of allowed `NodeK0.kind` values is not constrained by GF0; higher-level specs
+      (`SpecFrame`, `TaskFrame`, etc.) **MUST** define their own allowed kinds.
+    attrs:
+      - key: "text.format"
+        value: "md-block"
 
   - id: "clause.nodek0.attrs_metrics"
     kind: "clause"
     status: "normative"
     label: "Node Attributes and Metrics"
-    text: >
-      Node attrs and metrics MUST be stored as slices and MUST NOT be represented as maps in
-      the canonical form. Keys and names MUST be non-empty. The interpretation of specific
-      keys is delegated to higher-level specs (SpecFrame, TaskFrame, etc.).
+    text: |
+      Node `attrs` and `metrics` **MUST** be stored as slices and **MUST NOT** be represented as maps in
+      the canonical form. Keys and names **MUST** be non-empty. The interpretation of specific
+      keys is delegated to higher-level specs (`SpecFrame`, `TaskFrame`, etc.).
+    attrs:
+      - key: "text.format"
+        value: "md-inline"
 
   # --- Clauses: EdgeK0 ---
 
@@ -173,25 +188,31 @@ nodes:
     kind: "clause"
     status: "normative"
     label: "EdgeK0 Fields"
-    text: >
-      An EdgeK0 MUST have:
-        - from: NodeK0 ID (string) in the same GraphFrameK0;
-        - to: NodeK0 ID (string) in the same GraphFrameK0;
-        - type: non-empty string describing the edge semantics (e.g. contains, depends_on);
-      It MAY have:
-        - id: optional string identifier;
-        - attrs: optional list of AttrK0;
-        - metrics: optional list of MetricK0.
-      GF0 does not constrain the set of EdgeK0.type values beyond non-empty strings; higher-
-      level specs MUST define allowed edge types where needed.
+    text: |
+      An `EdgeK0` **MUST** have:
+        - `from`: `NodeK0` ID (string) in the same `GraphFrameK0`;
+        - `to`: `NodeK0` ID (string) in the same `GraphFrameK0`;
+        - `type`: non-empty string describing the edge semantics (e.g., `contains`, `depends_on`);
+      It **MAY** have:
+        - `id`: optional string identifier;
+        - `attrs`: optional list of `AttrK0`;
+        - `metrics`: optional list of `MetricK0`.
+      GF0 does not constrain the set of `EdgeK0.type` values beyond non-empty strings; higher-
+      level specs **MUST** define allowed edge types where needed.
+    attrs:
+      - key: "text.format"
+        value: "md-block"
 
   - id: "clause.edgek0.integrity"
     kind: "clause"
     status: "normative"
     label: "Edge Integrity (Structural)"
-    text: >
-      EdgeK0.from and EdgeK0.to MUST reference existing NodeK0 IDs in the same GraphFrameK0.
+    text: |
+      `EdgeK0.from` and `EdgeK0.to` **MUST** reference existing `NodeK0` IDs in the same `GraphFrameK0`.
       Edges that reference missing nodes violate structural integrity.
+    attrs:
+      - key: "text.format"
+        value: "md-inline"
 
   # --- Clauses: AttrK0 and MetricK0 ---
 
@@ -199,33 +220,42 @@ nodes:
     kind: "clause"
     status: "normative"
     label: "AttrK0 Structure"
-    text: >
-      AttrK0 MUST at least contain:
-        - key: non-empty string;
-        - value: string (UTF-8).
-      It MAY contain:
-        - vtype: optional string naming the logical type (e.g. "string", "int", "target_ref");
-        - desc: optional description string.
+    text: |
+      `AttrK0` **MUST** at least contain:
+        - `key`: non-empty string;
+        - `value`: string (UTF-8).
+      It **MAY** contain:
+        - `vtype`: optional string naming the logical type (e.g., `"string"`, `"int"`, `"target_ref"`);
+        - `desc`: optional description string.
+    attrs:
+      - key: "text.format"
+        value: "md-block"
 
   - id: "clause.metrick0.structure"
     kind: "clause"
     status: "normative"
     label: "MetricK0 Structure"
-    text: >
-      MetricK0 MUST at least contain:
-        - name: non-empty string;
-        - value: numeric value (e.g. float64).
-      It MAY contain:
-        - unit: optional string;
-        - desc: optional description.
+    text: |
+      `MetricK0` **MUST** at least contain:
+        - `name`: non-empty string;
+        - `value`: numeric value (e.g., `float64`).
+      It **MAY** contain:
+        - `unit`: optional string;
+        - `desc`: optional description.
+    attrs:
+      - key: "text.format"
+        value: "md-block"
 
   - id: "clause.attr_metric.slice_not_map"
     kind: "clause"
     status: "normative"
     label: "Slices, Not Maps"
-    text: >
-      AttrK0 and MetricK0 collections MUST be represented as ordered slices, not maps. This
+    text: |
+      `AttrK0` and `MetricK0` collections **MUST** be represented as ordered slices, not maps. This
       ensures deterministic ordering and stable serialization across implementations.
+    attrs:
+      - key: "text.format"
+        value: "md-inline"
 
   # --- Clauses: Fractal meta ---
 
@@ -233,29 +263,38 @@ nodes:
     kind: "clause"
     status: "normative"
     label: "Fractal Meta Graphs"
-    text: >
-      The meta field of a GraphFrameK0 is a list of subgraphs, each of which is itself a
-      GraphFrameK0 with the same fields {graph_id, version, attrs, nodes, edges, meta}. This
+    text: |
+      The `meta` field of a `GraphFrameK0` is a list of subgraphs, each of which is itself a
+      `GraphFrameK0` with the same fields `{graph_id, version, attrs, nodes, edges, meta}`. This
       recursive structure allows auxiliary views, indexes, or annotations to be attached
       without changing the primary frame.
+    attrs:
+      - key: "text.format"
+        value: "md-inline"
 
   - id: "clause.meta.scoping"
     kind: "clause"
     status: "normative"
     label: "MetaGraph Scoping"
-    text: >
-      MetaGraphs MUST be structurally independent: their node IDs and edges are scoped within
-      the subgraph. References from a MetaGraph into the parent graph MUST be expressed via
-      attributes (e.g. parent_node_id) or well-defined edge types with explicit semantics.
+    text: |
+      `MetaGraph`s **MUST** be structurally independent: their node IDs and edges are scoped within
+      the subgraph. References from a `MetaGraph` into the parent graph **MUST** be expressed via
+      attributes (e.g., `parent_node_id`) or well-defined edge types with explicit semantics.
+    attrs:
+      - key: "text.format"
+        value: "md-inline"
 
   - id: "clause.meta.usage"
     kind: "clause"
     status: "informative"
     label: "Examples of Meta Usage"
-    text: >
-      Common uses of meta include: alternative layout graphs, index structures, commentary
-      layers, or regime annotations. Higher-level specs SHOULD document their usage of meta
+    text: |
+      Common uses of `meta` include: alternative layout graphs, index structures, commentary
+      layers, or regime annotations. Higher-level specs **SHOULD** document their usage of `meta`
       explicitly rather than overloading it.
+    attrs:
+      - key: "text.format"
+        value: "md-inline"
 
   # --- Clauses: invariants and validation ---
 
@@ -263,44 +302,59 @@ nodes:
     kind: "clause"
     status: "normative"
     label: "Node ID Uniqueness"
-    text: >
-      Within a single GraphFrameK0, all NodeK0 IDs MUST be unique. Duplicate node IDs MUST
+    text: |
+      Within a single `GraphFrameK0`, all `NodeK0` IDs **MUST** be unique. Duplicate node IDs **MUST**
       cause validation failure.
+    attrs:
+      - key: "text.format"
+        value: "md-inline"
 
   - id: "clause.validation.edge_integrity"
     kind: "clause"
     status: "normative"
     label: "Edge Integrity (Validation Rule)"
-    text: >
-      A GraphFrameK0 validator MUST enforce clause.edgek0.integrity: for every EdgeK0, from
-      and to MUST reference existing NodeK0 IDs in the same frame. Missing endpoints MUST
+    text: |
+      A `GraphFrameK0` validator **MUST** enforce `clause.edgek0.integrity`: for every `EdgeK0`, `from`
+      and `to` **MUST** reference existing `NodeK0` IDs in the same frame. Missing endpoints **MUST**
       cause validation failure.
+    attrs:
+      - key: "text.format"
+        value: "md-inline"
 
   - id: "clause.validation.meta_recursion"
     kind: "clause"
     status: "normative"
     label: "Meta Recursion"
-    text: >
-      Validation of a GraphFrameK0 MUST recursively validate each MetaGraph according to the
-      same GF0 rules. Implementations MUST protect against unbounded recursion (e.g. cycles
-      via references) and MAY impose a maximum meta depth.
+    text: |
+      Validation of a `GraphFrameK0` **MUST** recursively validate each `MetaGraph` according to the
+      same GF0 rules. Implementations **MUST** protect against unbounded recursion (e.g., cycles
+      via references) and **MAY** impose a maximum `meta` depth.
+    attrs:
+      - key: "text.format"
+        value: "md-inline"
 
   - id: "clause.validation.graph_id_version"
     kind: "clause"
     status: "normative"
     label: "Graph ID and Version Non-Empty"
-    text: >
-      graph_id and version MUST be non-empty strings. Frames with empty graph_id or version
-      MUST be rejected.
+    text: |
+      `graph_id` and `version` **MUST** be non-empty strings. Frames with empty `graph_id` or `version`
+      **MUST** be rejected.
+    attrs:
+      - key: "text.format"
+        value: "md-inline"
 
   - id: "clause.validation.attrs_backcompat"
     kind: "clause"
     status: "informative"
     label: "Back-compat for legacy frames missing attrs"
-    text: >
-      Loaders MAY accept legacy GF0 frames that omit the top-level attrs field and treat it
-      as an empty list. Canonical serialization MUST emit attrs explicitly (attrs: []) in
+    text: |
+      Loaders **MAY** accept legacy GF0 frames that omit the top-level `attrs` field and treat it
+      as an empty list. Canonical serialization **MUST** emit `attrs` explicitly (`attrs: []`) in
       the canonical form.
+    attrs:
+      - key: "text.format"
+        value: "md-inline"
 
   # --- Extension and specialization ---
 
@@ -308,20 +362,26 @@ nodes:
     kind: "clause"
     status: "informative"
     label: "Specialization via NodeK0.kind and EdgeK0.type"
-    text: >
-      Higher-level schemas (SpecFrame, TaskFrame, EvidenceFrame, KernelCore, etc.) MUST
-      specialize GF0 by constraining NodeK0.kind, EdgeK0.type, and attribute conventions,
+    text: |
+      Higher-level schemas (`SpecFrame`, `TaskFrame`, `EvidenceFrame`, `KernelCore`, etc.) **MUST**
+      specialize GF0 by constraining `NodeK0.kind`, `EdgeK0.type`, and attribute conventions,
       rather than redefining graph structure. GF0 remains the single canonical graph schema.
+    attrs:
+      - key: "text.format"
+        value: "md-inline"
 
   - id: "clause.extension.canon_mapping"
     kind: "clause"
     status: "informative"
     label: "Mapping to canon.Graph"
-    text: >
-      Implementations MAY embed or derive GF0 graphs from canon.Graph values. However, GF0 is
+    text: |
+      Implementations **MAY** embed or derive GF0 graphs from `canon.Graph` values. However, GF0 is
       defined at the YAML/JSON frame layer and does not require a one-to-one mapping to
-      canon.Graph. When such a mapping exists, its semantics SHOULD be specified in a
-      separate SpecFrame.
+      `canon.Graph`. When such a mapping exists, its semantics **SHOULD** be specified in a
+      separate `SpecFrame`.
+    attrs:
+      - key: "text.format"
+        value: "md-inline"
 
   # --- Spec references ---
 
