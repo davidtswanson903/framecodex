@@ -84,5 +84,5 @@ The renderer **SHOULD** emit warnings (non-fatal) for: - unknown/extra top-level
 ## References
 <a id="refs-e812cd2d"></a>
 
-- GF0 schema ()
-- SpecFrame K1 schema ()
+- GF0 schema (spec://\_kernel/gf/gf0-k1)
+- SpecFrame K1 schema (spec://\_kernel/spec/specframe-k1)

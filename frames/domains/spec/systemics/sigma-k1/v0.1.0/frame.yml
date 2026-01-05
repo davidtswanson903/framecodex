@@ -243,10 +243,13 @@ nodes:
       \end{equation}
 
       where
-      - $f_v:V\to V'$ is a valuation map,
-      - $f_\chi:\mathbb{V}\times\Theta\times\beta\to \mathbb{V}'\times\Theta'\times\beta'$ is a compatible decision map,
-      - $f_\beta:\beta\to\beta'$ and $f_C:C\to C'$ are invariance and capacity transformations,
-      - $f_\Gamma:\Gamma\to\Gamma'$ is an envelope transformation.
+
+      \begin{itemize}
+        \item $f_v:V\to V'$ is a valuation map,
+        \item $f_\chi:\mathbb{V}\times\Theta\times\beta\to \mathbb{V}'\times\Theta'\times\beta'$ is a compatible decision map,
+        \item $f_\beta:\beta\to\beta'$ and $f_C:C\to C'$ are invariance and capacity transformations,
+        \item $f_\Gamma:\Gamma\to\Gamma'$ is an envelope transformation.
+      \end{itemize}
     attrs:
       - { key: "text.format", value: "tex-block" }
 

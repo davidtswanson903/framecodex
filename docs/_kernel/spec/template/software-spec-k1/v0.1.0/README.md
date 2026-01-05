@@ -98,6 +98,6 @@ TODO: Define versioning scheme, compatibility guarantees, and deprecation policy
 ## References
 <a id="refs-e812cd2d"></a>
 
-- DocProfiles K1 ()
-- GraphFrame GF0 ()
-- SpecFrame K1 ()
+- DocProfiles K1 (spec://\_kernel/docs/docprofiles-k1)
+- GraphFrame GF0 (spec://\_kernel/gf/gf0-k1)
+- SpecFrame K1 (spec://\_kernel/spec/specframe-k1)

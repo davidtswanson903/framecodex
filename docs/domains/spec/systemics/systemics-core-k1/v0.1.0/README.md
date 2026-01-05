@@ -16,8 +16,8 @@ Systemics Core currently includes only: (1) Kernel Axiom K0, (2) Systemics Σ Mi
 ## References
 <a id="refs-e812cd2d"></a>
 
-- GraphFrame K0 (GF0) ()
-- SpecFrame K1 ()
-- Systemics Σ — Composition ()
-- Systemics Σ — Minimal Specification ()
-- Systemics — Kernel Axiom K0 ()
+- GraphFrame K0 (GF0) (spec://\_kernel/gf/gf0-k1)
+- SpecFrame K1 (spec://\_kernel/spec/specframe-k1)
+- Systemics Σ — Composition (spec://domains/systemics/sigma-composition-k1)
+- Systemics Σ — Minimal Specification (spec://domains/systemics/sigma-k1)
+- Systemics — Kernel Axiom K0 (spec://domains/systemics/k0-k1)

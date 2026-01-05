@@ -184,5 +184,5 @@ explicit overrides **SHOULD** take precedence.
 ## References
 <a id="refs-e812cd2d"></a>
 
-- GraphFrame K0 (GF0) ()
-- SpecFrame K1 ()
+- GraphFrame K0 (GF0) (spec://\_kernel/gf/gf0-k1)
+- SpecFrame K1 (spec://\_kernel/spec/specframe-k1)

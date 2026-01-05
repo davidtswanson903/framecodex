@@ -152,4 +152,4 @@ rather than redefining graph structure. GF0 remains the single canonical graph s
 ## References
 <a id="refs-e812cd2d"></a>
 
-- Canon graph mapping spec ()
+- Canon graph mapping spec (spec://\_kernel/canon/canon-k1)

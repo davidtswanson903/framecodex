@@ -220,6 +220,6 @@ Emitted when a required attribute per SpecFrame node `kind` is missing.
 ## References
 <a id="refs-e812cd2d"></a>
 
-- GraphFrame K0 schema ()
-- RenderFrame K1 schema ()
-- SpecFrame K1 schema ()
+- GraphFrame K0 schema (spec://\_kernel/gf/gf0-k1)
+- RenderFrame K1 schema (spec://\_kernel/render/renderframe-k1)
+- SpecFrame K1 schema (spec://\_kernel/spec/specframe-k1)

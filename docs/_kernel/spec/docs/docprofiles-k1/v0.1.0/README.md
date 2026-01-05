@@ -93,5 +93,5 @@ Common render products: per-spec README, per-section pages, glossary from `term`
 ## References
 <a id="refs-e812cd2d"></a>
 
-- GraphFrame GF0 ()
-- SpecFrame K1 ()
+- GraphFrame GF0 (spec://\_kernel/gf/gf0-k1)
+- SpecFrame K1 (spec://\_kernel/spec/specframe-k1)

@@ -173,6 +173,6 @@ and refactored uniformly.
 ## References
 <a id="refs-e812cd2d"></a>
 
-- Canon envelope mappings ()
-- GraphFrame K0 schema ()
-- TargetRef naming scheme ()
+- Canon envelope mappings (spec://\_kernel/canon/canon-k1)
+- GraphFrame K0 schema (spec://\_kernel/gf/gf0-k1)
+- TargetRef naming scheme (spec://\_kernel/targetref/targetref-k1)

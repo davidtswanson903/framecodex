@@ -289,6 +289,13 @@ def to_docir(g: Dict[str, Any], src_bytes: bytes) -> Dict[str, Any]:
     root_id, children_map = build_spine(g, nodes)
     root = nodes[root_id]
 
+    # Deterministic lookup table for raw node mappings (needed for fields not
+    # included in the Node dataclass, e.g. spec_ref.target_graph_id).
+    raw_nodes_list = g.get("nodes") if isinstance(g.get("nodes"), list) else []
+    raw_nodes: Dict[str, Dict[str, Any]] = {
+        str(r.get("id")): r for r in raw_nodes_list if isinstance(r, dict) and isinstance(r.get("id"), str)
+    }
+
     anchors: Dict[str, str] = {nid: stable_anchor(nid) for nid in sorted(nodes.keys())}
 
     front = {
@@ -311,10 +318,14 @@ def to_docir(g: Dict[str, Any], src_bytes: bytes) -> Dict[str, Any]:
             continue
         label = n.label or n.id
         target = ""
-        # spec_ref in current frames uses `target_graph_id` on node, but render_docir
-        # only parses known fields. It will remain empty unless we add it.
-        # For now: try to read from raw by scanning for it.
-        # (Later: extend Node to include target_graph_id like render_latex_spec.)
+        # spec_ref in current frames uses `target_graph_id` on node.
+        # The Node model used by this tool does not currently include it, so we
+        # read it from the raw mapping deterministically.
+        raw = raw_nodes.get(n.id) if isinstance(raw_nodes, dict) else None
+        if isinstance(raw, dict):
+            tgid = raw.get("target_graph_id")
+            if isinstance(tgid, str):
+                target = tgid
         refs.append({"label": label, "target": target})
 
     # Emit title heading
@@ -546,7 +557,11 @@ def to_docir(g: Dict[str, Any], src_bytes: bytes) -> Dict[str, Any]:
     if refs:
         blocks.append({"type": "heading", "level": 2, "title": "References", "anchor": stable_anchor("refs")})
         for r in refs:
-            blocks.append({"type": "list_item", "text": f"{r['label']} ({r['target']})"})
+            label = (r.get("label") or "").strip()
+            target = (r.get("target") or "").strip()
+            text = f"{label} ({target})" if target else label
+            if text:
+                blocks.append({"type": "list_item", "text": text})
 
     docir = {
         "docir_version": "0.2.0",

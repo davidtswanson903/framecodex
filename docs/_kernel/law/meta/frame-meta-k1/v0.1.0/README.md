@@ -42,5 +42,5 @@
 ## References
 <a id="refs-e812cd2d"></a>
 
-- DocLicense K1 (doc.license) ()
-- GF0 (GraphFrameK0 / AttrK0) ()
+- DocLicense K1 (doc.license) (law://\_kernel/ip/doclicense-k1)
+- GF0 (GraphFrameK0 / AttrK0) (spec://\_kernel/gf/gf0-k1)

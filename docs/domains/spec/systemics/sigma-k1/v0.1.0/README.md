@@ -98,7 +98,13 @@ A morphism between systemic kernels $K,K'$ is a tuple
 \begin{equation}
   f = \big(f_v, f_\chi, f_\beta, f_C, f_\Gamma\big),
 \end{equation}
-where - $f_v:V\to V'$ is a valuation map, - $f_\chi:\mathbb{V}\times\Theta\times\beta\to \mathbb{V}'\times\Theta'\times\beta'$ is a compatible decision map, - $f_\beta:\beta\to\beta'$ and $f_C:C\to C'$ are invariance and capacity transformations, - $f_\Gamma:\Gamma\to\Gamma'$ is an envelope transformation.
+where
+\begin{itemize}
+  \item $f_v:V\to V'$ is a valuation map,
+  \item $f_\chi:\mathbb{V}\times\Theta\times\beta\to \mathbb{V}'\times\Theta'\times\beta'$ is a compatible decision map,
+  \item $f_\beta:\beta\to\beta'$ and $f_C:C\to C'$ are invariance and capacity transformations,
+  \item $f_\Gamma:\Gamma\to\Gamma'$ is an envelope transformation.
+\end{itemize}
 
 **Equivalence of Morphisms** _(normative)_
 
@@ -138,6 +144,6 @@ To specify a Systemics $\\Sigma$ instance:
 ## References
 <a id="refs-e812cd2d"></a>
 
-- GraphFrame K0 (GF0) ()
-- SpecFrame K1 ()
-- Σ Composition (separate spec) ()
+- GraphFrame K0 (GF0) (spec://\_kernel/gf/gf0-k1)
+- SpecFrame K1 (spec://\_kernel/spec/specframe-k1)
+- Σ Composition (separate spec) (spec://domains/systemics/sigma-composition-k1)
