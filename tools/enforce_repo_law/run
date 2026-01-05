@@ -38,6 +38,9 @@ fi
 # InlineMarkup-K1 validation (deterministic, policy-driven).
 ./tools/validate_inline_markup/run
 
+# Copilot instruction file (strict autogen; must match generator output)
+"$repo_root/tools/gen_copilot_instructions/run"
+
 # Emit deterministic JSON report
 {
   printf '{\n'
