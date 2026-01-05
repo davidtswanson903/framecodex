@@ -24,6 +24,7 @@ Generated documentation and publication artifacts MUST be reproducible.
 - `enforce_repo_law`: `tools/enforce_repo_law/run`
 - `gen_copilot_instructions`: `tools/gen_copilot_instructions/run`
 - `gen_index`: `tools/gen_index/run`
+- `markup_audit`: `tools/markup_audit/run`
 - `no_diff`: `tools/no_diff/run`
 - `pub_build_pdf`: `tools/pub_build_pdf/run`
 - `pub_manifest`: `tools/pub_manifest/run`
@@ -34,6 +35,7 @@ Generated documentation and publication artifacts MUST be reproducible.
 - `render_simple_md`: `tools/render_simple_md/run`
 - `render_tex_doc`: `tools/render_tex_doc/run`
 - `run_with_timeout`: `tools/run_with_timeout/run`
+- `semantic_invariants`: `tools/semantic_invariants/run`
 - `validate_group`: `tools/validate_group/run`
 - `validate_inline_markup`: `tools/validate_inline_markup/run`
 - `validate_references`: `tools/validate_references/run`
@@ -717,6 +719,92 @@ def load_yaml_minimal(path: Path) -> Any:
             cur[key] = nxt
             stack.append((indent + 2, nxt))
         else:
+```
+
+#### tools/markup_audit
+Source: `tools/markup_audit/run.py`
+
+```
+#!/usr/bin/env python3
+"""Inventory and audit freeform text fields for InlineMarkup-K1 adoption.
+
+This tool scans all frames and reports:
+- Which nodes have text/summary/title/label/desc fields
+- Current text.format usage
+- Obvious candidates for markup (code patterns, paths, emphasis, etc.)
+
+Usage:
+  tools/markup_audit/run.py [--out <report.json>]
+
+Writes:
+  out/markup_audit/report.json - structured report
+  out/markup_audit/candidates.csv - human-readable candidate list
+
+Design:
+- Deterministic (stable ordering)
+- No modifications, scan-only
+- Best-effort heuristics for code patterns, paths, refs
+"""
+
+from __future__ import annotations
+
+import csv
+import json
+import re
+import sys
+from dataclasses import dataclass, asdict
+from pathlib import Path
+from typing import Any, Dict, List, Optional, Tuple
+
+import yaml
+
+REPO_ROOT = Path(__file__).resolve().parents[2]
+
+
+def read_yaml(path: Path) -> Any:
+    return yaml.safe_load(path.read_text(encoding="utf-8"))
+
+
+@dataclass
+class FieldCandidate:
+    """A single text field with markup opportunity."""
+    frame_path: str
+    node_id: str
+    node_kind: str
+    field_name: str
+    current_format: str  # "plain", "md-inline", "md-block", or inferred
+    has_code_backticks: bool
+    has_paths: bool
+    has_emphasis: bool
+    has_references: bool
+    has_lists: bool
+    text_length: int
+    recommendation: str  # "md-inline", "md-block", or "review"
+
+
+def is_str(x: Any) -> bool:
+    return isinstance(x, str) and bool(x)
+
+
+def find_attr(attrs: Any, key: str) -> Optional[str]:
+    if not isinstance(attrs, list):
+        return None
+    for a in attrs:
+        if isinstance(a, dict) and a.get("key") == key:
+            v = a.get("value")
+            if isinstance(v, str):
+                return v
+    return None
+
+
+def detect_patterns(text: str) -> Dict[str, bool]:
+    """Detect markup-friendly patterns in text."""
+    return {
+        "code_backticks": "`" in text,
+        "paths": bool(re.search(r"(frames|tools|docs|\.github)/[\w/\-\.]+", text)),
+        "emphasis": bool(re.search(r"\*\*\w+\*\*|\*\w+\*|__\w+__|_\w+_", text)),
+        "references": bool(re.search(r"(law|spec|frame)://\S+", text)),
+        "lists": bool(re.search(r"^[\s]*[-*+]\s+\w", text, re.MULTILINE)),
 ```
 
 #### tools/no_diff
@@ -1569,6 +1657,91 @@ def main() -> None:
         out_path.write_text(combined, encoding="utf-8")
         if combined.strip():
             print(tail_lines(combined, args.tail))
+```
+
+#### tools/semantic_invariants
+Source: `tools/semantic_invariants/run.py`
+
+```
+#!/usr/bin/env python3
+"""Verify semantic invariants are preserved across frame edits.
+
+This tool compares two frame.yml files (before/after) and asserts that
+only "safe" fields were changed (e.g., text.format, text, summary).
+Structural changes (IDs, edges, kinds, statuses) are forbidden.
+
+Usage:
+  tools/semantic_invariants/run.py --before <old.yml> --after <new.yml> [--verbose]
+
+Exit codes:
+  0 if invariants are preserved
+  1 if structural changes detected
+
+Allowed changes:
+- text, summary, title (content only, not presence/absence)
+- text.format attribute
+- description fields (desc)
+- Other doc-oriented attrs
+
+Forbidden changes:
+- graph_id, version
+- node id, kind, status, profile, law_id, law_version
+- edges (from, to, type)
+- machine-consumed fields (symbols, validators, etc.)
+- Removing/adding nodes
+
+Design:
+- Deterministic
+- Clear whitelist of safe field changes
+- Reports violations clearly
+"""
+
+from __future__ import annotations
+
+import argparse
+import json
+import sys
+from dataclasses import dataclass
+from pathlib import Path
+from typing import Any, Dict, List, Optional, Set, Tuple
+
+import yaml
+
+REPO_ROOT = Path(__file__).resolve().parents[2]
+
+
+def read_yaml(path: Path) -> Any:
+    return yaml.safe_load(path.read_text(encoding="utf-8"))
+
+
+# Fields that are safe to modify for readability
+SAFE_TEXT_FIELDS = {"text", "summary", "title", "label", "desc"}
+
+# Fields that MUST NOT change
+PROTECTED_FIELDS = {
+    "graph_id",
+    "version",
+    "id",
+    "kind",
+    "status",
+    "profile",
+    "law_id",
+    "law_version",
+}
+
+
+@dataclass
+class Violation:
+    """A structural invariant violation."""
+    code: str  # e.g., "node_removed", "edge_added", "id_changed"
+    frame_path: str
+    details: str
+
+
+def normalize_node_id(node: Dict[str, Any]) -> str:
+    """Extract a stable node ID."""
+    nid = node.get("id")
+    return str(nid) if nid else ""
 ```
 
 #### tools/validate_group
