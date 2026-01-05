@@ -10,6 +10,12 @@ Usage:
 Notes:
 - Pure pretty-printer over DocIR.
 - Designed to be consumed by tools/pub_build_pdf/run.
+
+TeX passthrough (repo-local, opt-in):
+- If a DocIR block has `text_format` set to `tex-inline` or `tex-block`, the
+  corresponding string payload is emitted verbatim (no escaping / markup parsing).
+- This is intentionally unsafe unless paired with dedicated validation.
+  Enforcement is delegated to repo policy gates.
 """
 
 from __future__ import annotations
@@ -174,7 +180,27 @@ def _render_inline_block_or_plain(value: Any) -> str:
     return ""
 
 
+def _is_tex_passthrough(fmt: Any) -> bool:
+    return fmt in ("tex-inline", "tex-block")
+
+
+def _passthrough_block_text(b: Dict[str, Any]) -> str:
+    t = b.get("type")
+    if t == "paragraph":
+        return str(b.get("text", ""))
+    if t in ("definition", "clause"):
+        return str(b.get("body", ""))
+    if t == "heading":
+        return str(b.get("title", ""))
+    return str(b.get("text", "") or b.get("body", "") or b.get("title", ""))
+
+
 def render_body_tex(b: Dict[str, Any]) -> List[str]:
+    # TeX passthrough: emit body verbatim.
+    if _is_tex_passthrough(b.get("text_format")):
+        raw = _passthrough_block_text(b).rstrip()
+        return [raw, ""] if raw else [""]
+
     bm = b.get("body_markup")
     if isinstance(bm, dict) and bm.get("kind") == "inline-markup-k1":
         return render_inline_markup_k1_tex(bm)
@@ -184,8 +210,39 @@ def render_body_tex(b: Dict[str, Any]) -> List[str]:
 
 
 def render_preamble(title: str) -> List[str]:
-    # Title should be treated as plain text (no TeX macro injection).
-    t = tex_escape(title or "Document")
+    # Title is mostly plain text, but this repo commonly uses simple $...$ math
+    # in titles (e.g. $\Sigma$). Escaping the whole title corrupts such math.
+    #
+    # Policy (minimal, deterministic):
+    # - Split on $...$ pairs (non-nested).
+    # - Outside math: escape as plain text.
+    # - Inside math: normalize unicode and emit inside \(...\) without further escaping.
+    def render_title_mixed(s: str) -> str:
+        s = s or ""
+        parts: List[str] = []
+        buf: List[str] = []
+        in_math = False
+        for ch in s:
+            if ch == "$":
+                frag = "".join(buf)
+                buf = []
+                if in_math:
+                    parts.append(r"\\(" + normalize_tex_unicode(frag) + r"\\)")
+                else:
+                    parts.append(tex_escape(frag))
+                in_math = not in_math
+            else:
+                buf.append(ch)
+        # trailing
+        frag = "".join(buf)
+        if in_math:
+            # unmatched '$' -> treat literally as text
+            parts.append(tex_escape("$" + frag))
+        else:
+            parts.append(tex_escape(frag))
+        return "".join(parts)
+
+    t = render_title_mixed(title or "Document")
     return [
         r"\documentclass[11pt]{article}",
         r"\usepackage[T1]{fontenc}",
@@ -213,7 +270,11 @@ def render_block(b: Dict[str, Any]) -> List[str]:
 
     if t == "heading":
         level = int(b.get("level", 1))
-        title = tex_escape(str(b.get("title", "")))
+        if _is_tex_passthrough(b.get("text_format")):
+            title = _passthrough_block_text(b).strip()
+        else:
+            title = tex_escape(str(b.get("title", "")))
+
         if level <= 1:
             return [rf"\section*{{{title}}}", ""]
         if level == 2:
@@ -223,6 +284,10 @@ def render_block(b: Dict[str, Any]) -> List[str]:
         return [rf"\paragraph*{{{title}}}", ""]
 
     if t == "paragraph":
+        if _is_tex_passthrough(b.get("text_format")):
+            raw = _passthrough_block_text(b).rstrip()
+            return [raw, ""] if raw else [""]
+
         bm = b.get("body_markup")
         if isinstance(bm, dict) and bm.get("kind") == "inline-markup-k1":
             return render_inline_markup_k1_tex(bm)
@@ -230,7 +295,12 @@ def render_block(b: Dict[str, Any]) -> List[str]:
         return [tex_escape(txt), ""] if txt else [""]
 
     if t in ("definition", "clause"):
-        label = tex_escape(str(b.get("label", "")))
+        # Allow labels to pass through in tex-* mode.
+        if _is_tex_passthrough(b.get("text_format")):
+            label = str(b.get("label", ""))
+        else:
+            label = tex_escape(str(b.get("label", "")))
+
         status = tex_escape(str(b.get("status", "")))
         head = rf"\textbf{{{label}}}" + (rf" \emph{{({status})}}" if status else "")
         out: List[str] = [head, ""]
@@ -254,10 +324,16 @@ def render_block(b: Dict[str, Any]) -> List[str]:
             out.append(r"\begin{itemize}")
             for s in symbols:
                 sym_raw = str(s.get("sym", ""))
-                sym_math = normalize_tex_unicode(sym_raw)
 
-                # Prefer markup-aware descriptions when present.
-                desc_rendered = _render_inline_block_or_plain(s.get("desc_markup") or s.get("desc"))
+                # In tex-* mode treat symbol fields as raw TeX.
+                if _is_tex_passthrough(b.get("text_format")):
+                    sym_math = sym_raw
+                    desc_rendered = str(s.get("desc", "") or "")
+                else:
+                    sym_math = normalize_tex_unicode(sym_raw)
+                    # Prefer markup-aware descriptions when present.
+                    desc_rendered = _render_inline_block_or_plain(s.get("desc_markup") or s.get("desc"))
+
                 if sym_math:
                     out.append(rf"  \item \({sym_math}\): {desc_rendered}")
                 else:

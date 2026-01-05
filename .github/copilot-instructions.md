@@ -1652,6 +1652,12 @@ Usage:
 Notes:
 - Pure pretty-printer over DocIR.
 - Designed to be consumed by tools/pub_build_pdf/run.
+
+TeX passthrough (repo-local, opt-in):
+- If a DocIR block has `text_format` set to `tex-inline` or `tex-block`, the
+  corresponding string payload is emitted verbatim (no escaping / markup parsing).
+- This is intentionally unsafe unless paired with dedicated validation.
+  Enforcement is delegated to repo policy gates.
 """
 
 from __future__ import annotations
@@ -1713,13 +1719,6 @@ def normalize_tex_unicode(s: str) -> str:
     # Specific, deterministic rewrite(s) first.
     # Use escaped backslashes in the replacement so `re` doesn't treat `\m` as an escape.
     s = _R_GE0_RE.sub(r"\\mathbb{R}_{\\ge 0}", s)
-
-    # Character-by-character rewrite for stable behavior.
-    out: List[str] = []
-    for ch in s:
-        rep = _UNICODE_TO_TEX.get(ch)
-        if rep is None:
-            out.append(ch)
 ```
 
 #### tools/run_with_timeout
