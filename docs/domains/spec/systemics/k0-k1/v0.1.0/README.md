@@ -27,7 +27,7 @@ There exists a (possibly partial) replay operator R that, given an initial state
 
 **K3 Budgeted behavior** _(normative)_
 
-Transitions respect budgets: b_out ⪯ b_in for a well-founded preorder ⪯ on B.
+Transitions respect budgets: b*out ⪯ b*in for a well-founded preorder ⪯ on B.
 
 **K4 Composability** _(normative)_
 

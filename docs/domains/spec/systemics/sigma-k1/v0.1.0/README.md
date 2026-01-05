@@ -17,7 +17,7 @@
 - `V`: valuation space (any measurable space; commonly R^k × B^m)
 - `2`: decision space 2 := {0,1}
 - `Π`: frames / benign contexts
-- `P_n`: probes / benign perturbations
+- `P\_n`: probes / benign perturbations
 - `Θ`: floors/thresholds (partially ordered set)
 - `β`: invariance budgets (tolerances in a poset/lattice)
 - `C`: capacity budgets (bits/time/energy constraints)
@@ -51,7 +51,7 @@ For any run on u ∈ U, the record κ ∈ R contains (v(u), Θ, β, C, Π, P_n, 
 
 **Σ-A3 Benign invariance** _(normative)_
 
-Let (π,p) ∈ Π × P_n act on the measurement/evaluation pathway to yield v_{π,p}(u). Define W(u) := sup_{(π,p)} w(v_{π,p}(u), v_{π0,p0}(u)). If W(u) ⪯ β then for all benign (π,p), χ(v_{π,p}(u), Θ, β) = χ(v_{π0,p0}(u), Θ, β).
+Let (π,p) ∈ Π × P*n act on the measurement/evaluation pathway to yield v*{π,p}(u). Define W(u) := sup*{(π,p)} w(v*{π,p}(u), v*{π0,p0}(u)). If W(u) ⪯ β then for all benign (π,p), χ(v*{π,p}(u), Θ, β) = χ(v_{π0,p0}(u), Θ, β).
 
 **Σ-A4 Minimal sufficiency under capacity** _(normative)_
 
@@ -89,7 +89,7 @@ A morphism F: Σ → Σ' is a pair (φ_U, φ_V) such that the following commutat
 
 **Morphism preservation** _(normative)_
 
-A morphism preserves valuation and decision structure by satisfying: v' ∘ φ_U = φ_V ∘ v, χ' ∘ (φ_V × id) = χ. It also maps contract parameters monotonically and preserves Σ-A1..Σ-A7.
+A morphism preserves valuation and decision structure by satisfying: v' ∘ φ*U = φ*V ∘ v, χ' ∘ (φ_V × id) = χ. It also maps contract parameters monotonically and preserves Σ-A1..Σ-A7.
 
 ## Instantiation Recipe (Domain-Agnostic)
 <a id="section-8-recipe-2801220f"></a>

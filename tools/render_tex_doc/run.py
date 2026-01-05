@@ -40,6 +40,60 @@ def tex_escape(s: str) -> str:
     )
 
 
+def render_inline_nodes_tex(nodes: List[Dict[str, Any]]) -> str:
+    out: List[str] = []
+    for n in nodes:
+        if not isinstance(n, dict):
+            continue
+        t = n.get("t")
+        if t == "text":
+            out.append(tex_escape(str(n.get("s", ""))))
+        elif t == "emph":
+            out.append(r"\emph{" + render_inline_nodes_tex(n.get("c") or []) + "}")
+        elif t == "strong":
+            out.append(r"\textbf{" + render_inline_nodes_tex(n.get("c") or []) + "}")
+        elif t == "code":
+            out.append(r"\texttt{" + tex_escape(str(n.get("s", ""))) + "}")
+        elif t == "math":
+            out.append("$" + str(n.get("s", "")) + "$")
+        elif t == "link":
+            out.append(r"\href{" + tex_escape(str(n.get("url", ""))) + "}{" + render_inline_nodes_tex(n.get("c") or []) + "}")
+        else:
+            out.append(tex_escape(str(n.get("s", ""))))
+    return "".join(out)
+
+
+def render_inline_markup_k1_tex(ast: Dict[str, Any]) -> List[str]:
+    out: List[str] = []
+    blocks = ast.get("blocks") or []
+    for b in blocks:
+        if not isinstance(b, dict):
+            continue
+        t = b.get("t")
+        if t == "code_fence":
+            code = str(b.get("code") or "")
+            out.append(r"\begin{verbatim}")
+            out.extend(code.split("\n"))
+            out.append(r"\end{verbatim}")
+            out.append("")
+        elif t == "paragraph":
+            out.append(render_inline_nodes_tex(b.get("c") or []))
+            out.append("")
+        else:
+            out.append(tex_escape(f"[unhandled:{t}]"))
+            out.append("")
+    return out
+
+
+def render_body_tex(b: Dict[str, Any]) -> List[str]:
+    bm = b.get("body_markup")
+    if isinstance(bm, dict) and bm.get("kind") == "inline-markup-k1":
+        return render_inline_markup_k1_tex(bm)
+
+    body = str(b.get("body", "")).strip()
+    return [tex_escape(body), ""] if body else [""]
+
+
 def render_preamble(title: str) -> List[str]:
     t = tex_escape(title or "Document")
     return [
@@ -82,11 +136,9 @@ def render_block(b: Dict[str, Any]) -> List[str]:
     if t in ("definition", "clause"):
         label = tex_escape(str(b.get("label", "")))
         status = tex_escape(str(b.get("status", "")))
-        body = str(b.get("body", "")).strip()
         head = rf"\\textbf{{{label}}}" + (rf"\\ \emph{{({status})}}" if status else "")
         out: List[str] = [head, ""]
-        if body:
-            out.extend([tex_escape(body), ""])
+        out.extend(render_body_tex(b))
         return out
 
     if t == "property":

@@ -17,18 +17,11 @@ GraphFrameK0.attrs is an ordered slice of AttrK0 representing frame-level metada
 
 **GraphFrameK0 Fields** _(normative)_
 
-A GraphFrameK0 value MUST have the following top-level fields:
-  - graph_id: non-empty string identifying the frame;
-  - version: non-empty string identifying the frame's version (logical or semantic);
-  - attrs: list of AttrK0 values (possibly empty);
-  - nodes: list of NodeK0 values (possibly empty);
-  - edges: list of EdgeK0 values (possibly empty);
-  - meta: list of MetaGraph values (GraphFrameK0 instances), possibly empty.
-These fields MUST be present in the canonical form. Empty lists MUST be encoded as [] and MUST NOT be encoded as null or omitted.
+A GraphFrameK0 value MUST have the following top-level fields: - graph_id: non-empty string identifying the frame; - version: non-empty string identifying the frame's version (logical or semantic); - attrs: list of AttrK0 values (possibly empty); - nodes: list of NodeK0 values (possibly empty); - edges: list of EdgeK0 values (possibly empty); - meta: list of MetaGraph values (GraphFrameK0 instances), possibly empty. These fields MUST be present in the canonical form. Empty lists MUST be encoded as [] and MUST NOT be encoded as null or omitted.
 
 **Graph Identity** _(normative)_
 
-graph_id is a logical identifier for the frame. It MUST be stable within a given repository or namespace. Different versions of the same conceptual graph SHOULD share the same graph_id but use distinct version values.
+graph*id is a logical identifier for the frame. It MUST be stable within a given repository or namespace. Different versions of the same conceptual graph SHOULD share the same graph*id but use distinct version values.
 
 ## NodeK0 Structure
 <a id="section-3-nodes-f18c3596"></a>
@@ -51,21 +44,11 @@ AttrK0 and MetricK0 collections MUST be represented as ordered slices, not maps.
 
 **AttrK0 Structure** _(normative)_
 
-AttrK0 MUST at least contain:
-  - key: non-empty string;
-  - value: string (UTF-8).
-It MAY contain:
-  - vtype: optional string naming the logical type (e.g. "string", "int", "target_ref");
-  - desc: optional description string.
+AttrK0 MUST at least contain: - key: non-empty string; - value: string (UTF-8). It MAY contain: - vtype: optional string naming the logical type (e.g. "string", "int", "target_ref"); - desc: optional description string.
 
 **MetricK0 Structure** _(normative)_
 
-MetricK0 MUST at least contain:
-  - name: non-empty string;
-  - value: numeric value (e.g. float64).
-It MAY contain:
-  - unit: optional string;
-  - desc: optional description.
+MetricK0 MUST at least contain: - name: non-empty string; - value: numeric value (e.g. float64). It MAY contain: - unit: optional string; - desc: optional description.
 
 **Node Attributes and Metrics** _(normative)_
 
@@ -73,13 +56,7 @@ Node attrs and metrics MUST be stored as slices and MUST NOT be represented as m
 
 **NodeK0 Fields** _(normative)_
 
-A NodeK0 MUST have:
-  - id: non-empty string, unique within the containing GraphFrameK0;
-  - kind: non-empty string describing the node's semantic role (e.g. spec, section, kernel);
-  - label: optional human-readable string;
-  - attrs: optional list of AttrK0;
-  - metrics: optional list of MetricK0.
-The set of allowed NodeK0.kind values is not constrained by GF0; higher-level specs (SpecFrame, TaskFrame, etc.) MUST define their own allowed kinds.
+A NodeK0 MUST have: - id: non-empty string, unique within the containing GraphFrameK0; - kind: non-empty string describing the node's semantic role (e.g. spec, section, kernel); - label: optional human-readable string; - attrs: optional list of AttrK0; - metrics: optional list of MetricK0. The set of allowed NodeK0.kind values is not constrained by GF0; higher-level specs (SpecFrame, TaskFrame, etc.) MUST define their own allowed kinds.
 
 ## EdgeK0 Structure
 <a id="section-4-edges-f8a0fc38"></a>
@@ -90,15 +67,7 @@ Directed edge in a GraphFrameK0 with from, to, and type fields, and optional ID 
 
 **EdgeK0 Fields** _(normative)_
 
-An EdgeK0 MUST have:
-  - from: NodeK0 ID (string) in the same GraphFrameK0;
-  - to: NodeK0 ID (string) in the same GraphFrameK0;
-  - type: non-empty string describing the edge semantics (e.g. contains, depends_on);
-It MAY have:
-  - id: optional string identifier;
-  - attrs: optional list of AttrK0;
-  - metrics: optional list of MetricK0.
-GF0 does not constrain the set of EdgeK0.type values beyond non-empty strings; higher- level specs MUST define allowed edge types where needed.
+An EdgeK0 MUST have: - from: NodeK0 ID (string) in the same GraphFrameK0; - to: NodeK0 ID (string) in the same GraphFrameK0; - type: non-empty string describing the edge semantics (e.g. contains, depends_on); It MAY have: - id: optional string identifier; - attrs: optional list of AttrK0; - metrics: optional list of MetricK0. GF0 does not constrain the set of EdgeK0.type values beyond non-empty strings; higher- level specs MUST define allowed edge types where needed.
 
 **Edge Integrity (Structural)** _(normative)_
 
@@ -117,7 +86,7 @@ The meta field of a GraphFrameK0 is a list of subgraphs, each of which is itself
 
 **MetaGraph Scoping** _(normative)_
 
-MetaGraphs MUST be structurally independent: their node IDs and edges are scoped within the subgraph. References from a MetaGraph into the parent graph MUST be expressed via attributes (e.g. parent_node_id) or well-defined edge types with explicit semantics.
+MetaGraphs MUST be structurally independent: their node IDs and edges are scoped within the subgraph. References from a MetaGraph into the parent graph MUST be expressed via attributes (e.g. parent*node*id) or well-defined edge types with explicit semantics.
 
 **Examples of Meta Usage** _(informative)_
 
@@ -132,7 +101,7 @@ A GraphFrameK0 validator MUST enforce clause.edgek0.integrity: for every EdgeK0,
 
 **Graph ID and Version Non-Empty** _(normative)_
 
-graph_id and version MUST be non-empty strings. Frames with empty graph_id or version MUST be rejected.
+graph*id and version MUST be non-empty strings. Frames with empty graph*id or version MUST be rejected.
 
 **Meta Recursion** _(normative)_
 

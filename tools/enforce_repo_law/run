@@ -35,6 +35,9 @@ if [ -f "$repo_root/.gitignore" ]; then
   fi
 fi
 
+# InlineMarkup-K1 validation (deterministic, policy-driven).
+./tools/validate_inline_markup/run
+
 # Emit deterministic JSON report
 {
   printf '{\n'

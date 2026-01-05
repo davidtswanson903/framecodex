@@ -6,6 +6,7 @@
 
 **RenderFrameK1** _(normative)_
 
+
 **Intent** _(normative)_
 
 RenderFrame K1 specifies a portable, deterministic plan for rendering graphs into text. The plan MAY tag outputs with a 'format' string (e.g. 'markdown', 'latex'), but the core semantics are purely text-based.
@@ -19,26 +20,31 @@ A RenderFrame is intended to be carried as a GF0 MetaGraph under the 'meta' list
 
 **Emitter** _(normative)_
 
+
 **RenderPlan** _(normative)_
+
 
 **RenderPredicate** _(normative)_
 
+
 **RenderProduct** _(normative)_
+
 
 **RenderRule** _(normative)_
 
+
 **Selector** _(normative)_
+
 
 **Template** _(normative)_
 
+
 **Transform** _(normative)_
+
 
 **Definition** _(normative)_
 
-A RenderFrame is any GF0 graph that satisfies:
-  (1) It is a valid GraphFrameK0 (graph_id/version/attrs/nodes/edges/meta present in canonical form);
-  (2) It contains exactly one root node with id==graph_id, kind=='render_plan';
-  (3) That root node has profile=='renderframe-k1'.
+A RenderFrame is any GF0 graph that satisfies: (1) It is a valid GraphFrameK0 (graph*id/version/attrs/nodes/edges/meta present in canonical form); (2) It contains exactly one root node with id==graph*id, kind=='render_plan'; (3) That root node has profile=='renderframe-k1'.
 
 **Determinism** _(normative)_
 
@@ -50,7 +56,7 @@ Within a RenderProduct, rules are evaluated in deterministic order. For a given 
 
 **Scoping into parent graphs** _(normative)_
 
-RenderFrames are structurally independent from their parent graphs. Any references from a RenderFrame into the source graph MUST be expressed via attributes (e.g. parent_graph_id, parent_node_id, source_root_id) or via explicit edge types with documented semantics.
+RenderFrames are structurally independent from their parent graphs. Any references from a RenderFrame into the source graph MUST be expressed via attributes (e.g. parent*graph*id, parent*node*id, source*root*id) or via explicit edge types with documented semantics.
 
 ## RenderFrame Node Kinds
 <a id="section-3-node-kinds-7f208afe"></a>
@@ -75,73 +81,31 @@ Within a RenderFrame, EdgeK0.type MUST be one of the values in property.renderfr
 
 **Attributes for emitter nodes** _(normative)_
 
-A node with kind=='emitter' MUST provide:
-  - label  : short emitter name,
-  - status : RenderStatus.
-It SHOULD provide:
-  - template_id : node id of a template node in the same RenderFrame.
-It MAY provide:
-  - pipeline : ordered list of transform node ids to apply to the emitted text.
+A node with kind=='emitter' MUST provide: - label  : short emitter name, - status : RenderStatus. It SHOULD provide: - template_id : node id of a template node in the same RenderFrame. It MAY provide: - pipeline : ordered list of transform node ids to apply to the emitted text.
 
-**Attributes for render_plan nodes** _(normative)_
+**Attributes for render\_plan nodes** _(normative)_
 
-A node with kind=='render_plan' MUST provide:
-  - title   : short plan title,
-  - status  : RenderStatus,
-  - summary : short description,
-  - profile : 'renderframe-k1'.
-It MAY also provide:
-  - format_hint : string tag (e.g. 'markdown', 'latex', 'text'),
-  - applies_to_doc_profile : string tag used by tooling,
-  - on_missing_field : 'empty' | 'error' (default: 'empty').
+A node with kind=='render*plan' MUST provide: - title   : short plan title, - status  : RenderStatus, - summary : short description, - profile : 'renderframe-k1'. It MAY also provide: - format*hint : string tag (e.g. 'markdown', 'latex', 'text'), - applies*to*doc*profile : string tag used by tooling, - on*missing_field : 'empty' | 'error' (default: 'empty').
 
-**Attributes for render_product nodes** _(normative)_
+**Attributes for render\_product nodes** _(normative)_
 
-A node with kind=='render_product' MUST provide:
-  - label  : short product name,
-  - status : RenderStatus.
-It MAY provide:
-  - output_kind : 'file' | 'string' (default: 'string'),
-  - output_path : string (required if output_kind=='file'),
-  - source_root_id : string (parent graph node id) selecting a render root,
-  - resolution_mode : 'first_match' | 'merge' (default: 'first_match').
+A node with kind=='render*product' MUST provide: - label  : short product name, - status : RenderStatus. It MAY provide: - output*kind : 'file' | 'string' (default: 'string'), - output*path : string (required if output*kind=='file'), - source*root*id : string (parent graph node id) selecting a render root, - resolution*mode : 'first*match' | 'merge' (default: 'first_match').
 
 **Required attributes per node kind** _(normative)_
 
-A RenderFrame validator MUST treat missing required attributes as a hard validation error. Required attributes per kind are:
-  - render_plan    : title, status, summary, profile
-  - render_product : label, status
-  - render_rule    : label, status
-  - selector       : label, status
-  - emitter        : label, status
-  - template       : label, status, body
-  - transform      : label, status, op
+A RenderFrame validator MUST treat missing required attributes as a hard validation error. Required attributes per kind are: - render*plan    : title, status, summary, profile - render*product : label, status - render_rule    : label, status - selector       : label, status - emitter        : label, status - template       : label, status, body - transform      : label, status, op
 
 **Attributes for selector nodes** _(normative)_
 
-A node with kind=='selector' MUST provide:
-  - label  : short selector name,
-  - status : RenderStatus.
-It SHOULD provide:
-  - predicates : ordered list of RenderPredicate strings.
-Selector predicate syntax is implementation-defined but MUST be deterministic.
+A node with kind=='selector' MUST provide: - label  : short selector name, - status : RenderStatus. It SHOULD provide: - predicates : ordered list of RenderPredicate strings. Selector predicate syntax is implementation-defined but MUST be deterministic.
 
 **Attributes for template nodes** _(normative)_
 
-A node with kind=='template' MUST provide:
-  - label  : short template name,
-  - status : RenderStatus,
-  - body   : template text.
-Templates MAY contain placeholders. Placeholder syntax is implementation-defined, but MUST be deterministic and MUST define behavior for missing fields (see render_plan.on_missing_field).
+A node with kind=='template' MUST provide: - label  : short template name, - status : RenderStatus, - body   : template text. Templates MAY contain placeholders. Placeholder syntax is implementation-defined, but MUST be deterministic and MUST define behavior for missing fields (see render*plan.on*missing_field).
 
 **Attributes for transform nodes** _(normative)_
 
-A node with kind=='transform' MUST provide:
-  - label  : short transform name,
-  - status : RenderStatus,
-  - op     : string naming a pure text transform operation.
-It MAY provide:
-  - args : ordered list of string args (interpretation is op-specific).
+A node with kind=='transform' MUST provide: - label  : short transform name, - status : RenderStatus, - op     : string naming a pure text transform operation. It MAY provide: - args : ordered list of string args (interpretation is op-specific).
 
 **RenderStatus enum** _(normative)_
 
@@ -162,10 +126,7 @@ For every 'selects' edge, the destination node MUST have kind=='selector'. For e
 
 **Root plan node** _(normative)_
 
-Each RenderFrame MUST contain exactly one node with:
-  - id == graph_id,
-  - kind == 'render_plan',
-  - profile == 'renderframe-k1'.
+Each RenderFrame MUST contain exactly one node with: - id == graph*id, - kind == 'render*plan', - profile == 'renderframe-k1'.
 
 ## Integration and Usage
 <a id="section-7-integration-114f38a5"></a>

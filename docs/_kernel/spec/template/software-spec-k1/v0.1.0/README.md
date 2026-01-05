@@ -28,9 +28,12 @@ TODO: List non-goals (things intentionally not supported).
 
 **Interface** _(normative)_
 
+
 **Kernel** _(normative)_
 
+
 **Module** _(normative)_
+
 
 ## Architecture
 <a id="section-4-architecture-8218f811"></a>
@@ -50,7 +53,7 @@ TODO: Describe the primary dataflow and controlflow. Include invariants at bound
 
 TODO: Define your public API/protocols. Link to property.api_surface.
 
-**api_surface** _(normative)_
+**api\_surface** _(normative)_
 
 ## Data Model
 <a id="section-6-data-model-44497ef8"></a>
@@ -71,7 +74,7 @@ TODO: List invariants. Each invariant should be testable.
 ## Security and Abuse Cases
 <a id="section-8-security-1354701e"></a>
 
-**threat_model** _(informative)_
+**threat\_model** _(informative)_
 
 ## Testing and Verification
 <a id="section-9-testing-00bc3379"></a>

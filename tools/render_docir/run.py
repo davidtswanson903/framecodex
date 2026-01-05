@@ -21,11 +21,23 @@ import argparse
 import hashlib
 import json
 import re
+import sys
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
 
 import yaml
+
+# Ensure repo root is on sys.path so we can import tools/* as modules.
+REPO_ROOT = Path(__file__).resolve().parents[2]
+if str(REPO_ROOT) not in sys.path:
+    sys.path.insert(0, str(REPO_ROOT))
+
+# InlineMarkup-K1 (deterministic tiny markup subset)
+try:
+    from tools.markup.inline_markup_k1 import parse as parse_inline_markup  # type: ignore
+except Exception:  # pragma: no cover
+    parse_inline_markup = None  # type: ignore
 
 
 def sha256_bytes(b: bytes) -> str:
@@ -181,6 +193,27 @@ def build_spine(g: Dict[str, Any], nodes: Dict[str, Node]) -> Tuple[str, Dict[st
     return root_id, {}
 
 
+def to_markup(value: str, *, text_format: str) -> Optional[Dict[str, Any]]:
+    """Parse value into MarkupIR if enabled.
+
+    Returns a JSON-serializable MarkupIR dict, or None if parsing is unavailable.
+    Parsing errors are embedded as `errors` for downstream validation/reporting.
+    """
+
+    if parse_inline_markup is None:
+        return None
+    ast, errs = parse_inline_markup(value, mode=text_format)
+    return {
+        "kind": "inline-markup-k1",
+        "mode": text_format,
+        "blocks": ast.get("blocks", []),
+        "errors": [
+            {"code": e.code, "message": e.message, "pos": e.pos}
+            for e in (errs or [])
+        ],
+    }
+
+
 def to_docir(g: Dict[str, Any], src_bytes: bytes) -> Dict[str, Any]:
     nodes = parse_nodes(g)
     root_id, children_map = build_spine(g, nodes)
@@ -228,6 +261,11 @@ def to_docir(g: Dict[str, Any], src_bytes: bytes) -> Dict[str, Any]:
             n = nodes.get(nid)
             if n is None:
                 return
+
+            # Determine desired text.format for this node.
+            # Defaults are conservative: inline for summaries, block for clause.text.
+            node_fmt = find_attr(n.attrs, "text.format") or "plain"
+
             if n.kind == "section":
                 blocks.append(
                     {
@@ -238,23 +276,31 @@ def to_docir(g: Dict[str, Any], src_bytes: bytes) -> Dict[str, Any]:
                     }
                 )
             elif n.kind == "term":
+                body = norm_text(n.summary or "")
                 blocks.append(
                     {
                         "type": "definition",
                         "label": n.label or n.id,
                         "status": n.status,
                         "anchor": anchors[n.id],
-                        "body": norm_text(n.summary or ""),
+                        "text_format": node_fmt or "plain",
+                        "body": body,
+                        "body_markup": to_markup(body, text_format=node_fmt or "plain") if body else None,
                     }
                 )
             elif n.kind == "clause":
+                body = norm_text(n.text or "")
+                # Default clauses to md-block unless explicit override.
+                fmt = node_fmt if node_fmt != "plain" else "md-block"
                 blocks.append(
                     {
                         "type": "clause",
                         "label": n.label or n.id,
                         "status": n.status,
                         "anchor": anchors[n.id],
-                        "body": norm_text(n.text or ""),
+                        "text_format": fmt,
+                        "body": body,
+                        "body_markup": to_markup(body, text_format=fmt) if body else None,
                     }
                 )
             elif n.kind == "property":
@@ -298,24 +344,32 @@ def to_docir(g: Dict[str, Any], src_bytes: bytes) -> Dict[str, Any]:
             )
             for nid in stable_node_sort(nodes, groups[kind]):
                 n = nodes[nid]
+                node_fmt = find_attr(n.attrs, "text.format") or "plain"
                 if n.kind == "term":
+                    body = norm_text(n.summary or "")
                     blocks.append(
                         {
                             "type": "definition",
                             "label": n.label or n.id,
                             "status": n.status,
                             "anchor": anchors[n.id],
-                            "body": norm_text(n.summary or ""),
+                            "text_format": node_fmt or "plain",
+                            "body": body,
+                            "body_markup": to_markup(body, text_format=node_fmt or "plain") if body else None,
                         }
                     )
                 elif n.kind == "clause":
+                    body = norm_text(n.text or "")
+                    fmt = node_fmt if node_fmt != "plain" else "md-block"
                     blocks.append(
                         {
                             "type": "clause",
                             "label": n.label or n.id,
                             "status": n.status,
                             "anchor": anchors[n.id],
-                            "body": norm_text(n.text or ""),
+                            "text_format": fmt,
+                            "body": body,
+                            "body_markup": to_markup(body, text_format=fmt) if body else None,
                         }
                     )
                 elif n.kind == "property":
@@ -345,15 +399,11 @@ def to_docir(g: Dict[str, Any], src_bytes: bytes) -> Dict[str, Any]:
             blocks.append({"type": "list_item", "text": f"{r['label']} ({r['target']})"})
 
     docir = {
-        "docir_version": "0.1.0",
+        "docir_version": "0.2.0",
         "front_matter": front,
         "anchors": anchors,
         "blocks": blocks,
-        "provenance": {
-            "input_sha256": sha256_bytes(src_bytes),
-            "renderer": "tools/render_docir",
-            "renderer_version": "0.1.0",
-        },
+        "sha256": sha256_bytes(src_bytes),
     }
 
     return docir

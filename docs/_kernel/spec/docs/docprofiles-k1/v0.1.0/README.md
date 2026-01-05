@@ -11,11 +11,14 @@ DocProfiles are conventions layered on SpecFrame K1 to support consistent author
 ## Core Model
 <a id="section-2-core-model-fd724e9a"></a>
 
-**doc_profile** _(normative)_
+**doc\_profile** _(normative)_
+
 
 **ProfileId** _(normative)_
 
+
 **ProfileRule** _(normative)_
+
 
 **frame-metadata** _(informative)_
 
@@ -23,7 +26,7 @@ Frame-level tags such as 'domain', 'depends_on', and publishing hints SHOULD be 
 
 **profile-location** _(normative)_
 
-A document selects a DocProfile by providing 'doc_profile' as an attribute on the root 'spec' node (id == graph_id). Tooling MAY ignore unknown doc_profile values.
+A document selects a DocProfile by providing 'doc*profile' as an attribute on the root 'spec' node (id == graph*id). Tooling MAY ignore unknown doc_profile values.
 
 **profile-semantics** _(normative)_
 
@@ -34,29 +37,35 @@ A doc_profile MUST NOT change the underlying SpecFrame K1 validity rules. It onl
 
 **guide-k1** _(normative)_
 
-**required_properties** _(informative)_
 
-**hardware_spec-k1** _(normative)_
+**required\_properties** _(informative)_
 
-**required_sections** _(normative)_
+**hardware\_spec-k1** _(normative)_
 
-**math_theory-k1** _(normative)_
+
+**required\_sections** _(normative)_
+
+**math\_theory-k1** _(normative)_
+
 
 **conventions** _(informative)_
 
 **playbook-k1** _(normative)_
 
-**software_spec-k1** _(normative)_
 
-**required_properties** _(informative)_
+**software\_spec-k1** _(normative)_
 
-**required_sections** _(normative)_
+
+**required\_properties** _(informative)_
+
+**required\_sections** _(normative)_
 
 **standard-k1** _(normative)_
 
-**required_properties** _(informative)_
 
-**required_sections** _(normative)_
+**required\_properties** _(informative)_
+
+**required\_sections** _(normative)_
 
 ## Lint Rules
 <a id="section-4-lint-rules-2432e0a9"></a>

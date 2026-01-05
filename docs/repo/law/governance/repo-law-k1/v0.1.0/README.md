@@ -13,7 +13,7 @@
 
 **Required paths** _(normative)_
 
-**Required paths when output_mode=commit_docs** _(normative)_
+**Required paths when output\_mode=commit\_docs** _(normative)_
 
 ## Frames Tree and Fractal Sharding
 <a id="section-3-frames-tree-a14d3797"></a>
@@ -34,7 +34,7 @@
 
 **Minimal required CI gates** _(normative)_
 
-**Additional CI gates when output_mode=commit_docs** _(normative)_
+**Additional CI gates when output\_mode=commit\_docs** _(normative)_
 
 ## Receipts and Manifests
 <a id="section-6-receipts-cc73359d"></a>
