@@ -1,12 +1,10 @@
 \documentclass[11pt]{article}
-\usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{hyperref}
 \usepackage{geometry}
 \geometry{margin=1in}
-\usepackage{amsmath,amssymb,amsthm,mathtools}
-\usepackage{hyperref}
-\usepackage{enumitem}
-\usepackage{microtype}
 
 \title{Systemics Σ — Composition (K1)}
 \author{}
@@ -15,37 +13,56 @@
 \begin{document}
 \maketitle
 
-\section*{References}
-\begin{itemize}
-\item GraphFrame K0 (GF0) (spec://\_kernel/gf/gf0-k1)
-\item SpecFrame K1 (spec://\_kernel/spec/specframe-k1)
-\item Systemics Σ — Minimal Specification (spec://domains/systemics/sigma-k1)
-\end{itemize}
+\section*{Systemics Σ — Composition (K1)}
 
-\section{Charter}
 \subsection*{Charter}
+
+\textbf{Charter} \emph{(normative)}
+
 This spec defines how lawful Σ kernels compose in serial, parallel, and temporal forms, preserving Σ lawfulness via posted adapters/combinators and monotone contract combination.
 
-\section{Serial Composition}
-\subsection*{Posted adapter requirement}
+\subsection*{Serial Composition}
+
+\textbf{Posted adapter requirement} \emph{(normative)}
+
 For serial composition with K1\textasciicircum{}Σ = (v1, χ1, …) and K2\textasciicircum{}Σ = (v2, χ2, …), any adapter f used to produce the second valuation MUST be posted as part of the record/contract. In particular, if v2 is defined from u and the upstream decision by: v2(u) = f(u, χ1(v1(u), Θ1, β1)), then f MUST be included in posted data so downstream decisions remain records-only.
-\subsection*{Monotone contract combination}
+
+\textbf{Monotone contract combination} \emph{(normative)}
+
 The composite kernel K2 ∘ K1 is lawful only if (Σ-A1 … Σ-A7) hold for the composite and if the combined contracts (Θ, β, C) are formed via a monotone operator ⊕ (domain-chosen), i.e. tightening in any component must not rely on hidden slack.
 
-\section{Parallel / Product Composition}
-\subsection*{Posted decision combinator}
+\subsection*{Parallel / Product Composition}
+
+\textbf{Posted decision combinator} \emph{(normative)}
+
 For parallel/product composition K1 ⊗ K2, both kernels evaluate and decisions are aggregated via a posted combinator comb: 2 × 2 → 2 (e.g., AND/OR). The choice of comb MUST be posted as part of the record/contract.
-\subsection*{Monotone floors/budgets}
+
+\textbf{Monotone floors/budgets} \emph{(normative)}
+
 Floors and budgets for parallel composition MUST be combined monotonically (tightening cannot rely on hidden slack).
 
-\section{Temporal Composition (window → page → book)}
-\subsection*{Pages and books}
+\subsection*{Temporal Composition (window → page → book)}
+
+\textbf{Pages and books} \emph{(normative)}
+
 A page is a lawful record κ for one window. A book is an ordered sequence of pages; optionally, pages may be hash-chained. Chaining preserves replay and does not alter decisions.
 
-\section{Composition Invariants}
-\subsection*{Records-only preserved}
+\subsection*{Composition Invariants}
+
+\textbf{Records-only preserved} \emph{(normative)}
+
 Composition MUST preserve Σ-A2 (records-only): any dependency introduced by composition must be posted.
-\subsection*{Replay preserved}
+
+\textbf{Replay preserved} \emph{(normative)}
+
 Composition MUST preserve reflexive reproducibility and replayability obligations implied by the Σ contract.
+
+\subsection*{References}
+
+\begin{itemize}
+\item GraphFrame K0 (GF0) ()
+\item SpecFrame K1 ()
+\item Systemics Σ — Minimal Specification ()
+\end{itemize}
 
 \end{document}
