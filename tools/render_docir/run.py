@@ -411,6 +411,40 @@ def to_docir(g: Dict[str, Any], src_bytes: bytes) -> Dict[str, Any]:
                             "body_markup": to_markup(body, text_format=fmt) if body else None,
                         }
                     )
+                elif n.kind == "paragraph":
+                    body = norm_text(n.text or "")
+                    fmt = node_fmt if node_fmt != "plain" else "md-block"
+                    blocks.append(
+                        {
+                            "type": "paragraph",
+                            "anchor": anchors[n.id],
+                            "text_format": fmt,
+                            "text": body,
+                            "body_markup": to_markup(body, text_format=fmt) if body else None,
+                        }
+                    )
+                elif n.kind == "reference":
+                    label = n.label or n.title or n.id
+                    target = n.target or ""
+                    body = f"{label}: {target}" if target else label
+                    blocks.append(
+                        {
+                            "type": "paragraph",
+                            "anchor": anchors[n.id],
+                            "text_format": "md-inline",
+                            "text": body,
+                            "body_markup": to_markup(body, text_format="md-inline") if body else None,
+                        }
+                    )
+                elif n.kind == "title":
+                    blocks.append(
+                        {
+                            "type": "heading",
+                            "level": 3,
+                            "title": n.text or n.title or n.label or n.id,
+                            "anchor": anchors[n.id],
+                        }
+                    )
                 elif n.kind == "property":
                     blocks.append(
                         {
