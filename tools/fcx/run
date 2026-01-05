@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+repo_root="$(cd "$(dirname "$0")/../.." && pwd)"
+
+# Ensure local library import path.
+export PYTHONPATH="$repo_root/py${PYTHONPATH:+:$PYTHONPATH}"
+
+exec python3 "$repo_root/tools/fcx/run.py" "$@"
