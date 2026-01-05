@@ -10,6 +10,11 @@ Policy (v0.1):
 - If node attrs contain text.format, validate the relevant text-like fields.
 - Fields validated: text, summary, desc
 
+NOTE (repo-local extension):
+- `text.format` values `tex-inline` and `tex-block` are treated as explicit
+  *passthrough* modes and are not parsed as InlineMarkup-K1.
+  InlineMarkup validation is therefore skipped for those fields.
+
 Exit codes:
 - 0 if ok
 - 1 if any violations
@@ -33,6 +38,9 @@ if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 
 from tools.markup.inline_markup_k1 import parse  # type: ignore
+
+
+_TEX_PASSTHROUGH_FORMATS = {"tex-inline", "tex-block"}
 
 
 def is_str(x: Any) -> bool:
@@ -73,6 +81,10 @@ def validate_frame(path: Path) -> Tuple[List[Dict[str, Any]], List[Dict[str, Any
             continue
         nid = str(n.get("id") or "")
         fmt = find_attr(n.get("attrs"), "text.format") or "plain"
+
+        # Opt-out for explicit TeX passthrough blocks.
+        if fmt in _TEX_PASSTHROUGH_FORMATS:
+            continue
 
         for field in ("text", "summary", "desc"):
             v = n.get(field)

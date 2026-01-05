@@ -119,6 +119,8 @@ nodes:
     text: >
       - A divergence ("wobble") $w:\\mathbb{V}\\times\\mathbb{V}\\to \\mathbb{R}_{\\ge 0}$ on decision-relevant coordinates.
       - Orders: $\\theta\\preceq \\theta'$ means tightening floors; $\\beta'\\preceq\\beta$ means tightening budgets; $C'\\preceq C$ means shrinking capacity.
+    attrs:
+      - { key: "text.format", value: "tex-block" }
 
   - id: "section.5.axioms"
     kind: "section"
@@ -131,83 +133,99 @@ nodes:
     status: "normative"
     label: "Σ-A1 Well-typedness"
     text: >
-      **(Well-typedness).** All maps are measurable/continuous as needed; $\\chi$ is total.
+      \\textbf{(Well-typedness).} All maps are measurable/continuous as needed; $\\chi$ is total.
+    attrs:
+      - { key: "text.format", value: "tex-block" }
 
   - id: "clause.a2"
     kind: "clause"
     status: "normative"
     label: "Σ-A2 Posting / Records-only"
     text: >
-      **(Posting / Records-only).** For any run on $u\\in U$, the record $\\kappa\\in\\mathcal{R}$ contains $(v(u),\\Theta,\\beta,C,\\Pi,P_n,\\Gamma)$, and the decision equals
-      
+      \\textbf{(Posting / Records-only).} For any run on $u\\in U$, the record $\\kappa\\in\\mathcal{R}$ contains $(v(u),\\Theta,\\beta,C,\\Pi,P_n,\\Gamma)$, and the decision equals
+
       \\begin{equation}
         \\chi^\\ast(u;\\kappa) \\;=\\; \\chi\\big(v(u),\\Theta,\\beta\\big),
       \\end{equation}
-      
+
       with no dependence on unposted data.
+    attrs:
+      - { key: "text.format", value: "tex-block" }
 
   - id: "clause.a3"
     kind: "clause"
     status: "normative"
     label: "Σ-A3 Benign invariance"
     text: >
-      **(Benign invariance).** Let $(\\pi,p)\\in \\Pi\\times P_n$ act on the measurement/evaluation pathway to yield $v_{\\pi,p}(u)$. Define
-      
+      \\textbf{(Benign invariance).} Let $(\\pi,p)\\in \\Pi\\times P_n$ act on the measurement/evaluation pathway to yield $v_{\\pi,p}(u)$. Define
+
       \\begin{equation}
         W(u)\\;:=\\;\\sup_{(\\pi,p)}\\; w\\!\\big(v_{\\pi,p}(u),\\,v_{\\pi_0,p_0}(u)\\big).
       \\end{equation}
-      
+
       If $W(u)\\preceq \\beta$ then $\\chi\\big(v_{\\pi,p}(u),\\Theta,\\beta\\big)=\\chi\\big(v_{\\pi_0,p_0}(u),\\Theta,\\beta\\big)$.
+    attrs:
+      - { key: "text.format", value: "tex-block" }
 
   - id: "clause.a4"
     kind: "clause"
     status: "normative"
     label: "Σ-A4 Minimal sufficiency under capacity"
     text: >
-      **(Minimal sufficiency under capacity).** Among valuations preserving decisions under posted $(\\Theta,\\beta)$, $v$ is minimal w.r.t.\\ $C$:
-      
+      \\textbf{(Minimal sufficiency under capacity).} Among valuations preserving decisions under posted $(\\Theta,\\beta)$, $v$ is minimal w.r.t.\\ $C$:
+
       \\begin{equation}
         \\forall v'\\; \\big(\\chi\\!\\circ v'=\\chi\\!\\circ v\\big)\\ \\Rightarrow\\ \\mathrm{cost}(v')\\ \\succeq\\ \\mathrm{cost}(v)\\quad\\text{subject to }C.
       \\end{equation}
+    attrs:
+      - { key: "text.format", value: "tex-block" }
 
   - id: "clause.a5"
     kind: "clause"
     status: "normative"
     label: "Σ-A5 Reflexive reproducibility"
     text: >
-      **(Reflexive reproducibility).** There exists an admissible, independently realized $v'$ (different numeric/route) such that
-      
+      \\textbf{(Reflexive reproducibility).} There exists an admissible, independently realized $v'$ (different numeric/route) such that
+
       \\begin{equation}
         \\chi\\big(v(u),\\Theta,\\beta\\big)\\;=\\;\\chi\\big(v'(u),\\Theta,\\beta\\big),
       \\end{equation}
-      
+
       with both posted in $\\kappa$ (self-warrant).
+    attrs:
+      - { key: "text.format", value: "tex-block" }
 
   - id: "clause.a6"
     kind: "clause"
     status: "normative"
     label: "Σ-A6 Determinism & idempotence"
     text: >
-      **(Determinism & idempotence).** For fixed $\\big(v(u),\\Theta,\\beta\\big)$, the decision $\\chi$ is unique and idempotent.
+      \\textbf{(Determinism & idempotence).} For fixed $\\big(v(u),\\Theta,\\beta\\big)$, the decision $\\chi$ is unique and idempotent.
+    attrs:
+      - { key: "text.format", value: "tex-block" }
 
   - id: "clause.a7"
     kind: "clause"
     status: "normative"
     label: "Σ-A7 Monotonicity"
     text: >
-      **(Monotonicity).** Tightening floors or budgets cannot rescue a failure by hidden dependence:
-      
+      \\textbf{(Monotonicity).} Tightening floors or budgets cannot rescue a failure by hidden dependence:
+
       \\begin{equation}
-        \\theta\\preceq \\theta',\\ \\beta'\\preceq \\beta\\;\\Rightarrow\\ 
+        \\theta\\preceq \\theta',\\ \\beta'\\preceq \\beta\\;\\Rightarrow\\
         \\chi(v,\\theta,\\beta)=1 \\ \\Rightarrow\\ \\chi(v,\\theta',\\beta')\\in\\{0,1\\}\\ \\text{with no hidden rescue.}
       \\end{equation}
+    attrs:
+      - { key: "text.format", value: "tex-block" }
 
   - id: "clause.a8"
     kind: "clause"
     status: "normative"
     label: "Σ-A8 Isomorphism invariance"
     text: >
-      **(Isomorphism invariance).** If a frame $\\pi$ induces a structure-preserving isomorphism on representation, decisions are invariant.
+      \\textbf{(Isomorphism invariance).} If a frame $\\pi$ induces a structure-preserving isomorphism on representation, decisions are invariant.
+    attrs:
+      - { key: "text.format", value: "tex-block" }
 
   - id: "section.6.conformance"
     kind: "section"
@@ -220,14 +238,16 @@ nodes:
     status: "normative"
     label: "Σ-lawful record checklist"
     text: >
-      A record $\\kappa \\in \\mathcal{R}$ is *$\\Sigma$-lawful* iff it includes:
-      
-      1. **Contract:** $\\Theta,\\beta,C,\\Pi,P_n,\\Gamma$ (with any guards like $\\epsilon$).
-      2. **Valuation:** $v(u)$ (decision-relevant coordinates posted).
-      3. **Decision:** $\\chi\\big(v(u),\\Theta,\\beta\\big)$ and a reason enumerating passed/failed predicates.
-      4. **Invariance evidence:** wobble metrics and the realizing worst-case $(\\pi,p)$.
-      5. **Reflexive warrant:** independent $v'(u)$ and agreement of $\\chi$.
-      6. **Canonicalization:** canonical bytes, digest $d$, and optional chain root for append-only books.
+      A record $\\kappa \\in \\mathcal{R}$ is \\emph{$\\Sigma$-lawful} iff it includes:
+
+      1. \\textbf{Contract:} $\\Theta,\\beta,C,\\Pi,P_n,\\Gamma$ (with any guards like $\\epsilon$).
+      2. \\textbf{Valuation:} $v(u)$ (decision-relevant coordinates posted).
+      3. \\textbf{Decision:} $\\chi\\big(v(u),\\Theta,\\beta\\big)$ and a reason enumerating passed/failed predicates.
+      4. \\textbf{Invariance evidence:} wobble metrics and the realizing worst-case $(\\pi,p)$.
+      5. \\textbf{Reflexive warrant:} independent $v'(u)$ and agreement of $\\chi$.
+      6. \\textbf{Canonicalization:} canonical bytes, digest $d$, and optional chain root for append-only books.
+    attrs:
+      - { key: "text.format", value: "tex-block" }
 
   - id: "section.7.morphisms"
     kind: "section"

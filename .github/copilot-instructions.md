@@ -1479,6 +1479,12 @@ Key idea (Option A): frames may attach a publication-specific inline IR via attr
 (e.g. `pub.tex.summary`, `pub.tex.text`) that is carried into DocIR as
 `pub_tex_inline` and preferred over InlineMarkup-K1.
 
+TeX passthrough (opt-in):
+- If a DocIR block has `text_format == 'tex-inline'` or `text_format == 'tex-block'`,
+  the corresponding string payload is emitted **verbatim** (no escaping).
+- This is intentionally unsafe unless paired with a dedicated validator gate.
+  For now we keep this mode opt-in and leave enforcement to future tooling.
+
 Input:
 - DocIR JSON (tools/render_docir/run.py output)
 
@@ -1488,7 +1494,7 @@ Output:
 Determinism:
 - stable ordering (comes from DocIR)
 - no timestamps
-- conservative escaping
+- conservative escaping (except for explicit tex-* passthrough)
 
 Security/safety:
 - PubTeX IR is treated as *data*, not raw TeX injection. We only accept a
@@ -1543,13 +1549,6 @@ def validate_code_tex(s: str) -> None:
 
 def read_json(path: Path) -> Dict[str, Any]:
     return json.loads(path.read_text(encoding="utf-8"))
-
-
-def render_tex_inline(nodes: List[Dict[str, Any]]) -> str:
-    """Render constrained publication inline nodes."""
-
-    out: List[str] = []
-    for n in nodes:
 ```
 
 #### tools/render_simple_md
@@ -1952,6 +1951,11 @@ Policy (v0.1):
 - If node attrs contain text.format, validate the relevant text-like fields.
 - Fields validated: text, summary, desc
 
+NOTE (repo-local extension):
+- `text.format` values `tex-inline` and `tex-block` are treated as explicit
+  *passthrough* modes and are not parsed as InlineMarkup-K1.
+  InlineMarkup validation is therefore skipped for those fields.
+
 Exit codes:
 - 0 if ok
 - 1 if any violations
@@ -1975,6 +1979,9 @@ if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 
 from tools.markup.inline_markup_k1 import parse  # type: ignore
+
+
+_TEX_PASSTHROUGH_FORMATS = {"tex-inline", "tex-block"}
 
 
 def is_str(x: Any) -> bool:
@@ -2012,14 +2019,6 @@ def validate_frame(path: Path) -> Tuple[List[Dict[str, Any]], List[Dict[str, Any
 
     for n in nodes:
         if not isinstance(n, dict):
-            continue
-        nid = str(n.get("id") or "")
-        fmt = find_attr(n.get("attrs"), "text.format") or "plain"
-
-        for field in ("text", "summary", "desc"):
-            v = n.get(field)
-            if not is_str(v):
-                continue
 ```
 
 #### tools/validate_pub_tex

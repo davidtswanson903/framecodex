@@ -7,6 +7,12 @@ Key idea (Option A): frames may attach a publication-specific inline IR via attr
 (e.g. `pub.tex.summary`, `pub.tex.text`) that is carried into DocIR as
 `pub_tex_inline` and preferred over InlineMarkup-K1.
 
+TeX passthrough (opt-in):
+- If a DocIR block has `text_format == 'tex-inline'` or `text_format == 'tex-block'`,
+  the corresponding string payload is emitted **verbatim** (no escaping).
+- This is intentionally unsafe unless paired with a dedicated validator gate.
+  For now we keep this mode opt-in and leave enforcement to future tooling.
+
 Input:
 - DocIR JSON (tools/render_docir/run.py output)
 
@@ -16,7 +22,7 @@ Output:
 Determinism:
 - stable ordering (comes from DocIR)
 - no timestamps
-- conservative escaping
+- conservative escaping (except for explicit tex-* passthrough)
 
 Security/safety:
 - PubTeX IR is treated as *data*, not raw TeX injection. We only accept a
@@ -71,6 +77,25 @@ def validate_code_tex(s: str) -> None:
 
 def read_json(path: Path) -> Dict[str, Any]:
     return json.loads(path.read_text(encoding="utf-8"))
+
+
+def _is_tex_passthrough(text_format: Any) -> bool:
+    return text_format in ("tex-inline", "tex-block")
+
+
+def _read_passthrough_block_text(b: Dict[str, Any]) -> str:
+    """Pick the correct string payload for passthrough blocks."""
+
+    # DocIR uses:
+    # - paragraph: `text`
+    # - clause/definition: `body`
+    # Keep this deterministic and explicit.
+    t = b.get("type")
+    if t == "paragraph":
+        return str(b.get("text", ""))
+    if t in ("clause", "definition"):
+        return str(b.get("body", ""))
+    return str(b.get("text", "") or b.get("body", ""))
 
 
 def render_tex_inline(nodes: List[Dict[str, Any]]) -> str:
@@ -145,6 +170,10 @@ def render_block(b: Dict[str, Any]) -> List[str]:
         return [rf"\paragraph*{{{title}}}", ""]
 
     if t == "paragraph":
+        if _is_tex_passthrough(b.get("text_format")):
+            raw = _read_passthrough_block_text(b).rstrip()
+            return [raw, ""] if raw else [""]
+
         pub = b.get("pub_tex_inline")
         if isinstance(pub, dict) and pub.get("kind") == "pub-tex-inline-v0":
             return [render_tex_inline(pub.get("nodes") or []), ""]
@@ -156,6 +185,11 @@ def render_block(b: Dict[str, Any]) -> List[str]:
         status = tex_escape(str(b.get("status", "")))
         head = rf"\textbf{{{label}}}" + (rf" \emph{{({status})}}" if status else "")
         out: List[str] = [head, ""]
+
+        if _is_tex_passthrough(b.get("text_format")):
+            raw = _read_passthrough_block_text(b).rstrip()
+            out.extend([raw, ""] if raw else [""])
+            return out
 
         pub = b.get("pub_tex_inline")
         if isinstance(pub, dict) and pub.get("kind") == "pub-tex-inline-v0":
