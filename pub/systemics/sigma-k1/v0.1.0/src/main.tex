@@ -9,7 +9,7 @@
 \usepackage{fancyvrb}
 \geometry{margin=1in}
 
-\title{Systemics Σ — Minimal Specification (K1)}
+\title{Systemics \$\textbackslash\{\}Sigma\$ --- Minimal Specification}
 \author{}
 \date{}
 
@@ -20,98 +20,107 @@
 
 \textbf{Charter} \emph{(normative)}
 
-Σ specifies a contract-shaped kernel that produces decisions from posted evidence under benign variation, with replayable records, without making domain assumptions.
+This document gives a domain-agnostic, minimal formal specification of Systemics $\\Sigma$. It treats any practice as a kernel-shaped contract that produces decisions from posted evidence under benign variation, with replayable records. No specific domain assumptions (physics, ML, audits, etc.) are required.
 
 \subsection*{Alphabet (Objects \& Maps)}
 
 \textbf{Alphabet} \emph{(normative)}
 
 \begin{itemize}
-  \item \(U\): universe of artifacts
-  \item \(V\): valuation space (any measurable space; commonly R\textasciicircum{}k × B\textasciicircum{}m)
-  \item \(2\): decision space 2 := \{0,1\}
-  \item \(\Pi\): frames / benign contexts
-  \item \(P_n\): probes / benign perturbations
-  \item \(\Theta\): floors/thresholds (partially ordered set)
-  \item \(\beta\): invariance budgets (tolerances in a poset/lattice)
-  \item \(C\): capacity budgets (bits/time/energy constraints)
-  \item \(\Gamma\): envelope/meta (versions, seeds, numeric modes, commits)
-  \item \(R\): records (canonical map → bytes; hash/ledger optional)
+  \item \(U\): Universe of artifacts.
+  \item \(\mathbb{V}\): Valuation space (any measurable space; commonly \textbackslash\{\}mathbb\{R\}\textasciicircum{}k \textbackslash\{\}times \textbackslash\{\}mathbb\{B\}\textasciicircum{}m).
+  \item \(\mathbf{2}\): Decision space \textbackslash\{\}mathbf\{2\} = \{0,1\}.
+  \item \(\Pi\): Frames (benign contexts).
+  \item \(P_n\): Probes (benign perturbations).
+  \item \(\Theta\): Floors/thresholds (partially ordered set).
+  \item \(\beta\): Invariance budgets (tolerances in a poset/lattice).
+  \item \(C\): Capacity budgets (bits/time/energy constraints).
+  \item \(\Gamma\): Envelope/meta (versions, seeds, numeric modes, commits).
+  \item \(\mathcal{R}\): Records (canonical map \textbackslash\{\}to bytes; hash/ledger optional).
 \end{itemize}
 
 \subsection*{Definition: Systemic Kernel}
 
 \textbf{Systemic Kernel} \emph{(normative)}
 
-A systemic kernel is the tuple: $K^{\\Sigma}_{\\mu} := (v, \\chi, \\Pi, P_n, \\Theta, \\beta, C, \\Gamma)$, where $v: U \\to V$ and $\\chi: V \\times \\Theta \\times \\beta \\to 2$.
+A systemic kernel is the tuple
+\textbackslash\{\}\textbackslash\{\}begin\{equation\}
+  K\_\textbackslash\{\}\textbackslash\{\}mu\textasciicircum{}\textbackslash\{\}\textbackslash\{\}Sigma \textbackslash\{\}\textbackslash\{\};=\textbackslash\{\}\textbackslash\{\}; \textbackslash\{\}\textbackslash\{\}big(v,\textbackslash\{\}\textbackslash\{\} \textbackslash\{\}\textbackslash\{\}chi,\textbackslash\{\}\textbackslash\{\} \textbackslash\{\}\textbackslash\{\}Pi,\textbackslash\{\}\textbackslash\{\} P\_n,\textbackslash\{\}\textbackslash\{\} \textbackslash\{\}\textbackslash\{\}Theta,\textbackslash\{\}\textbackslash\{\} \textbackslash\{\}\textbackslash\{\}beta,\textbackslash\{\}\textbackslash\{\} C,\textbackslash\{\}\textbackslash\{\} \textbackslash\{\}\textbackslash\{\}Gamma\textbackslash\{\}\textbackslash\{\}big),
+\textbackslash\{\}\textbackslash\{\}end\{equation\}
+where \$v:U\textbackslash\{\}\textbackslash\{\}to \textbackslash\{\}\textbackslash\{\}mathbb\{V\}\$ is a valuation map and \$\textbackslash\{\}\textbackslash\{\}chi:\textbackslash\{\}\textbackslash\{\}mathbb\{V\}\textbackslash\{\}\textbackslash\{\}times\textbackslash\{\}\textbackslash\{\}Theta\textbackslash\{\}\textbackslash\{\}times\textbackslash\{\}\textbackslash\{\}beta\textbackslash\{\}\textbackslash\{\}to \textbackslash\{\}\textbackslash\{\}mathbf\{2\}\$ is a decision gate.
 
 \subsection*{Metrics \& Order}
 
 \textbf{Wobble and orderings} \emph{(normative)}
 
-$\\Sigma$ assumes a divergence ("wobble") $w: V \\times V \\to \\mathbb{R}_{\\ge 0}$ on decision-relevant coordinates. Orders: $\\Theta \\preceq \\Theta'$ means tightening floors; $\\beta' \\preceq \\beta$ means tightening budgets; $C' \\preceq C$ means shrinking capacity.
+- A divergence ("wobble") $w:\\mathbb{V}\\times\\mathbb{V}\\to \\mathbb{R}_{\\ge 0}$ on decision-relevant coordinates. - Orders: $\\theta\\preceq \\theta'$ means tightening floors; $\\beta'\\preceq\\beta$ means tightening budgets; $C'\\preceq C$ means shrinking capacity.
 
 \subsection*{Axioms (Minimal Core)}
 
 \textbf{Σ-A1 Well-typedness} \emph{(normative)}
 
-All maps are measurable/continuous as needed; χ is total on V × Θ × β.
+\textbf{(Well-typedness).} All maps are measurable/continuous as needed; $\\chi$ is total.
 
 \textbf{Σ-A2 Posting / Records-only} \emph{(normative)}
 
-For any run on u ∈ U, the record κ ∈ R contains (v(u), Θ, β, C, Π, P\_n, Γ), and the decision equals χ*(u; κ) = χ(v(u), Θ, β), with no dependence on unposted data.
+\textbf{(Posting / Records-only).} For any run on $u\\in U$, the record $\\kappa\\in\\mathcal{R}$ contains $(v(u),\\Theta,\\beta,C,\\Pi,P_n,\\Gamma)$, and the decision equals \textbackslash\{\}\textbackslash\{\}begin\{equation\} \textbackslash\{\}\textbackslash\{\}chi\textasciicircum{}\textbackslash\{\}\textbackslash\{\}ast(u;\textbackslash\{\}\textbackslash\{\}kappa) \textbackslash\{\}\textbackslash\{\};=\textbackslash\{\}\textbackslash\{\}; \textbackslash\{\}\textbackslash\{\}chi\textbackslash\{\}\textbackslash\{\}big(v(u),\textbackslash\{\}\textbackslash\{\}Theta,\textbackslash\{\}\textbackslash\{\}beta\textbackslash\{\}\textbackslash\{\}big), \textbackslash\{\}\textbackslash\{\}end\{equation\} with no dependence on unposted data.
 
 \textbf{Σ-A3 Benign invariance} \emph{(normative)}
 
-Let (π,p) ∈ Π × P\emph{n act on the measurement/evaluation pathway to yield v}\{π,p\}(u). Define W(u) := sup\emph{\{(π,p)\} w(v}\{π,p\}(u), v\emph{\{π0,p0\}(u)). If W(u) ⪯ β then for all benign (π,p), χ(v}\{π,p\}(u), Θ, β) = χ(v\_\{π0,p0\}(u), Θ, β).
+\textbf{(Benign invariance).} Let $(\\pi,p)\\in \\Pi\\times P_n$ act on the measurement/evaluation pathway to yield $v_{\\pi,p}(u)$. Define \textbackslash\{\}\textbackslash\{\}begin\{equation\} W(u)\textbackslash\{\}\textbackslash\{\};:=\textbackslash\{\}\textbackslash\{\};\textbackslash\{\}\textbackslash\{\}sup\emph{\{(\textbackslash\{\}\textbackslash\{\}pi,p)\}\textbackslash\{\}\textbackslash\{\}; w\textbackslash\{\}\textbackslash\{\}!\textbackslash\{\}\textbackslash\{\}big(v}\{\textbackslash\{\}\textbackslash\{\}pi,p\}(u),\textbackslash\{\}\textbackslash\{\},v\emph{\{\textbackslash\{\}\textbackslash\{\}pi}0,p\emph{0\}(u)\textbackslash\{\}\textbackslash\{\}big). \textbackslash\{\}\textbackslash\{\}end\{equation\} If $W(u)\\preceq \\beta$ then \$\textbackslash\{\}\textbackslash\{\}chi\textbackslash\{\}\textbackslash\{\}big(v}\{\textbackslash\{\}\textbackslash\{\}pi,p\}(u),\textbackslash\{\}\textbackslash\{\}Theta,\textbackslash\{\}\textbackslash\{\}beta\textbackslash\{\}\textbackslash\{\}big)=\textbackslash\{\}\textbackslash\{\}chi\textbackslash\{\}\textbackslash\{\}big(v\emph{\{\textbackslash\{\}\textbackslash\{\}pi}0,p\_0\}(u),\textbackslash\{\}\textbackslash\{\}Theta,\textbackslash\{\}\textbackslash\{\}beta\textbackslash\{\}\textbackslash\{\}big)\$.
 
 \textbf{Σ-A4 Minimal sufficiency under capacity} \emph{(normative)}
 
-Among valuations preserving decisions under posted (Θ, β), v is minimal w.r.t. capacity cost subject to C: for all v', (χ ∘ v' = χ ∘ v) ⇒ cost(v') ⪰ cost(v), subject to C.
+\textbf{(Minimal sufficiency under capacity).} Among valuations preserving decisions under posted $(\\Theta,\\beta)$, $v$ is minimal w.r.t.\textbackslash\{\}\textbackslash\{\} $C$: \textbackslash\{\}\textbackslash\{\}begin\{equation\} \textbackslash\{\}\textbackslash\{\}forall v'\textbackslash\{\}\textbackslash\{\}; \textbackslash\{\}\textbackslash\{\}big(\textbackslash\{\}\textbackslash\{\}chi\textbackslash\{\}\textbackslash\{\}!\textbackslash\{\}\textbackslash\{\}circ v'=\textbackslash\{\}\textbackslash\{\}chi\textbackslash\{\}\textbackslash\{\}!\textbackslash\{\}\textbackslash\{\}circ v\textbackslash\{\}\textbackslash\{\}big)\textbackslash\{\}\textbackslash\{\} \textbackslash\{\}\textbackslash\{\}Rightarrow\textbackslash\{\}\textbackslash\{\} \textbackslash\{\}\textbackslash\{\}mathrm\{cost\}(v')\textbackslash\{\}\textbackslash\{\} \textbackslash\{\}\textbackslash\{\}succeq\textbackslash\{\}\textbackslash\{\} \textbackslash\{\}\textbackslash\{\}mathrm\{cost\}(v)\textbackslash\{\}\textbackslash\{\}quad\textbackslash\{\}\textbackslash\{\}text\{subject to \}C. \textbackslash\{\}\textbackslash\{\}end\{equation\}
 
 \textbf{Σ-A5 Reflexive reproducibility} \emph{(normative)}
 
-There exists an admissible, independently realized v' (different numeric/route) such that χ(v(u), Θ, β) = χ(v'(u), Θ, β), with both posted in κ (self-warrant).
+\textbf{(Reflexive reproducibility).} There exists an admissible, independently realized $v'$ (different numeric/route) such that \textbackslash\{\}\textbackslash\{\}begin\{equation\} \textbackslash\{\}\textbackslash\{\}chi\textbackslash\{\}\textbackslash\{\}big(v(u),\textbackslash\{\}\textbackslash\{\}Theta,\textbackslash\{\}\textbackslash\{\}beta\textbackslash\{\}\textbackslash\{\}big)\textbackslash\{\}\textbackslash\{\};=\textbackslash\{\}\textbackslash\{\};\textbackslash\{\}\textbackslash\{\}chi\textbackslash\{\}\textbackslash\{\}big(v'(u),\textbackslash\{\}\textbackslash\{\}Theta,\textbackslash\{\}\textbackslash\{\}beta\textbackslash\{\}\textbackslash\{\}big), \textbackslash\{\}\textbackslash\{\}end\{equation\} with both posted in $\\kappa$ (self-warrant).
 
 \textbf{Σ-A6 Determinism \& idempotence} \emph{(normative)}
 
-For fixed (v(u), Θ, β), the decision χ is unique and idempotent under re-evaluation.
+\textbf{(Determinism \& idempotence).} For fixed $\\big(v(u),\\Theta,\\beta\\big)$, the decision $\\chi$ is unique and idempotent.
 
 \textbf{Σ-A7 Monotonicity} \emph{(normative)}
 
-Tightening floors or budgets cannot rescue a failure by hidden dependence. For θ ⪯ θ' and β' ⪯ β, χ(v, θ, β) = 1 implies χ(v, θ', β') ∈ \{0,1\} with no hidden rescue: tightening must not create a pass whose justification depends on data not posted in the record.
+\textbf{(Monotonicity).} Tightening floors or budgets cannot rescue a failure by hidden dependence: \textbackslash\{\}\textbackslash\{\}begin\{equation\} \textbackslash\{\}\textbackslash\{\}theta\textbackslash\{\}\textbackslash\{\}preceq \textbackslash\{\}\textbackslash\{\}theta',\textbackslash\{\}\textbackslash\{\} \textbackslash\{\}\textbackslash\{\}beta'\textbackslash\{\}\textbackslash\{\}preceq \textbackslash\{\}\textbackslash\{\}beta\textbackslash\{\}\textbackslash\{\};\textbackslash\{\}\textbackslash\{\}Rightarrow\textbackslash\{\}\textbackslash\{\} \textbackslash\{\}\textbackslash\{\}chi(v,\textbackslash\{\}\textbackslash\{\}theta,\textbackslash\{\}\textbackslash\{\}beta)=1 \textbackslash\{\}\textbackslash\{\} \textbackslash\{\}\textbackslash\{\}Rightarrow\textbackslash\{\}\textbackslash\{\} \textbackslash\{\}\textbackslash\{\}chi(v,\textbackslash\{\}\textbackslash\{\}theta',\textbackslash\{\}\textbackslash\{\}beta')\textbackslash\{\}\textbackslash\{\}in\textbackslash\{\}\textbackslash\{\}\{0,1\textbackslash\{\}\textbackslash\{\}\}\textbackslash\{\}\textbackslash\{\} \textbackslash\{\}\textbackslash\{\}text\{with no hidden rescue.\} \textbackslash\{\}\textbackslash\{\}end\{equation\}
 
 \textbf{Σ-A8 Isomorphism invariance} \emph{(normative)}
 
-If a frame π induces a structure-preserving isomorphism on representation, decisions are invariant.
+\textbf{(Isomorphism invariance).} If a frame $\\pi$ induces a structure-preserving isomorphism on representation, decisions are invariant.
 
 \subsection*{Conformance (Lawful Record)}
 
 \textbf{Σ-lawful record checklist} \emph{(normative)}
 
-A record κ ∈ R is Σ-lawful iff it includes: (1) contract (Θ, β, C, Π, P\_n, Γ and guards), (2) valuation v(u) (decision-relevant coords), (3) decision χ(v(u), Θ, β) with reasons, (4) invariance evidence (wobble metrics + worst-case (π,p)), (5) reflexive warrant (v'(u) and agreement), (6) canonicalization: canonical bytes, digest d, and optional chain root.
+A record $\\kappa \\in \\mathcal{R}$ is \emph{$\\Sigma$-lawful} iff it includes: 1. \textbf{Contract:} $\\Theta,\\beta,C,\\Pi,P_n,\\Gamma$ (with any guards like $\\epsilon$). 2. \textbf{Valuation:} $v(u)$ (decision-relevant coordinates posted). 3. \textbf{Decision:} $\\chi\\big(v(u),\\Theta,\\beta\\big)$ and a reason enumerating passed/failed predicates. 4. \textbf{Invariance evidence:} wobble metrics and the realizing worst-case $(\\pi,p)$. 5. \textbf{Reflexive warrant:} independent $v'(u)$ and agreement of $\\chi$. 6. \textbf{Canonicalization:} canonical bytes, digest $d$, and optional chain root for append-only books.
 
 \subsection*{Morphisms of Systemics}
 
 \textbf{Morphism F: Σ → Σ'} \emph{(normative)}
 
-A morphism F: Σ → Σ' is a pair (φ\emph{U, φ}V) such that the following commutation laws hold: v' ∘ φ\emph{U = φ}V ∘ v, and χ' ∘ (φ\_V × id) = χ. A morphism also maps contracts monotonically so that Σ axioms remain satisfied.
+A morphism \$F:\textbackslash\{\}\textbackslash\{\}Sigma\textbackslash\{\}\textbackslash\{\}to\textbackslash\{\}\textbackslash\{\}Sigma'\$ is a pair \$(\textbackslash\{\}\textbackslash\{\}phi\_U,\textbackslash\{\}\textbackslash\{\}phi\_V)\$ with
+\textbackslash\{\}\textbackslash\{\}begin\{equation\}
+  v' \textbackslash\{\}\textbackslash\{\}circ \textbackslash\{\}\textbackslash\{\}phi\_U \textbackslash\{\}\textbackslash\{\};=\textbackslash\{\}\textbackslash\{\}; \textbackslash\{\}\textbackslash\{\}phi\_V \textbackslash\{\}\textbackslash\{\}circ v,\textbackslash\{\}\textbackslash\{\}qquad
+  \textbackslash\{\}\textbackslash\{\}chi' \textbackslash\{\}\textbackslash\{\}circ (\textbackslash\{\}\textbackslash\{\},\textbackslash\{\}\textbackslash\{\}phi\_V\textbackslash\{\}\textbackslash\{\}times\textbackslash\{\}\textbackslash\{\}mathrm\{id\}\textbackslash\{\}\textbackslash\{\},) \textbackslash\{\}\textbackslash\{\};=\textbackslash\{\}\textbackslash\{\}; \textbackslash\{\}\textbackslash\{\}chi,
+\textbackslash\{\}\textbackslash\{\}end\{equation\}
+that also maps contracts monotonically: \$F(\textbackslash\{\}\textbackslash\{\}Theta,\textbackslash\{\}\textbackslash\{\}beta,C,\textbackslash\{\}\textbackslash\{\}Pi,P\_n,\textbackslash\{\}\textbackslash\{\}Gamma)\$ respects the relevant orders and preserves \$(\textbackslash\{\}\textbackslash\{\}Sigma\$-A1,...,A7).
 
 \textbf{Morphism preservation} \emph{(normative)}
 
-A morphism preserves valuation and decision structure by satisfying: v' ∘ φ\emph{U = φ}V ∘ v, χ' ∘ (φ\_V × id) = χ. It also maps contract parameters monotonically and preserves Σ-A1..Σ-A7.
+A morphism preserves valuation and decision structure by satisfying: \textbackslash\{\}\textbackslash\{\}begin\{equation\} v' \textbackslash\{\}\textbackslash\{\}circ \textbackslash\{\}\textbackslash\{\}phi\emph{U \textbackslash\{\}\textbackslash\{\};=\textbackslash\{\}\textbackslash\{\}; \textbackslash\{\}\textbackslash\{\}phi}V \textbackslash\{\}\textbackslash\{\}circ v,\textbackslash\{\}\textbackslash\{\}qquad \textbackslash\{\}\textbackslash\{\}chi' \textbackslash\{\}\textbackslash\{\}circ (\textbackslash\{\}\textbackslash\{\},\textbackslash\{\}\textbackslash\{\}phi\_V\textbackslash\{\}\textbackslash\{\}times\textbackslash\{\}\textbackslash\{\}mathrm\{id\}\textbackslash\{\}\textbackslash\{\},) \textbackslash\{\}\textbackslash\{\};=\textbackslash\{\}\textbackslash\{\}; \textbackslash\{\}\textbackslash\{\}chi. \textbackslash\{\}\textbackslash\{\}end\{equation\} It also maps contract parameters monotonically and preserves (Σ-A1,...,A7).
 
 \subsection*{Instantiation Recipe (Domain-Agnostic)}
 
 \textbf{Recipe} \emph{(informative)}
 
-Choose U,V,v,χ; post Θ,β,C,Π,P\_n,Γ and wobble metric w; establish Σ-A1..Σ-A7 by construction/tests; emit lawful κ and optionally chain pages into books.
+To realize $\\Sigma$ in any field: 1. Choose $U$, $\\mathbb{V}$, $v$, $\\chi$. 2. Post $\\Theta,\\beta,C,\\Pi,P_n,\\Gamma$ and a wobble metric $w$. 3. Establish (Σ-A1,...,A7) by construction and tests. 4. Emit lawful $\\kappa$ and (optionally) hash-chain pages into a book.
 
 \subsection*{Notes}
 
 \textbf{Notes} \emph{(informative)}
 
-This specification does not fix what v measures, what χ decides, or how w is computed. It only requires posting, invariance under benign variation, minimal sufficiency under capacity, and reflexive reproducibility. Evidence Systemics is one instantiation where v encodes evidence gauges; other instances (Control, Protocol, Risk, Learning, etc.) keep the same Σ contract while choosing different v, Θ, β.
+This specification does not fix what $v$ measures, what $\\chi$ decides, or how $w$ is computed. It only requires posting, invariance under benign variation, minimal sufficiency under capacity, and reflexive reproducibility. Evidence Systemics is one instantiation where $v$ encodes evidence gauges; other instances (Control, Protocol, Risk, Learning, etc.) keep the same $\\Sigma$-contract while choosing different $v,\\Theta,\\beta$.
 
 \subsection*{References}
 
