@@ -1,4 +1,4 @@
-# Systemics Σ — Minimal Specification (K1)
+# Systemics $\\Sigma$ --- Minimal Specification
 <a id="spec-domains-systemics-sigma-k1-9c0dca86"></a>
 
 ## Charter
@@ -6,104 +6,113 @@
 
 **Charter** _(normative)_
 
-Σ specifies a contract-shaped kernel that produces decisions from posted evidence under benign variation, with replayable records, without making domain assumptions.
+This document gives a domain-agnostic, minimal formal specification of Systemics $\\Sigma$. It treats any practice as a kernel-shaped contract that produces decisions from posted evidence under benign variation, with replayable records. No specific domain assumptions (physics, ML, audits, etc.) are required.
 
 ## Alphabet (Objects & Maps)
 <a id="section-2-alphabet-2d2e0ec0"></a>
 
 **Alphabet** _(normative)_
 
-- `U`: universe of artifacts
-- `V`: valuation space (any measurable space; commonly R^k × B^m)
-- `2`: decision space 2 := {0,1}
-- `Π`: frames / benign contexts
-- `P\_n`: probes / benign perturbations
-- `Θ`: floors/thresholds (partially ordered set)
-- `β`: invariance budgets (tolerances in a poset/lattice)
-- `C`: capacity budgets (bits/time/energy constraints)
-- `Γ`: envelope/meta (versions, seeds, numeric modes, commits)
-- `R`: records (canonical map → bytes; hash/ledger optional)
+- `U`: Universe of artifacts.
+- `\\mathbb{V}`: Valuation space (any measurable space; commonly \\mathbb{R}^k \\times \\mathbb{B}^m).
+- `\\mathbf{2}`: Decision space \\mathbf{2} = {0,1}.
+- `\\Pi`: Frames (benign contexts).
+- `P\_n`: Probes (benign perturbations).
+- `\\Theta`: Floors/thresholds (partially ordered set).
+- `\\beta`: Invariance budgets (tolerances in a poset/lattice).
+- `C`: Capacity budgets (bits/time/energy constraints).
+- `\\Gamma`: Envelope/meta (versions, seeds, numeric modes, commits).
+- `\\mathcal{R}`: Records (canonical map \\to bytes; hash/ledger optional).
 
 ## Definition: Systemic Kernel
 <a id="section-3-kernel-706b1977"></a>
 
 **Systemic Kernel** _(normative)_
 
-A systemic kernel is the tuple: $K^{\\Sigma}_{\\mu} := (v, \\chi, \\Pi, P_n, \\Theta, \\beta, C, \\Gamma)$, where $v: U \\to V$ and $\\chi: V \\times \\Theta \\times \\beta \\to 2$.
+A systemic kernel is the tuple
+\\begin{equation}
+  K_\\mu^\\Sigma \\;=\\; \\big(v,\\ \\chi,\\ \\Pi,\\ P_n,\\ \\Theta,\\ \\beta,\\ C,\\ \\Gamma\\big),
+\\end{equation}
+where $v:U\\to \\mathbb{V}$ is a valuation map and $\\chi:\\mathbb{V}\\times\\Theta\\times\\beta\\to \\mathbf{2}$ is a decision gate.
 
 ## Metrics & Order
 <a id="section-4-metrics-orders-c4fd82d3"></a>
 
 **Wobble and orderings** _(normative)_
 
-$\\Sigma$ assumes a divergence ("wobble") $w: V \\times V \\to \\mathbb{R}_{\\ge 0}$ on decision-relevant coordinates. Orders: $\\Theta \\preceq \\Theta'$ means tightening floors; $\\beta' \\preceq \\beta$ means tightening budgets; $C' \\preceq C$ means shrinking capacity.
+- A divergence ("wobble") $w:\\mathbb{V}\\times\\mathbb{V}\\to \\mathbb{R}_{\\ge 0}$ on decision-relevant coordinates. - Orders: $\\theta\\preceq \\theta'$ means tightening floors; $\\beta'\\preceq\\beta$ means tightening budgets; $C'\\preceq C$ means shrinking capacity.
 
 ## Axioms (Minimal Core)
 <a id="section-5-axioms-15c13760"></a>
 
 **Σ-A1 Well-typedness** _(normative)_
 
-All maps are measurable/continuous as needed; χ is total on V × Θ × β.
+**(Well-typedness).** All maps are measurable/continuous as needed; $\\chi$ is total.
 
 **Σ-A2 Posting / Records-only** _(normative)_
 
-For any run on u ∈ U, the record κ ∈ R contains (v(u), Θ, β, C, Π, P_n, Γ), and the decision equals χ*(u; κ) = χ(v(u), Θ, β), with no dependence on unposted data.
+**(Posting / Records-only).** For any run on $u\\in U$, the record $\\kappa\\in\\mathcal{R}$ contains $(v(u),\\Theta,\\beta,C,\\Pi,P_n,\\Gamma)$, and the decision equals \\begin{equation} \\chi^\\ast(u;\\kappa) \\;=\\; \\chi\\big(v(u),\\Theta,\\beta\\big), \\end{equation} with no dependence on unposted data.
 
 **Σ-A3 Benign invariance** _(normative)_
 
-Let (π,p) ∈ Π × P*n act on the measurement/evaluation pathway to yield v*{π,p}(u). Define W(u) := sup*{(π,p)} w(v*{π,p}(u), v*{π0,p0}(u)). If W(u) ⪯ β then for all benign (π,p), χ(v*{π,p}(u), Θ, β) = χ(v_{π0,p0}(u), Θ, β).
+**(Benign invariance).** Let $(\\pi,p)\\in \\Pi\\times P_n$ act on the measurement/evaluation pathway to yield $v_{\\pi,p}(u)$. Define \\begin{equation} W(u)\\;:=\\;\\sup*{(\\pi,p)}\\; w\\!\\big(v*{\\pi,p}(u),\\,v*{\\pi*0,p*0}(u)\\big). \\end{equation} If $W(u)\\preceq \\beta$ then $\\chi\\big(v*{\\pi,p}(u),\\Theta,\\beta\\big)=\\chi\\big(v*{\\pi*0,p_0}(u),\\Theta,\\beta\\big)$.
 
 **Σ-A4 Minimal sufficiency under capacity** _(normative)_
 
-Among valuations preserving decisions under posted (Θ, β), v is minimal w.r.t. capacity cost subject to C: for all v', (χ ∘ v' = χ ∘ v) ⇒ cost(v') ⪰ cost(v), subject to C.
+**(Minimal sufficiency under capacity).** Among valuations preserving decisions under posted $(\\Theta,\\beta)$, $v$ is minimal w.r.t.\\ $C$: \\begin{equation} \\forall v'\\; \\big(\\chi\\!\\circ v'=\\chi\\!\\circ v\\big)\\ \\Rightarrow\\ \\mathrm{cost}(v')\\ \\succeq\\ \\mathrm{cost}(v)\\quad\\text{subject to }C. \\end{equation}
 
 **Σ-A5 Reflexive reproducibility** _(normative)_
 
-There exists an admissible, independently realized v' (different numeric/route) such that χ(v(u), Θ, β) = χ(v'(u), Θ, β), with both posted in κ (self-warrant).
+**(Reflexive reproducibility).** There exists an admissible, independently realized $v'$ (different numeric/route) such that \\begin{equation} \\chi\\big(v(u),\\Theta,\\beta\\big)\\;=\\;\\chi\\big(v'(u),\\Theta,\\beta\\big), \\end{equation} with both posted in $\\kappa$ (self-warrant).
 
 **Σ-A6 Determinism & idempotence** _(normative)_
 
-For fixed (v(u), Θ, β), the decision χ is unique and idempotent under re-evaluation.
+**(Determinism & idempotence).** For fixed $\\big(v(u),\\Theta,\\beta\\big)$, the decision $\\chi$ is unique and idempotent.
 
 **Σ-A7 Monotonicity** _(normative)_
 
-Tightening floors or budgets cannot rescue a failure by hidden dependence. For θ ⪯ θ' and β' ⪯ β, χ(v, θ, β) = 1 implies χ(v, θ', β') ∈ {0,1} with no hidden rescue: tightening must not create a pass whose justification depends on data not posted in the record.
+**(Monotonicity).** Tightening floors or budgets cannot rescue a failure by hidden dependence: \\begin{equation} \\theta\\preceq \\theta',\\ \\beta'\\preceq \\beta\\;\\Rightarrow\\ \\chi(v,\\theta,\\beta)=1 \\ \\Rightarrow\\ \\chi(v,\\theta',\\beta')\\in\\{0,1\\}\\ \\text{with no hidden rescue.} \\end{equation}
 
 **Σ-A8 Isomorphism invariance** _(normative)_
 
-If a frame π induces a structure-preserving isomorphism on representation, decisions are invariant.
+**(Isomorphism invariance).** If a frame $\\pi$ induces a structure-preserving isomorphism on representation, decisions are invariant.
 
 ## Conformance (Lawful Record)
 <a id="section-6-conformance-4e35257c"></a>
 
 **Σ-lawful record checklist** _(normative)_
 
-A record κ ∈ R is Σ-lawful iff it includes: (1) contract (Θ, β, C, Π, P_n, Γ and guards), (2) valuation v(u) (decision-relevant coords), (3) decision χ(v(u), Θ, β) with reasons, (4) invariance evidence (wobble metrics + worst-case (π,p)), (5) reflexive warrant (v'(u) and agreement), (6) canonicalization: canonical bytes, digest d, and optional chain root.
+A record $\\kappa \\in \\mathcal{R}$ is *$\\Sigma$-lawful* iff it includes: 1. **Contract:** $\\Theta,\\beta,C,\\Pi,P_n,\\Gamma$ (with any guards like $\\epsilon$). 2. **Valuation:** $v(u)$ (decision-relevant coordinates posted). 3. **Decision:** $\\chi\\big(v(u),\\Theta,\\beta\\big)$ and a reason enumerating passed/failed predicates. 4. **Invariance evidence:** wobble metrics and the realizing worst-case $(\\pi,p)$. 5. **Reflexive warrant:** independent $v'(u)$ and agreement of $\\chi$. 6. **Canonicalization:** canonical bytes, digest $d$, and optional chain root for append-only books.
 
 ## Morphisms of Systemics
 <a id="section-7-morphisms-6f87b55c"></a>
 
 **Morphism F: Σ → Σ'** _(normative)_
 
-A morphism F: Σ → Σ' is a pair (φ*U, φ*V) such that the following commutation laws hold: v' ∘ φ*U = φ*V ∘ v, and χ' ∘ (φ_V × id) = χ. A morphism also maps contracts monotonically so that Σ axioms remain satisfied.
+A morphism $F:\\Sigma\\to\\Sigma'$ is a pair $(\\phi_U,\\phi_V)$ with
+\\begin{equation}
+  v' \\circ \\phi_U \\;=\\; \\phi_V \\circ v,\\qquad
+  \\chi' \\circ (\\,\\phi_V\\times\\mathrm{id}\\,) \\;=\\; \\chi,
+\\end{equation}
+that also maps contracts monotonically: $F(\\Theta,\\beta,C,\\Pi,P_n,\\Gamma)$ respects the relevant orders and preserves $(\\Sigma$-A1,...,A7).
 
 **Morphism preservation** _(normative)_
 
-A morphism preserves valuation and decision structure by satisfying: v' ∘ φ*U = φ*V ∘ v, χ' ∘ (φ_V × id) = χ. It also maps contract parameters monotonically and preserves Σ-A1..Σ-A7.
+A morphism preserves valuation and decision structure by satisfying: \\begin{equation} v' \\circ \\phi*U \\;=\\; \\phi*V \\circ v,\\qquad \\chi' \\circ (\\,\\phi_V\\times\\mathrm{id}\\,) \\;=\\; \\chi. \\end{equation} It also maps contract parameters monotonically and preserves (Σ-A1,...,A7).
 
 ## Instantiation Recipe (Domain-Agnostic)
 <a id="section-8-recipe-2801220f"></a>
 
 **Recipe** _(informative)_
 
-Choose U,V,v,χ; post Θ,β,C,Π,P_n,Γ and wobble metric w; establish Σ-A1..Σ-A7 by construction/tests; emit lawful κ and optionally chain pages into books.
+To realize $\\Sigma$ in any field: 1. Choose $U$, $\\mathbb{V}$, $v$, $\\chi$. 2. Post $\\Theta,\\beta,C,\\Pi,P_n,\\Gamma$ and a wobble metric $w$. 3. Establish (Σ-A1,...,A7) by construction and tests. 4. Emit lawful $\\kappa$ and (optionally) hash-chain pages into a book.
 
 ## Notes
 <a id="section-9-notes-88cf718d"></a>
 
 **Notes** _(informative)_
 
-This specification does not fix what v measures, what χ decides, or how w is computed. It only requires posting, invariance under benign variation, minimal sufficiency under capacity, and reflexive reproducibility. Evidence Systemics is one instantiation where v encodes evidence gauges; other instances (Control, Protocol, Risk, Learning, etc.) keep the same Σ contract while choosing different v, Θ, β.
+This specification does not fix what $v$ measures, what $\\chi$ decides, or how $w$ is computed. It only requires posting, invariance under benign variation, minimal sufficiency under capacity, and reflexive reproducibility. Evidence Systemics is one instantiation where $v$ encodes evidence gauges; other instances (Control, Protocol, Risk, Learning, etc.) keep the same $\\Sigma$-contract while choosing different $v,\\Theta,\\beta$.
 
 ## References
 <a id="refs-e812cd2d"></a>
