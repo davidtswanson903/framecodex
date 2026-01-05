@@ -1,0 +1,38 @@
+name: docir-smoke
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+    paths:
+      - "frames/**"
+      - "tools/render_docir/**"
+      - "tools/render_md_doc/**"
+      - ".github/workflows/docir-smoke.yml"
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Render DocIR and Markdown (smoke)
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          mkdir -p out/docir out/docs
+
+          ./tools/render_docir/run --in frames/domains/spec/systemics/sigma-k1/v0.1.0/frame.yml --out out/docir/sigma-k1.json
+          ./tools/render_md_doc/run --in out/docir/sigma-k1.json --out out/docs/sigma-k1.md
+
+          ./tools/render_docir/run --in frames/domains/spec/systemics/sigma-composition-k1/v0.1.0/frame.yml --out out/docir/sigma-composition-k1.json
+          ./tools/render_md_doc/run --in out/docir/sigma-composition-k1.json --out out/docs/sigma-composition-k1.md
+
+      - name: Upload rendered Markdown (artifact)
+        uses: actions/upload-artifact@v4
+        with:
+          name: docir-md
+          path: |
+            out/docir/*.json
+            out/docs/*.md

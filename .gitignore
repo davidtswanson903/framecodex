@@ -1,6 +1,10 @@
 # RepoLaw K1 requirement: out/ MUST be gitignored
 out/
 
+# DocIR / renderer outputs (redundant since out/ is ignored, but explicit for clarity)
+out/docir/
+out/docs/
+
 # Common local noise
 .DS_Store
 *.tmp
