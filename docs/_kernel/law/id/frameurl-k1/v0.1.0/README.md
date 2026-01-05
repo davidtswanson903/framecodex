@@ -14,7 +14,7 @@
       <scheme>://<scope>/<segment>/<segment>/.../<name>. FrameURL is versionless.
 
       '
-    എന്ത
+    ```
 - **def.name** (kind: definition)
   - label: Name
   - Extra fields:
@@ -25,7 +25,7 @@
       its package path.
 
       '
-    എന്ത
+    ```
 - **def.pkg** (kind: definition)
   - label: Package Path (pkg)
   - Extra fields:
@@ -36,7 +36,7 @@
       FrameURL, pkg == [scope] + [segment...name] (excluding scheme).
 
       '
-    എന്ത
+    ```
 - **def.scheme** (kind: definition)
   - label: Scheme
   - Extra fields:
@@ -46,7 +46,7 @@
     text: 'The FrameURL scheme indicates the frame class. Schemes are an enum defined by prop.scheme_enum.
 
       '
-    എന്ത
+    ```
 - **def.scope** (kind: definition)
   - label: Scope
   - Extra fields:
@@ -57,7 +57,7 @@
       layout.
 
       '
-    എന്ത
+    ```
 - **def.segment** (kind: definition)
   - label: Segment
   - Extra fields:
@@ -68,7 +68,7 @@
       portability.
 
       '
-    എന്ത
+    ```
 - **ex.1.frameurl** (kind: example)
   - label: Canonical FrameURL
   - Extra fields:
@@ -82,7 +82,7 @@
       render://repo/docs/default
 
       '
-    എന്ത
+    ```
 - **ex.2.path_projection** (kind: example)
   - label: Projected path
   - Extra fields:
@@ -96,7 +96,7 @@
       path:      frames/repo/law/governance/repo-k1/v1.0.0/frame.yml
 
       '
-    എന്ത
+    ```
 - **law://_kernel/id/frameurl-k1** (kind: law)
   - Extra fields:
     ```yml
@@ -109,7 +109,7 @@
 
       '
     title: FrameURL K1 — Canonical Identity and Filesystem Projection
-    എന്ത
+    ```
 - **prop.forbidden_segments** (kind: property)
   - label: Forbidden segments
   - Extra fields:
@@ -119,7 +119,7 @@
     values:
     - .
     - ..
-    എന്ത
+    ```
 - **prop.leaf_filename** (kind: property)
   - label: Leaf filename
   - Extra fields:
@@ -127,7 +127,7 @@
     label: Leaf filename
     status: normative
     value: frame.yml
-    എന്ത
+    ```
 - **prop.path_root** (kind: property)
   - label: Repository frames root
   - Extra fields:
@@ -135,7 +135,7 @@
     label: Repository frames root
     status: normative
     value: frames
-    എന്ത
+    ```
 - **prop.required_root_node_invariant** (kind: property)
   - label: Root node invariant
   - Extra fields:
@@ -143,7 +143,7 @@
     label: Root node invariant
     status: normative
     value: Each frame MUST contain a root node where node.id == graph_id.
-    എന്ത
+    ```
 - **prop.required_violation_codes** (kind: property)
   - label: Required violation codes
   - Extra fields:
@@ -159,7 +159,7 @@
     - ID.E.PATH_MISMATCH
     - ID.E.MISSING_ROOT_NODE
     - ID.E.UNKNOWN_REFERENCE
-    എന്ത
+    ```
 - **prop.scheme_enum** (kind: property)
   - label: Allowed schemes
   - Extra fields:
@@ -172,7 +172,7 @@
     - profile
     - render
     - fixture
-    എന്ത
+    ```
 - **prop.segment_regex** (kind: property)
   - label: Segment regex
   - Extra fields:
@@ -180,7 +180,7 @@
     label: Segment regex
     status: normative
     value: ^[a-z0-9][a-z0-9._-]{0,63}$
-    എന്ത
+    ```
 - **prop.version_folder_prefix** (kind: property)
   - label: Version folder prefix
   - Extra fields:
@@ -188,7 +188,7 @@
     label: Version folder prefix
     status: normative
     value: v
-    എന്ത
+    ```
 - **rule.charter.graph_id_is_frameurl** (kind: rule)
   - label: graph_id is canonical FrameURL
   - Extra fields:
@@ -199,7 +199,7 @@
     text: 'A frame claiming conformance to FrameURL K1 MUST use a canonical FrameURL as graph_id.
 
       '
-    എന്ത
+    ```
 - **rule.charter.root_node_id** (kind: rule)
   - label: Root node id equals graph_id
   - Extra fields:
@@ -211,7 +211,7 @@
       MUST be treated as the canonical identity-bearing node.
 
       '
-    എന്ത
+    ```
 - **rule.charter.version_is_separate** (kind: rule)
   - label: Version is separate from FrameURL
   - Extra fields:
@@ -223,7 +223,7 @@
       into graph_id.
 
       '
-    എന്ത
+    ```
 - **rule.code.bad_frameurl** (kind: rule)
   - label: ID.E.BAD_FRAMEURL
   - Extra fields:
@@ -235,7 +235,7 @@
       or rule.grammar.no_percent_encoding or rule.norm.*. details MUST include: graph_id.
 
       '
-    എന്ത
+    ```
 - **rule.code.path_mismatch** (kind: rule)
   - label: ID.E.PATH_MISMATCH
   - Extra fields:
@@ -247,7 +247,7 @@
       details MUST include: graph_id, version, expected_path, actual_path.
 
       '
-    എന്ത
+    ```
 - **rule.code.unknown_reference** (kind: rule)
   - label: ID.E.UNKNOWN_REFERENCE
   - Extra fields:
@@ -258,7 +258,7 @@
     text: 'Emit when a FrameRef is not a valid FrameURL. details MUST include: reference.
 
       '
-    എന്ത
+    ```
 - **rule.codes.stable** (kind: rule)
   - label: Stable codes
   - Extra fields:
@@ -270,7 +270,7 @@
       with stable semantics.
 
       '
-    എന്ത
+    ```
 - **rule.grammar.no_percent_encoding** (kind: rule)
   - label: No percent-encoding
   - Extra fields:
@@ -282,7 +282,7 @@
       restricted segment charset.
 
       '
-    എന്ത
+    ```
 - **rule.grammar.no_query_fragment** (kind: rule)
   - label: No query or fragment
   - Extra fields:
@@ -294,7 +294,7 @@
       is purely hierarchical.
 
       '
-    എന്ത
+    ```
 - **rule.grammar.strict_form** (kind: rule)
   - label: Strict FrameURL grammar
   - Extra fields:
@@ -306,7 +306,7 @@
       \ of prop.scheme_enum\n  - scope and all segments (including name) match prop.segment_regex\n\
       \  - forbidden segments prop.forbidden_segments are disallowed\n  - there is at least one\
       \ segment after scope (i.e., name exists)\n"
-    എന്ത
+    ```
 - **rule.norm.canonical_slashes** (kind: rule)
   - label: Canonical slashes
   - Extra fields:
@@ -318,7 +318,7 @@
       Repeated slashes ''//'' in the path portion are forbidden.
 
       '
-    എന്ത
+    ```
 - **rule.norm.lowercase_only** (kind: rule)
   - label: Lowercase only
   - Extra fields:
@@ -329,7 +329,7 @@
     text: 'FrameURL MUST be lowercase ASCII only. Uppercase letters are forbidden.
 
       '
-    എന്ത
+    ```
 - **rule.norm.no_whitespace** (kind: rule)
   - label: No whitespace
   - Extra fields:
@@ -341,7 +341,7 @@
       invalid (not auto-trimmed).
 
       '
-    എന്ത
+    ```
 - **rule.norm.scheme_validation** (kind: rule)
   - label: Scheme validation
   - Extra fields:
@@ -352,7 +352,7 @@
     text: 'scheme MUST be in prop.scheme_enum. Unknown schemes are invalid.
 
       '
-    എന്ത
+    ```
 - **rule.path.leaf_filename** (kind: rule)
   - label: Leaf filename
   - Extra fields:
@@ -365,7 +365,7 @@
       but canonical projection remains authoritative.
 
       '
-    എന്ത
+    ```
 - **rule.path.must_match_on_disk** (kind: rule)
   - label: On-disk path must match projection
   - Extra fields:
@@ -378,7 +378,7 @@
       invalid.
 
       '
-    എന്ത
+    ```
 - **rule.path.projection_function** (kind: rule)
   - label: Canonical path projection
   - Extra fields:
@@ -389,7 +389,7 @@
     text: "The canonical relative filesystem path for a frame is a pure function of (graph_id,\
       \ version):\n  frames/<scope>/<scheme>/<segments...>/<name>/v<version>/frame.yml\nwhere\
       \ scope and segments are derived from parsing graph_id.\n"
-    എന്ത
+    ```
 - **rule.path.version_folder** (kind: rule)
   - label: Version folder format
   - Extra fields:
@@ -401,7 +401,7 @@
       no additional decoration. Example: v1.2.0.
 
       '
-    എന്ത
+    ```
 - **rule.ref.frameref_is_frameurl** (kind: rule)
   - label: FrameRef must be a canonical FrameURL
   - Extra fields:
@@ -412,7 +412,7 @@
     text: 'A FrameRef consumed by tools MUST be a canonical FrameURL.
 
       '
-    എന്ത
+    ```
 - **rule.ref.no_external_fetch** (kind: rule)
   - label: No external fetch
   - Extra fields:
@@ -424,56 +424,55 @@
       frames from network sources unless explicitly provided by the caller.
 
       '
-    എന്ത
+    ```
 - **section.1.charter** (kind: section)
   - Extra fields:
     ```yml
     order: 1
     status: normative
     title: Charter
-    എന്ത
+    ```
 - **section.2.grammar** (kind: section)
   - Extra fields:
     ```yml
     order: 2
     status: normative
     title: FrameURL Grammar
-    എന്ത
+    ```
 - **section.3.normalization** (kind: section)
   - Extra fields:
     ```yml
     order: 3
     status: normative
     title: Normalization Rules
-    എന്ത
+    ```
 - **section.4.path_projection** (kind: section)
   - Extra fields:
     ```yml
     order: 4
     status: normative
     title: Filesystem Path Projection
-    എന്ത
+    ```
 - **section.7.violations** (kind: section)
   - Extra fields:
     ```yml
     order: 7
     status: normative
     title: Required Violation Codes
-    എന്ത
+    ```
 - **section.8.examples** (kind: section)
   - Extra fields:
     ```yml
     order: 8
     status: informative
     title: Examples
-    എന്ത
+    ```
 - **title.0** (kind: title)
   - Extra fields:
     ```yml
     status: informative
     text: FrameURL K1
-    എന്ത
-
+    ```
 ## Edges
 | from | to | type | id | attrs | metrics |
 | --- | --- | --- | --- | --- | --- |

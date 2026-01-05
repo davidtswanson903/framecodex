@@ -14,7 +14,7 @@
       MUST include: frame graph_id and the invalid doc.license string.
 
       '
-    എന്ത
+    ```
 - **code.inherited_warning** (kind: rule)
   - label: IP.W.INHERITED_LICENSE
   - Extra fields:
@@ -26,7 +26,7 @@
       (package|repo).
 
       '
-    എന്ത
+    ```
 - **code.missing_effective** (kind: rule)
   - label: IP.E.MISSING_EFFECTIVE_LICENSE
   - Extra fields:
@@ -37,7 +37,7 @@
       absent, and repo_default_license missing/empty). details MUST include: frame graph_id.
 
       '
-    എന്ത
+    ```
 - **code.missing_repo_default** (kind: rule)
   - label: IP.E.MISSING_REPO_DEFAULT_LICENSE
   - Extra fields:
@@ -48,7 +48,7 @@
       include: frame graph_id.
 
       '
-    എന്ത
+    ```
 - **code.nonroot** (kind: rule)
   - label: IP.E.LICENSE_ON_NONROOT
   - Extra fields:
@@ -59,7 +59,7 @@
       MUST include: frame graph_id, offending node id, and key.
 
       '
-    എന്ത
+    ```
 - **def.doc_license_attr** (kind: definition)
   - label: doc.license
   - Extra fields:
@@ -70,7 +70,7 @@
       rules.
 
       '
-    എന്ത
+    ```
 - **def.effective_license** (kind: definition)
   - label: EffectiveLicense
   - Extra fields:
@@ -80,7 +80,7 @@
       in section.4.
 
       '
-    എന്ത
+    ```
 - **def.license_expression** (kind: definition)
   - label: LicenseExpression
   - Extra fields:
@@ -91,7 +91,7 @@
       values.
 
       '
-    എന്ത
+    ```
 - **def.package_default** (kind: definition)
   - label: Package default license
   - Extra fields:
@@ -102,7 +102,7 @@
       package path).
 
       '
-    എന്ത
+    ```
 - **def.repo_default** (kind: definition)
   - label: Repo default license
   - Extra fields:
@@ -112,7 +112,7 @@
       Used when doc.license is absent and no package default is provided.
 
       '
-    എന്ത
+    ```
 - **ex.1.explicit_spdx** (kind: example)
   - label: Explicit SPDX license
   - Extra fields:
@@ -120,7 +120,7 @@
     label: Explicit SPDX license
     text: "root.attrs:\n  - { key: \"doc.license\", value: \"CC-BY-4.0\", vtype: \"spdx\" }\n\
       \  - { key: \"doc.copyright\", value: \"© 2026 David Swanson\" }\n"
-    എന്ത
+    ```
 - **ex.2.inherit_repo_default** (kind: example)
   - label: Inherited repo default
   - Extra fields:
@@ -133,7 +133,7 @@
       EffectiveLicense: "CC-BY-4.0"  # source: repo-default
 
       '
-    എന്ത
+    ```
 - **ex.3.proprietary** (kind: example)
   - label: Proprietary sentinel
   - Extra fields:
@@ -141,7 +141,7 @@
     label: Proprietary sentinel
     text: "root.attrs:\n  - { key: \"doc.license\", value: \"Proprietary\" }\n  - { key: \"doc.license.note\"\
       , value: \"Do not redistribute without permission.\" }\n"
-    എന്ത
+    ```
 - **law://_kernel/ip/doclicense-k1** (kind: law)
   - Extra fields:
     ```yml
@@ -155,21 +155,21 @@
 
       '
     title: DocLicense K1 — Per-Document Licensing Metadata
-    എന്ത
+    ```
 - **prop.attr_json_array_regex** (kind: property)
   - label: Canonical JSON array encoding (for future multi-value attrs)
   - Extra fields:
     ```yml
     label: Canonical JSON array encoding (for future multi-value attrs)
     value: ^\[[^\s].*\]$
-    എന്ത
+    ```
 - **prop.default_repo_license_recommendation** (kind: property)
   - label: Recommended repo default (free/open)
   - Extra fields:
     ```yml
     label: Recommended repo default (free/open)
     value: CC-BY-4.0
-    എന്ത
+    ```
 - **prop.license_attr_keys** (kind: property)
   - label: License attribute keys
   - Extra fields:
@@ -179,14 +179,14 @@
     - doc.license
     - doc.license.note
     - doc.copyright
-    എന്ത
+    ```
 - **prop.license_regex_spdx_like** (kind: property)
   - label: SPDX-like license expression regex (permissive)
   - Extra fields:
     ```yml
     label: SPDX-like license expression regex (permissive)
     value: ^[A-Za-z0-9.+-]+([ ]+(AND|OR|WITH)[ ]+[A-Za-z0-9.+-]+)*$
-    എന്ത
+    ```
 - **prop.non_spdx_sentinels** (kind: property)
   - label: Permitted non-SPDX sentinel values
   - Extra fields:
@@ -196,7 +196,7 @@
     - Proprietary
     - Public-Domain
     - Unlicensed
-    എന്ത
+    ```
 - **prop.required_violation_codes** (kind: property)
   - label: Required violation codes
   - Extra fields:
@@ -208,7 +208,7 @@
     - IP.E.BAD_LICENSE_EXPR
     - IP.E.LICENSE_ON_NONROOT
     - IP.W.INHERITED_LICENSE
-    എന്ത
+    ```
 - **rule.charter.default_open** (kind: rule)
   - label: Default should be free/open
   - Extra fields:
@@ -220,7 +220,7 @@
       content.
 
       '
-    എന്ത
+    ```
 - **rule.charter.per_doc_license** (kind: rule)
   - label: Per-document license metadata
   - Extra fields:
@@ -231,7 +231,7 @@
       and MUST compute an EffectiveLicense for the frame using section.4.
 
       '
-    എന്ത
+    ```
 - **rule.fields.copyright_format** (kind: rule)
   - label: doc.copyright
   - Extra fields:
@@ -241,7 +241,7 @@
     text: 'doc.copyright MAY be present as a free-form string.
 
       '
-    എന്ത
+    ```
 - **rule.fields.doc_license_format** (kind: rule)
   - label: doc.license format
   - Extra fields:
@@ -250,7 +250,7 @@
     modal: MUST
     text: "If doc.license is present, its value MUST either:\n  (a) match prop.license_regex_spdx_like,\
       \ OR\n  (b) equal one of prop.non_spdx_sentinels.\nAny other value is invalid.\n"
-    എന്ത
+    ```
 - **rule.fields.doc_license_note_format** (kind: rule)
   - label: doc.license.note
   - Extra fields:
@@ -261,7 +261,7 @@
       for resolution, but MAY render it.
 
       '
-    എന്ത
+    ```
 - **rule.fields.root_only** (kind: rule)
   - label: License attrs live on root node
   - Extra fields:
@@ -272,7 +272,7 @@
       on the root node where node.id == graph_id. Declaring these keys on non-root nodes is invalid.
 
       '
-    എന്ത
+    ```
 - **rule.rendering.must_show_effective** (kind: rule)
   - label: Renderers must show EffectiveLicense
   - Extra fields:
@@ -284,7 +284,7 @@
       or repo-default.
 
       '
-    എന്ത
+    ```
 - **rule.rendering.should_show_note** (kind: rule)
   - label: Renderers should show license notes
   - Extra fields:
@@ -294,7 +294,7 @@
     text: 'If doc.license.note is present, renderers SHOULD include it near the license display.
 
       '
-    എന്ത
+    ```
 - **rule.resolution.deterministic** (kind: rule)
   - label: Deterministic resolution algorithm
   - Extra fields:
@@ -305,7 +305,7 @@
       \  1) If root has doc.license, EffectiveLicense := doc.license\n  2) Else if package_default_license\
       \ is provided by the caller, EffectiveLicense := package_default_license\n  3) Else EffectiveLicense\
       \ := repo_default_license\nIf repo_default_license is absent/empty, this is an error.\n"
-    എന്ത
+    ```
 - **rule.resolution.no_implicit_fetch** (kind: rule)
   - label: Offline resolution
   - Extra fields:
@@ -317,7 +317,7 @@
       by repository governance.
 
       '
-    എന്ത
+    ```
 - **rule.resolution.repo_default_required** (kind: rule)
   - label: Repo default required
   - Extra fields:
@@ -328,7 +328,7 @@
       is used when doc.license is absent and no package default is provided.
 
       '
-    എന്ത
+    ```
 - **rule.violations.stable** (kind: rule)
   - label: Stable violations
   - Extra fields:
@@ -339,55 +339,54 @@
       with stable semantics and deterministic ordering.
 
       '
-    എന്ത
+    ```
 - **section.1.charter** (kind: section)
   - Extra fields:
     ```yml
     order: 1
     title: Charter
-    എന്ത
+    ```
 - **section.2.model** (kind: section)
   - Extra fields:
     ```yml
     order: 2
     title: Model
-    എന്ത
+    ```
 - **section.3.fields** (kind: section)
   - Extra fields:
     ```yml
     order: 3
     title: Required and Optional Fields
-    എന്ത
+    ```
 - **section.4.resolution** (kind: section)
   - Extra fields:
     ```yml
     order: 4
     title: Effective License Resolution
-    എന്ത
+    ```
 - **section.5.rendering** (kind: section)
   - Extra fields:
     ```yml
     order: 5
     title: Renderer Requirements
-    എന്ത
+    ```
 - **section.6.violations** (kind: section)
   - Extra fields:
     ```yml
     order: 6
     title: Required Violation Codes
-    എന്ത
+    ```
 - **section.7.examples** (kind: section)
   - Extra fields:
     ```yml
     order: 7
     title: Examples
-    എന്ത
+    ```
 - **title.0** (kind: title)
   - Extra fields:
     ```yml
     text: DocLicense K1
-    എന്ത
-
+    ```
 ## Edges
 | from | to | type | id | attrs | metrics |
 | --- | --- | --- | --- | --- | --- |

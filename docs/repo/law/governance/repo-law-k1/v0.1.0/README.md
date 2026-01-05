@@ -14,7 +14,7 @@
       by referencing FrameURLs and explicit versions.
 
       '
-    എന്ത
+    ```
 - **def.docgroup** (kind: definition)
   - label: DocGroup
   - Extra fields:
@@ -25,7 +25,7 @@
       deterministically from the repository according to section.4 rules.
 
       '
-    എന്ത
+    ```
 - **def.frame_file** (kind: definition)
   - label: FrameFile
   - Extra fields:
@@ -36,7 +36,7 @@
       stored as frame.yml at a path derived from (graph_id, version) per FrameURL K1.
 
       '
-    എന്ത
+    ```
 - **ex.active_yml** (kind: example)
   - label: governance/ACTIVE.yml
   - Extra fields:
@@ -52,7 +52,7 @@
       active_profile_version: "0.1.0"
 
       '
-    എന്ത
+    ```
 - **ex.projected_path** (kind: example)
   - label: Projected frame path
   - Extra fields:
@@ -66,7 +66,7 @@
       path:     frames/repo/law/governance/repo-law-k1/v0.1.0/frame.yml
 
       '
-    എന്ത
+    ```
 - **law://repo/governance/repo-law-k1** (kind: law)
   - Extra fields:
     ```yml
@@ -80,7 +80,7 @@
 
       '
     title: RepoLaw K1 — Repository Structure, Frame Layout, and CI Gates
-    എന്ത
+    ```
 - **param.adapter_mode** (kind: parameter)
   - Extra fields:
     ```yml
@@ -90,7 +90,7 @@
     default: github
     key: adapter_mode
     status: normative
-    എന്ത
+    ```
 - **param.docgroup_include_fixtures** (kind: parameter)
   - Extra fields:
     ```yml
@@ -100,7 +100,7 @@
     default: 'false'
     key: docgroup_include_fixtures
     status: normative
-    എന്ത
+    ```
 - **param.frames_root** (kind: parameter)
   - Extra fields:
     ```yml
@@ -109,7 +109,7 @@
     default: frames
     key: frames_root
     status: normative
-    എന്ത
+    ```
 - **param.index_mode** (kind: parameter)
   - Extra fields:
     ```yml
@@ -120,7 +120,7 @@
     default: optional
     key: index_mode
     status: normative
-    എന്ത
+    ```
 - **param.output_mode** (kind: parameter)
   - Extra fields:
     ```yml
@@ -130,7 +130,7 @@
     default: commit_docs
     key: output_mode
     status: normative
-    എന്ത
+    ```
 - **prop.allowed_frame_schemes** (kind: property)
   - label: Allowed frame schemes (must match FrameURL K1)
   - Extra fields:
@@ -143,7 +143,7 @@
     - profile
     - render
     - fixture
-    എന്ത
+    ```
 - **prop.allowed_root_paths** (kind: property)
   - label: Allowed repo root entries
   - Extra fields:
@@ -161,7 +161,7 @@
     - README.md
     - LICENSE
     - .gitignore
-    എന്ത
+    ```
 - **prop.forbidden_paths** (kind: property)
   - label: Forbidden paths
   - Extra fields:
@@ -172,7 +172,7 @@
     - frames
     - out
     - docs
-    എന്ത
+    ```
 - **prop.frames_leaf_filename** (kind: property)
   - label: Canonical leaf filename for frames
   - Extra fields:
@@ -180,7 +180,7 @@
     label: Canonical leaf filename for frames
     status: normative
     value: frame.yml
-    എന്ത
+    ```
 - **prop.frames_version_prefix** (kind: property)
   - label: Canonical version folder prefix
   - Extra fields:
@@ -188,7 +188,7 @@
     label: Canonical version folder prefix
     status: normative
     value: v
-    എന്ത
+    ```
 - **prop.required_ci_gates** (kind: property)
   - label: Minimal required CI gates
   - Extra fields:
@@ -198,7 +198,7 @@
     values:
     - validate_group
     - enforce_repo_law
-    എന്ത
+    ```
 - **prop.required_ci_gates_if_commit_docs** (kind: property)
   - label: Additional CI gates when output_mode=commit_docs
   - Extra fields:
@@ -208,7 +208,7 @@
     values:
     - render_docs
     - no_diff
-    എന്ത
+    ```
 - **prop.required_frames_scopes** (kind: property)
   - label: Required top-level scopes under frames/
   - Extra fields:
@@ -220,7 +220,7 @@
     - repo
     - domains
     - projects
-    എന്ത
+    ```
 - **prop.required_paths** (kind: property)
   - label: Required paths
   - Extra fields:
@@ -236,7 +236,7 @@
     - .gitignore
     - README.md
     - LICENSE
-    എന്ത
+    ```
 - **prop.required_paths_if_commit_docs** (kind: property)
   - label: Required paths when output_mode=commit_docs
   - Extra fields:
@@ -246,7 +246,7 @@
     values:
     - docs/
     - docs/MANIFEST.json
-    എന്ത
+    ```
 - **prop.required_violation_codes** (kind: property)
   - label: Required RepoLaw violation codes
   - Extra fields:
@@ -265,7 +265,7 @@
     - REPO.E.ACTIVE_UNRESOLVED_POINTER
     - REPO.E.PROFILE_WEAKENING
     - REPO.W.UNKNOWN_ROOT_ENTRY
-    എന്ത
+    ```
 - **ref.frameurl-k1** (kind: reference)
   - label: FrameURL K1
   - Extra fields:
@@ -273,7 +273,7 @@
     label: FrameURL K1
     status: informative
     target: law://_kernel/id/frameurl-k1
-    എന്ത
+    ```
 - **ref.validatorgroup-k1** (kind: reference)
   - label: ValidatorGroup K1
   - Extra fields:
@@ -281,7 +281,7 @@
     label: ValidatorGroup K1
     status: informative
     target: spec://_kernel/validator/validatorgroup-k1
-    എന്ത
+    ```
 - **rule.active.must_resolve** (kind: rule)
   - label: ACTIVE pointers must resolve
   - Extra fields:
@@ -293,7 +293,7 @@
       and version). Unresolvable pointers are hard errors.
 
       '
-    എന്ത
+    ```
 - **rule.active.profile_nonweakening** (kind: rule)
   - label: Profiles must not weaken law
   - Extra fields:
@@ -305,7 +305,7 @@
       Any attempt to do so is a hard error.
 
       '
-    എന്ത
+    ```
 - **rule.active.required** (kind: rule)
   - label: ACTIVE.yml required
   - Extra fields:
@@ -317,7 +317,7 @@
       It MAY declare active_profile and active_profile_version.
 
       '
-    എന്ത
+    ```
 - **rule.charter.frameurl_required** (kind: rule)
   - label: FrameURL required for canonical frames
   - Extra fields:
@@ -329,7 +329,7 @@
       FrameURL K1 filesystem projection rules (graph_id+version -> frames/.../v<version>/frame.yml).
 
       '
-    എന്ത
+    ```
 - **rule.charter.offline_repo** (kind: rule)
   - label: Offline and self-contained
   - Extra fields:
@@ -341,7 +341,7 @@
       all frames required to validate itself and MUST NOT require network fetch to resolve references.
 
       '
-    എന്ത
+    ```
 - **rule.charter.single_source_of_truth** (kind: rule)
   - label: frames/ is source of truth
   - Extra fields:
@@ -353,7 +353,7 @@
       GF0-like files outside frames/ are non-authoritative and MUST be ignored by DocGroup selection.
 
       '
-    എന്ത
+    ```
 - **rule.ci.enforce_repo_law** (kind: rule)
   - label: Gate: enforce_repo_law
   - Extra fields:
@@ -364,7 +364,7 @@
     text: "enforce_repo_law MUST verify:\n  - required paths exist\n  - out/ is gitignored\n \
       \ - DocGroup selection matches rule.docgroup.scan_rule\n  - each frame obeys FrameURL K1\
       \ projected path\n  - ACTIVE.yml pointers resolve and do not weaken the law\n"
-    എന്ത
+    ```
 - **rule.ci.no_diff_if_commit** (kind: rule)
   - label: Gate: no_diff (conditional)
   - Extra fields:
@@ -377,7 +377,7 @@
       exceptions.
 
       '
-    എന്ത
+    ```
 - **rule.ci.render_docs_if_commit** (kind: rule)
   - label: Gate: render_docs (conditional)
   - Extra fields:
@@ -389,7 +389,7 @@
       from DocGroup and the applicable RenderFrames, and MUST produce docs/MANIFEST.json.
 
       '
-    എന്ത
+    ```
 - **rule.ci.required_gates** (kind: rule)
   - label: Required CI gates
   - Extra fields:
@@ -401,7 +401,7 @@
       CI MUST also run all gates listed in prop.required_ci_gates_if_commit_docs.
 
       '
-    എന്ത
+    ```
 - **rule.ci.validate_group** (kind: rule)
   - label: Gate: validate_group
   - Extra fields:
@@ -413,7 +413,7 @@
       MUST produce a canonical ValidationReport artifact.
 
       '
-    എന്ത
+    ```
 - **rule.docgroup.parse_each_frame** (kind: rule)
   - label: Each frame parses as GF0
   - Extra fields:
@@ -425,7 +425,7 @@
       validation prior to any higher-level profile validation.
 
       '
-    എന്ത
+    ```
 - **rule.docgroup.scan_rule** (kind: rule)
   - label: DocGroup scan rule
   - Extra fields:
@@ -437,7 +437,7 @@
       \ frames/**/v*/frame.yml\n  - excluding frames/**/fixture/** unless docgroup_include_fixtures\
       \ == 'true'\nThe scan order MUST be lexicographic by relative path (bytewise) to ensure\
       \ stable behavior.\n"
-    എന്ത
+    ```
 - **rule.docgroup.unique_graph_id** (kind: rule)
   - label: graph_id uniqueness
   - Extra fields:
@@ -448,7 +448,7 @@
     text: 'Within DocGroup, graph_id MUST be unique. Duplicate graph_id is a hard error.
 
       '
-    എന്ത
+    ```
 - **rule.frames.canonical_leaf** (kind: rule)
   - label: Canonical leaf filename
   - Extra fields:
@@ -460,7 +460,7 @@
       live under a version folder named prop.frames_version_prefix + <version> (e.g., v1.0.0).
 
       '
-    എന്ത
+    ```
 - **rule.frames.no_unversioned_frames** (kind: rule)
   - label: No unversioned canonical frames
   - Extra fields:
@@ -471,7 +471,7 @@
     text: 'No canonical frame.yml may exist under frames/ outside a v<version>/ directory.
 
       '
-    എന്ത
+    ```
 - **rule.frames.optional_indexes** (kind: rule)
   - label: Indexes
   - Extra fields:
@@ -484,7 +484,7 @@
       exist and MUST be treated as non-authoritative accelerators.
 
       '
-    എന്ത
+    ```
 - **rule.frames.projected_path_must_match** (kind: rule)
   - label: Projected path must match
   - Extra fields:
@@ -496,7 +496,7 @@
       (graph_id, version) under FrameURL K1. Mismatches are hard errors.
 
       '
-    എന്ത
+    ```
 - **rule.frames.scheme_folder_matches_graph_id** (kind: rule)
   - label: Scheme folder matches graph_id scheme
   - Extra fields:
@@ -508,7 +508,7 @@
       and MUST match the FrameURL scheme parsed from graph_id.
 
       '
-    എന്ത
+    ```
 - **rule.frames.scopes_exist** (kind: rule)
   - label: Required frames scopes
   - Extra fields:
@@ -519,7 +519,7 @@
     text: 'frames/ MUST contain the scope directories listed in prop.required_frames_scopes.
 
       '
-    എന്ത
+    ```
 - **rule.manifest.docs** (kind: rule)
   - label: docs/MANIFEST.json (conditional)
   - Extra fields:
@@ -531,7 +531,7 @@
       \ minimum:\n  - active law + profile pointers (FrameURL + version)\n  - inputs list (graph_id,\
       \ version, sha256)\n  - outputs list (path, sha256)\nThe manifest MUST be deterministic\
       \ and stable across implementations.\n"
-    എന്ത
+    ```
 - **rule.paths.allowed_root_entries** (kind: rule)
   - label: Allowed root entries
   - Extra fields:
@@ -543,7 +543,7 @@
       MAY warn on unknown root entries, but the law does not forbid them unless explicitly listed.
 
       '
-    എന്ത
+    ```
 - **rule.paths.commit_docs_paths** (kind: rule)
   - label: Required docs paths if committing docs
   - Extra fields:
@@ -555,7 +555,7 @@
       prop.required_paths_if_commit_docs.
 
       '
-    എന്ത
+    ```
 - **rule.paths.out_gitignored** (kind: rule)
   - label: out/ is gitignored
   - Extra fields:
@@ -566,7 +566,7 @@
     text: 'out/ MUST be excluded from version control via .gitignore.
 
       '
-    എന്ത
+    ```
 - **rule.paths.required_paths** (kind: rule)
   - label: Required repo paths
   - Extra fields:
@@ -577,7 +577,7 @@
     text: 'The repository MUST contain all paths listed in prop.required_paths.
 
       '
-    എന്ത
+    ```
 - **rule.receipts.required_artifacts** (kind: rule)
   - label: Receipts
   - Extra fields:
@@ -589,7 +589,7 @@
       \ version, sha256 over canonical bytes)\n  - tool_id and tool_version\n  - ordered list\
       \ of output (path, sha256 over file bytes)\nReceipt serialization SHOULD be canonical (stable\
       \ key order, stable list order, LF newlines).\n"
-    എന്ത
+    ```
 - **rule.violations.stable** (kind: rule)
   - label: Stable violations
   - Extra fields:
@@ -601,70 +601,69 @@
       prop.required_violation_codes with stable semantics and deterministic ordering.
 
       '
-    എന്ത
+    ```
 - **section.1.charter** (kind: section)
   - Extra fields:
     ```yml
     order: 1
     status: normative
     title: Charter
-    എന്ത
+    ```
 - **section.2.paths** (kind: section)
   - Extra fields:
     ```yml
     order: 2
     status: normative
     title: Canonical Repository Paths
-    എന്ത
+    ```
 - **section.3.frames_tree** (kind: section)
   - Extra fields:
     ```yml
     order: 3
     status: normative
     title: Frames Tree and Fractal Sharding
-    എന്ത
+    ```
 - **section.4.docgroup** (kind: section)
   - Extra fields:
     ```yml
     order: 4
     status: normative
     title: DocGroup Selection
-    എന്ത
+    ```
 - **section.5.ci** (kind: section)
   - Extra fields:
     ```yml
     order: 5
     status: normative
     title: CI Gates
-    എന്ത
+    ```
 - **section.6.receipts** (kind: section)
   - Extra fields:
     ```yml
     order: 6
     status: normative
     title: Receipts and Manifests
-    എന്ത
+    ```
 - **section.7.violations** (kind: section)
   - Extra fields:
     ```yml
     order: 7
     status: normative
     title: Required Violation Codes
-    എന്ത
+    ```
 - **section.8.examples** (kind: section)
   - Extra fields:
     ```yml
     order: 8
     status: informative
     title: Examples
-    എന്ത
+    ```
 - **title.0** (kind: title)
   - Extra fields:
     ```yml
     status: normative
     text: RepoLaw K1
-    എന്ത
-
+    ```
 ## Edges
 | from | to | type | id | attrs | metrics |
 | --- | --- | --- | --- | --- | --- |

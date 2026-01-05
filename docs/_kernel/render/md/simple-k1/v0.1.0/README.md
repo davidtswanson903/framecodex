@@ -16,7 +16,7 @@
       forest and MUST emit a warning (see Errors and Warnings).
 
       '
-    എന്ത
+    ```
 - **clause.determinism.newlines** (kind: clause)
   - label: Newlines and whitespace
   - Extra fields:
@@ -27,7 +27,7 @@
       document MUST end with exactly one LF.
 
       '
-    എന്ത
+    ```
 - **clause.determinism.sorting** (kind: clause)
   - label: Deterministic ordering
   - Extra fields:
@@ -38,7 +38,7 @@
       languages MUST produce byte-identical Markdown for the same input frame.
 
       '
-    എന്ത
+    ```
 - **clause.edges.rendering** (kind: clause)
   - label: Edge rendering
   - Extra fields:
@@ -48,7 +48,7 @@
     text: "Edges MUST be rendered as a Markdown table in deterministic order with columns:\n \
       \ [from, to, type, id(optional), attrs(optional), metrics(optional)].\nIf attrs/metrics\
       \ exist, they MUST be rendered as compact JSON within the table cell.\n"
-    എന്ത
+    ```
 - **clause.errors.warn_codes** (kind: clause)
   - label: Warnings
   - Extra fields:
@@ -58,7 +58,7 @@
     text: "The renderer SHOULD emit warnings (non-fatal) for:\n  - unknown/extra top-level keys\
       \ on nodes/edges (still rendered under Extra fields)\n  - contains cycles or multiple parents\n\
       \  - missing root node id == graph_id (contains tree becomes a forest)\n"
-    എന്ത
+    ```
 - **clause.input.gf0_required** (kind: clause)
   - label: Input must be valid GF0
   - Extra fields:
@@ -69,7 +69,7 @@
       lists present, node IDs unique, and edges must reference existing node IDs.
 
       '
-    എന്ത
+    ```
 - **clause.meta.rendering** (kind: clause)
   - label: Meta graph rendering
   - Extra fields:
@@ -80,7 +80,7 @@
       rule, using the same algorithm recursively. Meta graphs MUST be ordered deterministically.
 
       '
-    എന്ത
+    ```
 - **clause.nodes.rendering** (kind: clause)
   - label: Node rendering
   - Extra fields:
@@ -93,7 +93,7 @@
       \ if metrics present: columns [name, value, unit, desc]\n  - extra fields: any additional\
       \ node keys (e.g. title/status/text/summary/profile/order)\n    MUST be rendered under an\
       \ \"Extra fields\" sub-bullet as a YAML code block.\n"
-    എന്ത
+    ```
 - **clause.output.header** (kind: clause)
   - label: Header section
   - Extra fields:
@@ -102,7 +102,7 @@
     status: normative
     text: "The output MUST begin with:\n  - H1: graph_id\n  - A short metadata block containing\
       \ version, node_count, edge_count, meta_count.\n"
-    എന്ത
+    ```
 - **clause.output.sections** (kind: clause)
   - label: Required sections
   - Extra fields:
@@ -112,7 +112,7 @@
     text: "The output MUST include these sections in this order:\n  1) Header (H1 + metadata)\n\
       \  2) Nodes (index)\n  3) Edges (index)\n  4) Contains Tree (if any edges of type 'contains'\
       \ exist)\n  5) Meta Graphs (if meta_count > 0)\n"
-    എന്ത
+    ```
 - **clause.scope** (kind: clause)
   - label: Scope
   - Extra fields:
@@ -124,7 +124,7 @@
       LawFrame, etc.) beyond what is present in the GF0 structure.
 
       '
-    എന്ത
+    ```
 - **example.output_shape** (kind: example)
   - label: Markdown skeleton
   - Extra fields:
@@ -137,7 +137,7 @@
       \  title: Example\n    order: 1\n    ```\n\n## Edges\n| from | to | type | id | attrs |\
       \ metrics |\n| --- | --- | --- | --- | --- | --- |\n| ... | ... | ... | ... | ... | ...\
       \ |\n\n## Contains Tree\n- <root>\n  - <child>\n\n## Meta Graphs\n---\n"
-    എന്ത
+    ```
 - **property.contains_edge_type** (kind: property)
   - label: Contains edge type
   - Extra fields:
@@ -145,7 +145,7 @@
     label: Contains edge type
     status: normative
     value: contains
-    എന്ത
+    ```
 - **property.field_exclusions** (kind: property)
   - label: Field exclusion list
   - Extra fields:
@@ -163,7 +163,7 @@
     - metrics
     label: Field exclusion list
     status: normative
-    എന്ത
+    ```
 - **property.ordering** (kind: property)
   - label: Ordering keys
   - Extra fields:
@@ -173,7 +173,7 @@
     meta_order: by (graph_id,version) ascending (bytewise)
     node_order: by node.id ascending (bytewise)
     status: normative
-    എന്ത
+    ```
 - **property.output_extension** (kind: property)
   - label: Output extension
   - Extra fields:
@@ -181,7 +181,7 @@
     label: Output extension
     status: normative
     value: .md
-    എന്ത
+    ```
 - **property.output_path_rule** (kind: property)
   - label: Output path rule
   - Extra fields:
@@ -189,7 +189,7 @@
     label: Output path rule
     status: normative
     value: docs/{frameurl_path}/v{version}/README.md
-    എന്ത
+    ```
 - **property.renderer_id** (kind: property)
   - label: Renderer ID
   - Extra fields:
@@ -197,7 +197,7 @@
     label: Renderer ID
     status: normative
     value: simple-md-k1
-    എന്ത
+    ```
 - **ref.spec.gf0-k1** (kind: spec_ref)
   - label: GF0 schema
   - Extra fields:
@@ -205,7 +205,7 @@
     label: GF0 schema
     status: informative
     target_graph_id: spec://_kernel/gf/gf0-k1
-    എന്ത
+    ```
 - **ref.spec.specframe-k1** (kind: spec_ref)
   - label: SpecFrame K1 schema
   - Extra fields:
@@ -213,7 +213,7 @@
     label: SpecFrame K1 schema
     status: informative
     target_graph_id: spec://_kernel/spec/specframe-k1
-    എന്ത
+    ```
 - **render://_kernel/md/simple-k1** (kind: spec)
   - Extra fields:
     ```yml
@@ -225,64 +225,63 @@
 
       '
     title: Simple Markdown Renderer K1
-    എന്ത
+    ```
 - **section.1.scope** (kind: section)
   - Extra fields:
     ```yml
     order: 1
     status: normative
     title: Scope
-    എന്ത
+    ```
 - **section.2.inputs** (kind: section)
   - Extra fields:
     ```yml
     order: 2
     status: normative
     title: Inputs
-    എന്ത
+    ```
 - **section.3.outputs** (kind: section)
   - Extra fields:
     ```yml
     order: 3
     status: normative
     title: Outputs
-    എന്ത
+    ```
 - **section.4.algorithm** (kind: section)
   - Extra fields:
     ```yml
     order: 4
     status: normative
     title: Render Algorithm
-    എന്ത
+    ```
 - **section.5.determinism** (kind: section)
   - Extra fields:
     ```yml
     order: 5
     status: normative
     title: Determinism Rules
-    എന്ത
+    ```
 - **section.6.meta** (kind: section)
   - Extra fields:
     ```yml
     order: 6
     status: normative
     title: Meta Graph Rendering
-    എന്ത
+    ```
 - **section.7.errors** (kind: section)
   - Extra fields:
     ```yml
     order: 7
     status: normative
     title: Errors and Warnings
-    എന്ത
+    ```
 - **section.8.examples** (kind: section)
   - Extra fields:
     ```yml
     order: 8
     status: informative
     title: Example Output Shape
-    എന്ത
-
+    ```
 ## Edges
 | from | to | type | id | attrs | metrics |
 | --- | --- | --- | --- | --- | --- |

@@ -10,14 +10,14 @@
     ```yml
     label: LawDoc
     text: A GF0 graph whose root node has id==graph_id, kind='law', profile='lawframe-k1'.
-    എന്ത
+    ```
 - **def.lawprofile** (kind: definition)
   - label: LawProfile
   - Extra fields:
     ```yml
     label: LawProfile
     text: A GF0 graph whose root node has id==graph_id, kind='law_profile', profile='lawprofile-k1'.
-    എന്ത
+    ```
 - **def.location** (kind: definition)
   - label: Location
   - Extra fields:
@@ -25,21 +25,21 @@
     label: Location
     text: 'A pointer into a law graph: graph_id, optional node_id, optional edge_key, optional
       meta_path.'
-    എന്ത
+    ```
 - **def.modal** (kind: definition)
   - label: Modal
   - Extra fields:
     ```yml
     label: Modal
     text: 'A fixed enum controlling normative force: MUST, MUST_NOT, SHOULD, SHOULD_NOT, MAY.'
-    എന്ത
+    ```
 - **def.rule** (kind: definition)
   - label: Rule
   - Extra fields:
     ```yml
     label: Rule
     text: A normative statement with a modal (MUST/MUST_NOT/SHOULD/SHOULD_NOT/MAY) and text.
-    എന്ത
+    ```
 - **law://_kernel/law/lawframe-k1** (kind: law)
   - Extra fields:
     ```yml
@@ -49,7 +49,7 @@
     status: normative
     summary: Defines a GF0 profile for expressing laws, policies, and governance as graphs.
     title: LawFrame K1 — Generic Law Graph Profile over GF0
-    എന്ത
+    ```
 - **prop.allowed_edge_types** (kind: property)
   - label: Allowed edge types
   - Extra fields:
@@ -65,7 +65,7 @@
     - amends
     - enables
     - disables
-    എന്ത
+    ```
 - **prop.allowed_node_kinds** (kind: property)
   - label: Allowed node kinds
   - Extra fields:
@@ -81,7 +81,7 @@
     - parameter
     - reference
     - example
-    എന്ത
+    ```
 - **prop.modal_enum** (kind: property)
   - label: Modal enum
   - Extra fields:
@@ -93,7 +93,7 @@
     - SHOULD
     - SHOULD_NOT
     - MAY
-    എന്ത
+    ```
 - **rule.contains_tree** (kind: rule)
   - label: Structural containment
   - Extra fields:
@@ -104,7 +104,7 @@
       the law root. Multiple ''contains'' parents for the same node are forbidden.
 
       '
-    എന്ത
+    ```
 - **rule.deterministic_order** (kind: rule)
   - label: Deterministic ordering
   - Extra fields:
@@ -116,7 +116,7 @@
       ordering of edge keys.
 
       '
-    എന്ത
+    ```
 - **rule.edge_restriction** (kind: rule)
   - label: Edge type restriction
   - Extra fields:
@@ -127,7 +127,7 @@
       mechanism is explicitly invoked (see rule.extensions).
 
       '
-    എന്ത
+    ```
 - **rule.extensions** (kind: rule)
   - label: Extension mechanism
   - Extra fields:
@@ -139,7 +139,7 @@
       listing allowed additions.
 
       '
-    എന്ത
+    ```
 - **rule.gf0_conformance** (kind: rule)
   - label: GF0 conformance
   - Extra fields:
@@ -150,7 +150,7 @@
       edges, meta} MUST be present and empty lists encoded as [].
 
       '
-    എന്ത
+    ```
 - **rule.kind_restriction** (kind: rule)
   - label: Node kind restriction
   - Extra fields:
@@ -161,7 +161,7 @@
       mechanism is explicitly invoked (see rule.extensions).
 
       '
-    എന്ത
+    ```
 - **rule.meta_usage** (kind: rule)
   - label: Meta usage
   - Extra fields:
@@ -172,7 +172,7 @@
       in GF0 meta as MetaGraphs, which are structurally independent from the parent graph.
 
       '
-    എന്ത
+    ```
 - **rule.root_shape** (kind: rule)
   - label: Root law node
   - Extra fields:
@@ -182,7 +182,7 @@
     text: 'A LawDoc MUST contain exactly one root node where id==graph_id, kind==''law'', profile==''lawframe-k1''.
 
       '
-    എന്ത
+    ```
 - **rule.rule_fields** (kind: rule)
   - label: Rule required fields
   - Extra fields:
@@ -193,7 +193,7 @@
       It MAY have: scope, applies_to, params, and references.
 
       '
-    എന്ത
+    ```
 - **rule.supersession** (kind: rule)
   - label: Supersession is explicit
   - Extra fields:
@@ -204,31 +204,30 @@
       partial changes). Implicit supersession by timestamps or filenames is forbidden.
 
       '
-    എന്ത
+    ```
 - **section.1.charter** (kind: section)
   - Extra fields:
     ```yml
     order: 1
     title: Charter
-    എന്ത
+    ```
 - **section.2.model** (kind: section)
   - Extra fields:
     ```yml
     order: 2
     title: Model
-    എന്ത
+    ```
 - **section.3.invariants** (kind: section)
   - Extra fields:
     ```yml
     order: 3
     title: Invariants
-    എന്ത
+    ```
 - **title.0** (kind: title)
   - Extra fields:
     ```yml
     text: LawFrame K1
-    എന്ത
-
+    ```
 ## Edges
 | from | to | type | id | attrs | metrics |
 | --- | --- | --- | --- | --- | --- |

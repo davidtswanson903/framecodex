@@ -14,7 +14,7 @@
       missing_endpoint (''from''|''to''), missing_node_id.
 
       '
-    എന്ത
+    ```
 - **clause.codes.gf0_dup_node** (kind: clause)
   - label: GF0.E.DUP_NODE_ID
   - Extra fields:
@@ -25,7 +25,7 @@
       node_id.
 
       '
-    എന്ത
+    ```
 - **clause.codes.gf0_empty_id_ver** (kind: clause)
   - label: GF0.E.EMPTY_GRAPH_ID_OR_VERSION
   - Extra fields:
@@ -35,7 +35,7 @@
     text: 'Emitted when graph_id or version is empty string. details MUST include: which (''graph_id''|''version'').
 
       '
-    എന്ത
+    ```
 - **clause.codes.gf0_missing_field** (kind: clause)
   - label: GF0.E.MISSING_FIELD
   - Extra fields:
@@ -46,7 +46,7 @@
       MUST include: field_name.
 
       '
-    എന്ത
+    ```
 - **clause.codes.link_missing_target_graph** (kind: clause)
   - label: LINK.E.MISSING_TARGET_GRAPH
   - Extra fields:
@@ -57,7 +57,7 @@
       include: node_id, target_graph_id.
 
       '
-    എന്ത
+    ```
 - **clause.codes.link_unreachable_normative** (kind: clause)
   - label: LINK.W.UNREACHABLE_NORMATIVE
   - Extra fields:
@@ -68,7 +68,7 @@
       root via ''contains''. details MUST include: node_id.
 
       '
-    എന്ത
+    ```
 - **clause.codes.requirement** (kind: clause)
   - label: Stable codes
   - Extra fields:
@@ -80,7 +80,7 @@
       traces).
 
       '
-    എന്ത
+    ```
 - **clause.codes.spec_bad_edge_type** (kind: clause)
   - label: SPEC.E.BAD_EDGE_TYPE
   - Extra fields:
@@ -91,7 +91,7 @@
       details MUST include: edge_key, edge_type.
 
       '
-    എന്ത
+    ```
 - **clause.codes.spec_bad_kind** (kind: clause)
   - label: SPEC.E.BAD_NODE_KIND
   - Extra fields:
@@ -102,7 +102,7 @@
       details MUST include: node_id, node_kind.
 
       '
-    എന്ത
+    ```
 - **clause.codes.spec_contains_cycle** (kind: clause)
   - label: SPEC.E.CONTAINS_CYCLE_OR_MULTIPARENT
   - Extra fields:
@@ -114,7 +114,7 @@
       cycle_hint (string).
 
       '
-    എന്ത
+    ```
 - **clause.codes.spec_missing_attr** (kind: clause)
   - label: SPEC.E.MISSING_REQUIRED_ATTR
   - Extra fields:
@@ -125,7 +125,7 @@
       include: node_id, node_kind, attr_name.
 
       '
-    എന്ത
+    ```
 - **clause.determinism.details_order** (kind: clause)
   - label: Details ordering
   - Extra fields:
@@ -137,7 +137,7 @@
       order, unless a specific code explicitly requires a different order.
 
       '
-    എന്ത
+    ```
 - **clause.determinism.limits** (kind: clause)
   - label: Safety limits
   - Extra fields:
@@ -150,7 +150,7 @@
       \ GF0.E.GRAPH_TOO_LARGE)\n  - max_edges_per_graph: default 2,000,000 (if exceeded, emit\
       \ GF0.E.GRAPH_TOO_LARGE)\nLimits MUST be applied deterministically and reported via stable\
       \ codes.\n"
-    എന്ത
+    ```
 - **clause.determinism.sorting** (kind: clause)
   - label: Canonical sorting rules
   - Extra fields:
@@ -162,7 +162,7 @@
       \ be ascending lexicographic order of node.id.\n  - Edge lookup order MUST be ascending\
       \ lexicographic order of (edge.type, edge.from, edge.to, edge.id).\nAll violation lists\
       \ MUST be sorted by the canonical violation ordering (clause.determinism.violation_order).\n"
-    എന്ത
+    ```
 - **clause.determinism.violation_order** (kind: clause)
   - label: Canonical violation ordering
   - Extra fields:
@@ -174,7 +174,7 @@
       \ severity_rank(warning)=1\n  - meta_path_join is meta_path joined by ' > ' (empty string\
       \ if none)\n  - node_id and edge_key are empty string if absent\n  - details_join is details\
       \ joined as 'k=v' pairs in order with ';' separators\n"
-    എന്ത
+    ```
 - **clause.inputs.graph_id_uniqueness_across_group** (kind: clause)
   - label: graph_id uniqueness across DocGroup
   - Extra fields:
@@ -187,7 +187,7 @@
       \ graphs with duplicated graph_id MUST be validated for GF0 structural integrity, but MUST\
       \ be excluded from higher-level profile validation and excluded from cross-graph linking,\
       \ to avoid nondeterministic resolution.\n"
-    എന്ത
+    ```
 - **clause.inputs.graphrecord** (kind: clause)
   - label: GraphRecord input model
   - Extra fields:
@@ -197,7 +197,7 @@
     text: "A validator consumes a DocGroup expressed as a list of GraphRecords:\n  - graph: a\
       \ GF0 GraphFrameK0 value\n  - source_id: optional string (e.g. file path, URL, label)\n\
       source_id MUST NOT affect the canonical validation result.\n"
-    എന്ത
+    ```
 - **clause.inputs.meta_recursion** (kind: clause)
   - label: Meta recursion
   - Extra fields:
@@ -209,7 +209,7 @@
       independent; parent references, if any, are purely attribute/semantics level.
 
       '
-    എന്ത
+    ```
 - **clause.report.canonical_json** (kind: clause)
   - label: Canonical JSON serialization
   - Extra fields:
@@ -221,7 +221,7 @@
       \  - Arrays preserve their specified order\n  - No insignificant whitespace is permitted\n\
       \  - Newlines in strings MUST be '\\n' (LF)\nmessage fields, if present, MUST be excluded\
       \ from canonical serialization.\n"
-    എന്ത
+    ```
 - **clause.report.fingerprint** (kind: clause)
   - label: Fingerprint
   - Extra fields:
@@ -232,7 +232,7 @@
       JSON bytes as a convenience for fast equivalence checks.
 
       '
-    എന്ത
+    ```
 - **clause.report.location_model** (kind: clause)
   - label: Location model
   - Extra fields:
@@ -243,7 +243,7 @@
       \ string graph_ids from outermost graph to the graph where the violation occurred\nIt MAY\
       \ have:\n  - node_id: string\n  - edge_key: string (canonical edge key 'type|from|to|id',\
       \ with empty id allowed)\n"
-    എന്ത
+    ```
 - **clause.report.model** (kind: clause)
   - label: ValidationReportK1 model
   - Extra fields:
@@ -253,7 +253,7 @@
     text: "The validator produces a ValidationReportK1 object with fields:\n  - version: fixed\
       \ string 'validatorgroup-k1@0.1.0'\n  - ok: boolean\n  - violations: ordered list of Violation\
       \ objects\nok MUST be true iff violations contains no entries with severity == 'error'.\n"
-    എന്ത
+    ```
 - **clause.report.violation_model** (kind: clause)
   - label: Violation model
   - Extra fields:
@@ -265,7 +265,7 @@
       \ Location object\n  - details: ordered list of {key,value} pairs (not a map)\nA Violation\
       \ MAY have:\n  - message: non-canonical human-readable string (MUST be ignored for canonical\
       \ equivalence)\n"
-    എന്ത
+    ```
 - **clause.scope.intent** (kind: clause)
   - label: Intent
   - Extra fields:
@@ -277,7 +277,7 @@
       and generator pipelines.
 
       '
-    എന്ത
+    ```
 - **clause.scope.non_goals** (kind: clause)
   - label: Non-goals
   - Extra fields:
@@ -288,7 +288,7 @@
       layout, or CLI UX. It does not mandate performance characteristics beyond bounded recursion.
 
       '
-    എന്ത
+    ```
 - **clause.stages.definition** (kind: clause)
   - label: Stage definition
   - Extra fields:
@@ -299,7 +299,7 @@
       MAY add violations. A stage MAY be skipped for a graph if prerequisites fail.
 
       '
-    എന്ത
+    ```
 - **clause.stages.gf0_struct** (kind: clause)
   - label: Stage: gf0_struct
   - Extra fields:
@@ -311,7 +311,7 @@
       \ are non-empty strings;\n  - NodeK0 IDs are unique within the frame;\n  - EdgeK0 endpoints\
       \ refer to existing NodeK0 IDs in the same frame.\nAny failure in gf0_struct MUST emit an\
       \ error severity violation for that graph.\n"
-    എന്ത
+    ```
 - **clause.stages.links** (kind: clause)
   - label: Stage: links
   - Extra fields:
@@ -323,7 +323,7 @@
       \ in the DocGroup.\n  - Additional link rules MAY be implemented, but MUST be deterministic\
       \ and MUST have stable codes.\nLinks stage MUST NOT attempt network fetch or external resolution\
       \ unless the caller explicitly provides those graphs in the DocGroup.\n"
-    എന്ത
+    ```
 - **clause.stages.profile_detect** (kind: clause)
   - label: Stage: profile_detect
   - Extra fields:
@@ -337,7 +337,7 @@
       \ applies if the graph contains exactly one node with id==graph_id,\n    kind=='render_plan',\
       \ and profile=='renderframe-k1'.\nIf a graph matches multiple profile rules, the validator\
       \ MUST emit an error and MUST NOT proceed to the conflicting profile validators.\n"
-    എന്ത
+    ```
 - **clause.stages.renderframe** (kind: clause)
   - label: Stage: renderframe_k1
   - Extra fields:
@@ -350,7 +350,7 @@
       \ render_plan node;\n  - rule edges and reference targets are well-typed (selects->selector,\
       \ emits->emitter, etc.).\n(RenderFrameK1's detailed rules are defined by spec://_kernel/render/renderframe-k1;\
       \ this stage MUST implement them when that spec is available in the DocGroup.)\n"
-    എന്ത
+    ```
 - **clause.stages.specframe** (kind: clause)
   - label: Stage: specframe_k1
   - Extra fields:
@@ -362,7 +362,7 @@
       \ set;\n  - 'contains' edges form an acyclic tree (or forest) rooted at the spec node;\n\
       \  - required attributes per node kind are present.\nMissing required attributes MUST be\
       \ treated as errors.\n"
-    എന്ത
+    ```
 - **example.group_dedup_behavior** (kind: example)
   - label: Duplicate graph_id behavior
   - Extra fields:
@@ -372,7 +372,7 @@
     text: "If two GraphRecords share graph_id=\"spec.dup\", the validator MUST:\n  - emit an error\
       \ violation for the duplicated graph_id, and\n  - run gf0_struct on both,\n  - skip specframe/renderframe/links\
       \ stages for graph_id=\"spec.dup\".\n"
-    എന്ത
+    ```
 - **example.minimal_report** (kind: example)
   - label: Minimal ValidationReportK1
   - Extra fields:
@@ -384,7 +384,7 @@
       \  graph_id: \"spec.some-doc\"\n      meta_path: [\"spec.some-doc\"]\n      edge_key: \"\
       contains|spec.some-doc|section.1.scope|\"\n    details:\n      - { key: \"missing_endpoint\"\
       , value: \"to\" }\n      - { key: \"missing_node_id\", value: \"section.1.scope\" }\n"
-    എന്ത
+    ```
 - **property.details_kv** (kind: property)
   - label: Details are ordered KV pairs
   - Extra fields:
@@ -395,7 +395,7 @@
       '
     label: Details are ordered KV pairs
     status: normative
-    എന്ത
+    ```
 - **property.location_fields** (kind: property)
   - label: Location fields
   - Extra fields:
@@ -407,7 +407,7 @@
     - edge_key
     label: Location fields
     status: normative
-    എന്ത
+    ```
 - **property.report_fields** (kind: property)
   - label: Required report fields
   - Extra fields:
@@ -418,7 +418,7 @@
     - ok
     - violations
     status: normative
-    എന്ത
+    ```
 - **property.required_codes** (kind: property)
   - label: Required violation codes
   - Extra fields:
@@ -440,7 +440,7 @@
     - LINK.W.UNREACHABLE_NORMATIVE
     label: Required violation codes
     status: normative
-    എന്ത
+    ```
 - **property.severity_enum** (kind: property)
   - label: Severity enum
   - Extra fields:
@@ -450,7 +450,7 @@
     - error
     - warning
     status: normative
-    എന്ത
+    ```
 - **property.stage_enum** (kind: property)
   - label: Stage enum
   - Extra fields:
@@ -463,7 +463,7 @@
     - renderframe_k1
     - links
     status: normative
-    എന്ത
+    ```
 - **property.stage_order** (kind: property)
   - label: Stage evaluation order
   - Extra fields:
@@ -476,7 +476,7 @@
     - renderframe_k1
     - links
     status: normative
-    എന്ത
+    ```
 - **property.violation_fields** (kind: property)
   - label: Required violation fields
   - Extra fields:
@@ -489,7 +489,7 @@
     - location
     - details
     status: normative
-    എന്ത
+    ```
 - **ref.spec.gf0-k1** (kind: spec_ref)
   - label: GraphFrame K0 schema
   - Extra fields:
@@ -497,7 +497,7 @@
     label: GraphFrame K0 schema
     status: informative
     target_graph_id: spec://_kernel/gf/gf0-k1
-    എന്ത
+    ```
 - **ref.spec.renderframe-k1** (kind: spec_ref)
   - label: RenderFrame K1 schema
   - Extra fields:
@@ -505,7 +505,7 @@
     label: RenderFrame K1 schema
     status: informative
     target_graph_id: spec://_kernel/render/renderframe-k1
-    എന്ത
+    ```
 - **ref.spec.specframe-k1** (kind: spec_ref)
   - label: SpecFrame K1 schema
   - Extra fields:
@@ -513,63 +513,63 @@
     label: SpecFrame K1 schema
     status: informative
     target_graph_id: spec://_kernel/spec/specframe-k1
-    എന്ത
+    ```
 - **section.1.scope** (kind: section)
   - Extra fields:
     ```yml
     order: 1
     status: normative
     title: Scope and Intent
-    എന്ത
+    ```
 - **section.2.inputs** (kind: section)
   - Extra fields:
     ```yml
     order: 2
     status: normative
     title: Inputs and Canonicalization
-    എന്ത
+    ```
 - **section.3.stages** (kind: section)
   - Extra fields:
     ```yml
     order: 3
     status: normative
     title: Validation Stages
-    എന്ത
+    ```
 - **section.4.determinism** (kind: section)
   - Extra fields:
     ```yml
     order: 4
     status: normative
     title: Determinism and Ordering
-    എന്ത
+    ```
 - **section.5.report** (kind: section)
   - Extra fields:
     ```yml
     order: 5
     status: normative
     title: Validation Report Model
-    എന്ത
+    ```
 - **section.6.codes** (kind: section)
   - Extra fields:
     ```yml
     order: 6
     status: normative
     title: Required Violation Codes
-    എന്ത
+    ```
 - **section.7.examples** (kind: section)
   - Extra fields:
     ```yml
     order: 7
     status: informative
     title: Examples
-    എന്ത
+    ```
 - **section.8.integration** (kind: section)
   - Extra fields:
     ```yml
     order: 8
     status: informative
     title: Integration Notes
-    എന്ത
+    ```
 - **spec://_kernel/validator/validatorgroup-k1** (kind: spec)
   - Extra fields:
     ```yml
@@ -582,7 +582,7 @@
 
       '
     title: ValidatorGroup K1 — Deterministic Doc-Group Validation
-    എന്ത
+    ```
 - **term.canonical_equivalence** (kind: term)
   - label: CanonicalEquivalence
   - Extra fields:
@@ -593,7 +593,7 @@
       are identical (see clause.report.canonical_json).
 
       '
-    എന്ത
+    ```
 - **term.doc_group** (kind: term)
   - label: DocGroup
   - Extra fields:
@@ -604,7 +604,7 @@
       checks (e.g., referenced spec existence, shared profiles, render plans).
 
       '
-    എന്ത
+    ```
 - **term.graph_record** (kind: term)
   - label: GraphRecord
   - Extra fields:
@@ -615,7 +615,7 @@
       affect validation semantics or canonical outputs, except where explicitly stated.
 
       '
-    എന്ത
+    ```
 - **term.location** (kind: term)
   - label: Location
   - Extra fields:
@@ -626,7 +626,7 @@
       node_id, edge_key, and meta_path.
 
       '
-    എന്ത
+    ```
 - **term.profile_detection** (kind: term)
   - label: ProfileDetection
   - Extra fields:
@@ -637,7 +637,7 @@
       based on its root node and attributes.
 
       '
-    എന്ത
+    ```
 - **term.validation_stage** (kind: term)
   - label: ValidationStage
   - Extra fields:
@@ -648,7 +648,7 @@
       skipped for a graph if prerequisite stages failed.
 
       '
-    എന്ത
+    ```
 - **term.violation** (kind: term)
   - label: Violation
   - Extra fields:
@@ -659,8 +659,7 @@
       a specific stage. A violation is identified by (code, stage, location, details).
 
       '
-    എന്ത
-
+    ```
 ## Edges
 | from | to | type | id | attrs | metrics |
 | --- | --- | --- | --- | --- | --- |

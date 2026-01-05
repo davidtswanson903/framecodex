@@ -13,7 +13,7 @@
     text: "A node with kind == 'clause' MUST provide:\n  - 'label' : short handle for the clause,\n\
       \  - 'status': SpecStatus.\nIt SHOULD provide:\n  - 'text'  : full clause text in natural\
       \ language.\n"
-    എന്ത
+    ```
 - **clause.attrs.example** (kind: clause)
   - label: Attributes for example nodes
   - Extra fields:
@@ -23,7 +23,7 @@
     text: "A node with kind == 'example' MUST provide:\n  - 'label' : short identifier for the\
       \ example,\n  - 'status': SpecStatus (typically 'informative').\nIt SHOULD provide:\n  -\
       \ 'text'  : free-form example text or code snippet.\n"
-    എന്ത
+    ```
 - **clause.attrs.property** (kind: clause)
   - label: Attributes for property nodes
   - Extra fields:
@@ -33,7 +33,7 @@
     text: "A node with kind == 'property' MUST provide:\n  - 'label' : short name of the property,\n\
       \  - 'status': SpecStatus.\nProperty nodes MAY carry arbitrary additional attributes (lists,\
       \ enums, thresholds) that are interpreted by tooling.\n"
-    എന്ത
+    ```
 - **clause.attrs.required** (kind: clause)
   - label: Required attributes per node kind
   - Extra fields:
@@ -44,7 +44,7 @@
       \ Required attributes per kind are:\n  - spec     : title, status, summary, profile\n  -\
       \ section  : title, status\n  - term     : label, status\n  - clause   : label, status\n\
       \  - property : label, status\n  - example  : label, status\n  - spec_ref : target_graph_id\n"
-    എന്ത
+    ```
 - **clause.attrs.section** (kind: clause)
   - label: Attributes for section nodes
   - Extra fields:
@@ -54,7 +54,7 @@
     text: "A node with kind == 'section' MUST provide:\n  - 'title' : short section title,\n \
       \ - 'status': SpecStatus.\nIt SHOULD provide:\n  - 'order' : integer for ordering sections\
       \ within the spec.\nSections MAY nest other sections via 'contains'.\n"
-    എന്ത
+    ```
 - **clause.attrs.spec** (kind: clause)
   - label: Attributes for spec nodes
   - Extra fields:
@@ -65,7 +65,7 @@
       \ title,\n  - 'status'  : SpecStatus,\n  - 'summary' : short description of the spec's scope,\n\
       \  - 'profile' : string identifying the spec profile, e.g. 'specframe-k1'.\nThe spec node\
       \ MAY also include 'version_note', 'domain', and additional profile-specific attributes.\n"
-    എന്ത
+    ```
 - **clause.attrs.spec_ref** (kind: clause)
   - label: Attributes for spec_ref nodes
   - Extra fields:
@@ -75,7 +75,7 @@
     text: "A node with kind == 'spec_ref' MUST provide:\n  - 'target_graph_id' : canonical graph_id\
       \ of the referenced spec or frame.\nIt MAY provide:\n  - 'label' : short human-readable\
       \ label,\n  - 'note'  : explanatory text about the reference.\n"
-    എന്ത
+    ```
 - **clause.attrs.status_enum** (kind: clause)
   - label: Allowed status values
   - Extra fields:
@@ -84,7 +84,7 @@
     status: normative
     text: "For all nodes in a SpecFrame, the status attribute MUST be one of:\n  - 'normative',\n\
       \  - 'informative',\n  - 'experimental'.\n"
-    എന്ത
+    ```
 - **clause.attrs.term** (kind: clause)
   - label: Attributes for term nodes
   - Extra fields:
@@ -94,7 +94,7 @@
     text: "A node with kind == 'term' MUST provide:\n  - 'label' : short name of the term,\n \
       \ - 'status': SpecStatus.\nThe primary definition text MAY be stored in 'text'. Terms are\
       \ usually linked via 'defines' edges from clauses that define them.\n"
-    എന്ത
+    ```
 - **clause.edge.contains** (kind: clause)
   - label: contains edge semantics
   - Extra fields:
@@ -107,7 +107,7 @@
       rooted at the spec node.
 
       '
-    എന്ത
+    ```
 - **clause.edge_types.allowed** (kind: clause)
   - label: Allowed edge types
   - Extra fields:
@@ -120,7 +120,7 @@
       \ another clause,\n  - 'refers_to'  : non-normative reference to another node or spec,\n\
       \  - 'example_of' : examples illustrating a term or clause.\nAny other value MUST be reported\
       \ as a validation error.\n"
-    എന്ത
+    ```
 - **clause.frame_metadata.location** (kind: clause)
   - label: Frame-level metadata location
   - Extra fields:
@@ -134,7 +134,7 @@
       and does not affect the node/edge validation rules.
 
       '
-    എന്ത
+    ```
 - **clause.frame_metadata.recommended_keys** (kind: clause)
   - label: Recommended SpecFrame attrs keys
   - Extra fields:
@@ -144,7 +144,7 @@
     text: "Tooling MAY adopt the following conventional GraphFrameK0.attrs keys for SpecFrames:\n\
       \  - domain\n  - depends_on (repeatable)\n  - intended_consumer (repeatable)\n  - publish.root\n\
       \  - publish.path\n  - publish.slug\n"
-    എന്ത
+    ```
 - **clause.integration.usage** (kind: clause)
   - label: Use in GraphBrain and specgen
   - Extra fields:
@@ -157,7 +157,7 @@
       composed, diffed, and refactored uniformly.
 
       '
-    എന്ത
+    ```
 - **clause.node_kinds.allowed** (kind: clause)
   - label: Allowed node kinds
   - Extra fields:
@@ -171,7 +171,7 @@
       \ lists, thresholds),\n  - 'example'   : worked examples illustrating other nodes,\n  -\
       \ 'spec_ref'  : references to other specs or frames.\nAny other value MUST be reported as\
       \ a validation error.\n"
-    എന്ത
+    ```
 - **clause.node_kinds.root** (kind: clause)
   - label: Root spec node
   - Extra fields:
@@ -181,7 +181,7 @@
     text: "Each SpecFrame MUST contain exactly one node with:\n  - id == graph_id,\n  - kind ==\
       \ 'spec',\n  - status in {'normative', 'informative', 'experimental'}.\nThis node is the\
       \ root of the spec and is the unique entry point for reachability and top-level attributes.\n"
-    എന്ത
+    ```
 - **clause.scope.1** (kind: clause)
   - label: Scope of SpecFrame K1
   - Extra fields:
@@ -194,7 +194,7 @@
       defined in this spec.
 
       '
-    എന്ത
+    ```
 - **clause.scope.2** (kind: clause)
   - label: Intended consumers
   - Extra fields:
@@ -206,7 +206,7 @@
       docs, or other frames.
 
       '
-    എന്ത
+    ```
 - **clause.validation.contains_tree** (kind: clause)
   - label: Contains edges form a tree
   - Extra fields:
@@ -217,7 +217,7 @@
       or multiple parents for the same node via ''contains'' are considered hard validation failures.
 
       '
-    എന്ത
+    ```
 - **clause.validation.edge_types** (kind: clause)
   - label: Edge type validation
   - Extra fields:
@@ -229,7 +229,7 @@
       failures.
 
       '
-    എന്ത
+    ```
 - **clause.validation.node_kinds** (kind: clause)
   - label: Node kind validation
   - Extra fields:
@@ -241,7 +241,7 @@
       failures.
 
       '
-    എന്ത
+    ```
 - **clause.validation.reachability** (kind: clause)
   - label: Reachability from root
   - Extra fields:
@@ -253,7 +253,7 @@
       or at least strong warnings by tooling.
 
       '
-    എന്ത
+    ```
 - **property.edge_types** (kind: property)
   - label: Allowed Edge Types
   - Extra fields:
@@ -267,7 +267,7 @@
     - example_of
     label: Allowed Edge Types
     status: normative
-    എന്ത
+    ```
 - **property.node_kinds** (kind: property)
   - label: Allowed Node Kinds
   - Extra fields:
@@ -282,7 +282,7 @@
     - example
     - spec_ref
     status: normative
-    എന്ത
+    ```
 - **property.status_enum** (kind: property)
   - label: Spec Status Enum
   - Extra fields:
@@ -293,7 +293,7 @@
     - normative
     - informative
     - experimental
-    എന്ത
+    ```
 - **ref.spec.canon-k1** (kind: spec_ref)
   - label: Canon envelope mappings
   - Extra fields:
@@ -301,7 +301,7 @@
     label: Canon envelope mappings
     status: informative
     target_graph_id: spec://_kernel/canon/canon-k1
-    എന്ത
+    ```
 - **ref.spec.gf0-k1** (kind: spec_ref)
   - label: GraphFrame K0 schema
   - Extra fields:
@@ -309,7 +309,7 @@
     label: GraphFrame K0 schema
     status: informative
     target_graph_id: spec://_kernel/gf/gf0-k1
-    എന്ത
+    ```
 - **ref.spec.targetref-k1** (kind: spec_ref)
   - label: TargetRef naming scheme
   - Extra fields:
@@ -317,49 +317,49 @@
     label: TargetRef naming scheme
     status: informative
     target_graph_id: spec://_kernel/targetref/targetref-k1
-    എന്ത
+    ```
 - **section.1.scope** (kind: section)
   - Extra fields:
     ```yml
     order: 1
     status: normative
     title: Scope and Intent
-    എന്ത
+    ```
 - **section.2.node_kinds** (kind: section)
   - Extra fields:
     ```yml
     order: 2
     status: normative
     title: Node Kinds
-    എന്ത
+    ```
 - **section.3.edge_kinds** (kind: section)
   - Extra fields:
     ```yml
     order: 3
     status: normative
     title: Edge Types
-    എന്ത
+    ```
 - **section.4.attributes** (kind: section)
   - Extra fields:
     ```yml
     order: 4
     status: normative
     title: Attributes
-    എന്ത
+    ```
 - **section.5.validation** (kind: section)
   - Extra fields:
     ```yml
     order: 5
     status: normative
     title: Validation Invariants
-    എന്ത
+    ```
 - **section.6.integration** (kind: section)
   - Extra fields:
     ```yml
     order: 6
     status: informative
     title: Integration and Usage
-    എന്ത
+    ```
 - **spec://_kernel/spec/specframe-k1** (kind: spec)
   - Extra fields:
     ```yml
@@ -372,7 +372,7 @@
 
       '
     title: SpecFrame K1 — Canonical Specification Graph Schema
-    എന്ത
+    ```
 - **term.edge_type** (kind: term)
   - label: EdgeK0.type in SpecFrames
   - Extra fields:
@@ -383,7 +383,7 @@
       between nodes. Only a small fixed set of edge types is allowed.
 
       '
-    എന്ത
+    ```
 - **term.node_kind** (kind: term)
   - label: NodeK0.kind in SpecFrames
   - Extra fields:
@@ -394,7 +394,7 @@
       spec, section, term, clause, property, example, or spec_ref.
 
       '
-    എന്ത
+    ```
 - **term.status** (kind: term)
   - label: SpecStatus
   - Extra fields:
@@ -404,8 +404,7 @@
     text: "SpecStatus describes the normative weight of a node:\n  - 'normative'   : enforceable\
       \ spec law,\n  - 'informative' : non-binding explanatory material,\n  - 'experimental':\
       \ provisional or unstable guidance.\n"
-    എന്ത
-
+    ```
 ## Edges
 | from | to | type | id | attrs | metrics |
 | --- | --- | --- | --- | --- | --- |

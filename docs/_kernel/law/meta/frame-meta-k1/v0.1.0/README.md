@@ -14,7 +14,7 @@
       array string or contains empty elements. details MUST include: graph_id, key, value.
 
       '
-    എന്ത
+    ```
 - **code.bad_rfc3339** (kind: rule)
   - label: META.E.BAD_RFC3339
   - Extra fields:
@@ -25,7 +25,7 @@
       details MUST include: graph_id, key, value.
 
       '
-    എന്ത
+    ```
 - **code.dupkey** (kind: rule)
   - label: META.E.DUPLICATE_META_KEY
   - Extra fields:
@@ -36,7 +36,7 @@
       details MUST include: graph_id, key, count.
 
       '
-    എന്ത
+    ```
 - **code.nonroot** (kind: rule)
   - label: META.E.NONROOT_META_KEY
   - Extra fields:
@@ -47,7 +47,7 @@
       graph_id, node_id, key.
 
       '
-    എന്ത
+    ```
 - **ex.1.minimal** (kind: example)
   - label: Minimal recommended metadata
   - Extra fields:
@@ -58,7 +58,7 @@
       \ }\n  - { key: \"doc.created\", value: \"2026-01-04T12:00:00-06:00\", vtype: \"rfc3339\"\
       \ }\n  - { key: \"doc.updated\", value: \"2026-01-04T12:00:00-06:00\", vtype: \"rfc3339\"\
       \ }\n  - { key: \"doc.license\", value: \"CC-BY-4.0\", vtype: \"spdx\" }\n"
-    എന്ത
+    ```
 - **ex.2.tags_contact** (kind: example)
   - label: Tags + contact
   - Extra fields:
@@ -69,7 +69,7 @@
       \"]\", vtype: \"json\" }\n  - { key: \"doc.contact\", value: \"[\\\"email:you@example.com\\\
       \",\\\"handle:@plainstack\\\"]\", vtype: \"json\" }\n  - { key: \"doc.audience\", value:\
       \ \"public\" }\n"
-    എന്ത
+    ```
 - **law://_kernel/meta/frame-meta-k1** (kind: law)
   - Extra fields:
     ```yml
@@ -84,7 +84,7 @@
 
       '
     title: FrameMeta K1 — Common Per-Frame Metadata Fields
-    എന്ത
+    ```
 - **prop.audience_enum** (kind: property)
   - label: Recommended audience values
   - Extra fields:
@@ -98,7 +98,7 @@
     - customers
     - academic
     - internal
-    എന്ത
+    ```
 - **prop.contact_entry_recommendation** (kind: property)
   - label: Recommended contact entry formats
   - Extra fields:
@@ -110,7 +110,7 @@
     - url:https://example.com
     - handle:@name
     - Name <someone@example.com>
-    എന്ത
+    ```
 - **prop.json_array_string_regex** (kind: property)
   - label: Canonical JSON array string encoding
   - Extra fields:
@@ -122,7 +122,7 @@
 
       '
     value: ^\[[^\s].*\]$
-    എന്ത
+    ```
 - **prop.meta_key_prefix** (kind: property)
   - label: Metadata key prefix
   - Extra fields:
@@ -130,7 +130,7 @@
     label: Metadata key prefix
     status: normative
     value: doc.
-    എന്ത
+    ```
 - **prop.recommended_keys_minset** (kind: property)
   - label: Recommended minimal set (repo may require)
   - Extra fields:
@@ -142,7 +142,7 @@
     - doc.license
     label: Recommended minimal set (repo may require)
     status: normative
-    എന്ത
+    ```
 - **prop.required_violation_codes** (kind: property)
   - label: Required violation codes
   - Extra fields:
@@ -156,7 +156,7 @@
     - META.E.BAD_JSON_ARRAY
     - META.W.MISSING_RECOMMENDED_KEY
     - META.W.UPDATED_BEFORE_CREATED
-    എന്ത
+    ```
 - **prop.rfc3339_regex** (kind: property)
   - label: RFC3339 timestamp regex (strict enough for offline validation)
   - Extra fields:
@@ -164,7 +164,7 @@
     label: RFC3339 timestamp regex (strict enough for offline validation)
     status: normative
     value: ^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(\.[0-9]+)?(Z|[+-][0-9]{2}:[0-9]{2})$
-    എന്ത
+    ```
 - **prop.standard_keys** (kind: property)
   - label: Standard metadata keys
   - Extra fields:
@@ -185,7 +185,7 @@
     - doc.license
     label: Standard metadata keys
     status: normative
-    എന്ത
+    ```
 - **ref.doclicense** (kind: spec_ref)
   - label: DocLicense K1 (doc.license)
   - Extra fields:
@@ -193,7 +193,7 @@
     label: DocLicense K1 (doc.license)
     status: informative
     target_graph_id: law://_kernel/ip/doclicense-k1
-    എന്ത
+    ```
 - **ref.gf0** (kind: spec_ref)
   - label: GF0 (GraphFrameK0 / AttrK0)
   - Extra fields:
@@ -201,7 +201,7 @@
     label: GF0 (GraphFrameK0 / AttrK0)
     status: informative
     target_graph_id: spec://_kernel/gf/gf0-k1
-    എന്ത
+    ```
 - **rule.charter.uses_attrs** (kind: rule)
   - label: Metadata stored as AttrK0
   - Extra fields:
@@ -212,7 +212,7 @@
       simple key–value struct stored in a deterministic slice.
 
       '
-    എന്ത
+    ```
 - **rule.encoding.unique_keys** (kind: rule)
   - label: No duplicate doc.* keys on root
   - Extra fields:
@@ -223,7 +223,7 @@
       attrs. Duplicate keys are invalid (even though attrs are slices).
 
       '
-    എന്ത
+    ```
 - **rule.encoding.value_is_string** (kind: rule)
   - label: AttrK0 values remain strings
   - Extra fields:
@@ -234,7 +234,7 @@
       MUST be encoded as JSON array strings per this law.
 
       '
-    എന്ത
+    ```
 - **rule.keys.audience_enum** (kind: rule)
   - label: doc.audience recommended enum
   - Extra fields:
@@ -245,7 +245,7 @@
       MAY tighten this to MUST.
 
       '
-    എന്ത
+    ```
 - **rule.keys.author_shorthand** (kind: rule)
   - label: doc.author shorthand
   - Extra fields:
@@ -256,7 +256,7 @@
       are present, doc.authors is authoritative and doc.author SHOULD be treated as redundant.
 
       '
-    എന്ത
+    ```
 - **rule.keys.authors_format** (kind: rule)
   - label: doc.authors format
   - Extra fields:
@@ -267,7 +267,7 @@
       whose elements are non-empty strings. vtype SHOULD be ''json''.
 
       '
-    എന്ത
+    ```
 - **rule.keys.contact_format** (kind: rule)
   - label: doc.contact format
   - Extra fields:
@@ -278,7 +278,7 @@
       whose elements are non-empty strings. vtype SHOULD be ''json''.
 
       '
-    എന്ത
+    ```
 - **rule.keys.created_format** (kind: rule)
   - label: doc.created format
   - Extra fields:
@@ -288,7 +288,7 @@
     text: 'If doc.created is present, it MUST match prop.rfc3339_regex. vtype SHOULD be ''rfc3339''.
 
       '
-    എന്ത
+    ```
 - **rule.keys.keywords_format** (kind: rule)
   - label: doc.keywords format
   - Extra fields:
@@ -299,7 +299,7 @@
       whose elements are non-empty strings. vtype SHOULD be ''json''.
 
       '
-    എന്ത
+    ```
 - **rule.keys.license_delegation** (kind: rule)
   - label: doc.license governed elsewhere
   - Extra fields:
@@ -310,7 +310,7 @@
       This law only reserves the key within prop.standard_keys.
 
       '
-    എന്ത
+    ```
 - **rule.keys.prefix** (kind: rule)
   - label: doc.* prefix
   - Extra fields:
@@ -321,7 +321,7 @@
       MAY define additional namespaces, but doc.* is reserved for this law.
 
       '
-    എന്ത
+    ```
 - **rule.keys.tags_format** (kind: rule)
   - label: doc.tags format
   - Extra fields:
@@ -332,7 +332,7 @@
       whose elements are non-empty strings. vtype SHOULD be ''json''.
 
       '
-    എന്ത
+    ```
 - **rule.keys.updated_format** (kind: rule)
   - label: doc.updated format
   - Extra fields:
@@ -342,7 +342,7 @@
     text: 'If doc.updated is present, it MUST match prop.rfc3339_regex. vtype SHOULD be ''rfc3339''.
 
       '
-    എന്ത
+    ```
 - **rule.keys.updated_not_before_created** (kind: rule)
   - label: updated should not precede created
   - Extra fields:
@@ -353,7 +353,7 @@
       SHOULD NOT be earlier than doc.created. Tooling MAY warn or error based on repo policy.
 
       '
-    എന്ത
+    ```
 - **rule.resolution.effective_metadata** (kind: rule)
   - label: Effective metadata resolution (optional)
   - Extra fields:
@@ -365,7 +365,7 @@
       so. Defaults MUST be provided offline by repository governance.
 
       '
-    എന്ത
+    ```
 - **rule.resolution.no_network** (kind: rule)
   - label: No network fetch
   - Extra fields:
@@ -376,7 +376,7 @@
       to fill or validate doc.* metadata unless explicitly provided as inputs by the caller.
 
       '
-    എന്ത
+    ```
 - **rule.storage.attrs_slice_not_map** (kind: rule)
   - label: Attrs remain slices
   - Extra fields:
@@ -387,7 +387,7 @@
       into maps, even when interpreting metadata keys.
 
       '
-    എന്ത
+    ```
 - **rule.storage.root_only** (kind: rule)
   - label: Metadata keys live on root node only
   - Extra fields:
@@ -398,7 +398,7 @@
       node.id == graph_id. Declaring these keys on non-root nodes is invalid.
 
       '
-    എന്ത
+    ```
 - **rule.violations.stable** (kind: rule)
   - label: Stable violations
   - Extra fields:
@@ -409,54 +409,54 @@
       with stable semantics and deterministic ordering.
 
       '
-    എന്ത
+    ```
 - **section.1.charter** (kind: section)
   - Extra fields:
     ```yml
     order: 1
     title: Charter
-    എന്ത
+    ```
 - **section.2.storage** (kind: section)
   - Extra fields:
     ```yml
     order: 2
     title: Storage Location and Scope
-    എന്ത
+    ```
 - **section.3.keys** (kind: section)
   - Extra fields:
     ```yml
     order: 3
     title: Standard Metadata Keys
-    എന്ത
+    ```
 - **section.4.encoding** (kind: section)
   - Extra fields:
     ```yml
     order: 4
     title: Encoding and Normalization
-    എന്ത
+    ```
 - **section.5.resolution** (kind: section)
   - Extra fields:
     ```yml
     order: 5
     title: Effective Metadata Resolution
-    എന്ത
+    ```
 - **section.6.violations** (kind: section)
   - Extra fields:
     ```yml
     order: 6
     title: Required Violation Codes
-    എന്ത
+    ```
 - **section.7.examples** (kind: section)
   - Extra fields:
     ```yml
     order: 7
     title: Examples
-    എന്ത
+    ```
 - **title.0** (kind: title)
   - Extra fields:
     ```yml
     text: FrameMeta K1
-    എന്ത
+    ```
 - **warn.missing_recommended** (kind: rule)
   - label: META.W.MISSING_RECOMMENDED_KEY
   - Extra fields:
@@ -467,7 +467,7 @@
       SHOULD include: graph_id, missing_key.
 
       '
-    എന്ത
+    ```
 - **warn.updated_before_created** (kind: rule)
   - label: META.W.UPDATED_BEFORE_CREATED
   - Extra fields:
@@ -478,8 +478,7 @@
       < doc.created. details SHOULD include: graph_id, created, updated.
 
       '
-    എന്ത
-
+    ```
 ## Edges
 | from | to | type | id | attrs | metrics |
 | --- | --- | --- | --- | --- | --- |

@@ -335,13 +335,7 @@ def render_frame(frame: dict, *, heading_level: int = 1) -> tuple[str, list[dict
             lines.append("  - Extra fields:")
             lines.append("    ```yml")
             lines.extend(["    " + ln for ln in _yaml_block(extra).split("\n")])
-            lines.append("    എന്ത")
-            # replace sentinel with real fence below
-
-    # replace any sentinel line with closing fence
-    lines = ["    ```" if ln == "    ଠ" or ln == "    " or ln == "    " else ln for ln in lines]
-
-    lines.append("")
+            lines.append("    ```")
 
     # Edges
     lines.append(f"{h}# Edges")

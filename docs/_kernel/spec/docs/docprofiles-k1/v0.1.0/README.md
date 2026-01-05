@@ -15,7 +15,7 @@
       (indexes/layout/nav) per GF0.
 
       '
-    എന്ത
+    ```
 - **clause.core_model.profile_location** (kind: clause)
   - label: profile-location
   - Extra fields:
@@ -26,7 +26,7 @@
       root ''spec'' node (id == graph_id). Tooling MAY ignore unknown doc_profile values.
 
       '
-    എന്ത
+    ```
 - **clause.core_model.profile_semantics** (kind: clause)
   - label: profile-semantics
   - Extra fields:
@@ -37,7 +37,7 @@
       conventions (required/recommended content and lint/render expectations).
 
       '
-    എന്ത
+    ```
 - **clause.lint.baseline** (kind: clause)
   - label: lint-baseline
   - Extra fields:
@@ -49,7 +49,7 @@
       kinds.
 
       '
-    എന്ത
+    ```
 - **clause.overview.intent** (kind: clause)
   - label: intent
   - Extra fields:
@@ -60,7 +60,7 @@
       deterministic rendering, and automated linting across many document types.
 
       '
-    എന്ത
+    ```
 - **clause.rendering.baseline** (kind: clause)
   - label: render-baseline
   - Extra fields:
@@ -72,7 +72,7 @@
       from term nodes, and backlinks from refs.
 
       '
-    എന്ത
+    ```
 - **property.profile.guide-k1.required_properties** (kind: property)
   - label: required_properties
   - Extra fields:
@@ -84,7 +84,7 @@
     - property.steps
     - property.pitfalls
     status: informative
-    എന്ത
+    ```
 - **property.profile.hardware_spec-k1.required_sections** (kind: property)
   - label: required_sections
   - Extra fields:
@@ -98,7 +98,7 @@
     - section.constraints
     - section.testing
     status: normative
-    എന്ത
+    ```
 - **property.profile.math_theory-k1.conventions** (kind: property)
   - label: conventions
   - Extra fields:
@@ -113,7 +113,7 @@
     label: conventions
     profile_id: math_theory-k1
     status: informative
-    എന്ത
+    ```
 - **property.profile.software_spec-k1.required_properties** (kind: property)
   - label: required_properties
   - Extra fields:
@@ -125,7 +125,7 @@
     - property.invariants
     - property.compat
     status: informative
-    എന്ത
+    ```
 - **property.profile.software_spec-k1.required_sections** (kind: property)
   - label: required_sections
   - Extra fields:
@@ -142,7 +142,7 @@
     - section.testing
     - section.versioning
     status: normative
-    എന്ത
+    ```
 - **property.profile.standard-k1.required_properties** (kind: property)
   - label: required_properties
   - Extra fields:
@@ -153,7 +153,7 @@
     - property.versioning
     - property.keywords
     status: informative
-    എന്ത
+    ```
 - **property.profile.standard-k1.required_sections** (kind: property)
   - label: required_sections
   - Extra fields:
@@ -167,7 +167,7 @@
     - section.requirements
     - section.conformance
     status: normative
-    എന്ത
+    ```
 - **ref.spec.gf0-k1** (kind: spec_ref)
   - label: GraphFrame GF0
   - Extra fields:
@@ -176,7 +176,7 @@
     note: Base graph substrate.
     status: informative
     target_graph_id: spec://_kernel/gf/gf0-k1
-    എന്ത
+    ```
 - **ref.spec.specframe-k1** (kind: spec_ref)
   - label: SpecFrame K1
   - Extra fields:
@@ -185,49 +185,49 @@
     note: 'Document spine: sections/terms/clauses/properties/examples.'
     status: informative
     target_graph_id: spec://_kernel/spec/specframe-k1
-    എന്ത
+    ```
 - **section.1.overview** (kind: section)
   - Extra fields:
     ```yml
     order: 1
     status: normative
     title: Overview
-    എന്ത
+    ```
 - **section.2.core_model** (kind: section)
   - Extra fields:
     ```yml
     order: 2
     status: normative
     title: Core Model
-    എന്ത
+    ```
 - **section.3.profile_catalog** (kind: section)
   - Extra fields:
     ```yml
     order: 3
     status: normative
     title: Profile Catalog
-    എന്ത
+    ```
 - **section.4.lint_rules** (kind: section)
   - Extra fields:
     ```yml
     order: 4
     status: informative
     title: Lint Rules
-    എന്ത
+    ```
 - **section.5.rendering_hints** (kind: section)
   - Extra fields:
     ```yml
     order: 5
     status: informative
     title: Rendering Hints
-    എന്ത
+    ```
 - **section.6.examples** (kind: section)
   - Extra fields:
     ```yml
     order: 6
     status: informative
     title: Examples
-    എന്ത
+    ```
 - **spec://_kernel/docs/docprofiles-k1** (kind: spec)
   - Extra fields:
     ```yml
@@ -239,7 +239,7 @@
 
       '
     title: DocProfiles K1 — Document Profile Registry
-    എന്ത
+    ```
 - **term.doc_profile** (kind: term)
   - label: doc_profile
   - Extra fields:
@@ -250,7 +250,7 @@
       document type while remaining a valid SpecFrame K1 graph.
 
       '
-    എന്ത
+    ```
 - **term.profile.guide-k1** (kind: term)
   - label: guide-k1
   - Extra fields:
@@ -258,7 +258,7 @@
     label: guide-k1
     status: normative
     text: 'How-to guides: prerequisites, steps, pitfalls, verification.'
-    എന്ത
+    ```
 - **term.profile.hardware_spec-k1** (kind: term)
   - label: hardware_spec-k1
   - Extra fields:
@@ -266,7 +266,7 @@
     label: hardware_spec-k1
     status: normative
     text: 'Hardware specs: interfaces/pinout, electrical/mechanical constraints, tolerances, tests.'
-    എന്ത
+    ```
 - **term.profile.math_theory-k1** (kind: term)
   - label: math_theory-k1
   - Extra fields:
@@ -274,7 +274,7 @@
     label: math_theory-k1
     status: normative
     text: 'Math/theory docs: definitions, axioms, theorems, proofs, corollaries, examples.'
-    എന്ത
+    ```
 - **term.profile.playbook-k1** (kind: term)
   - label: playbook-k1
   - Extra fields:
@@ -282,7 +282,7 @@
     label: playbook-k1
     status: normative
     text: 'Operational playbooks: triggers, runbook steps, rollback, metrics, comms.'
-    എന്ത
+    ```
 - **term.profile.software_spec-k1** (kind: term)
   - label: software_spec-k1
   - Extra fields:
@@ -290,7 +290,7 @@
     label: software_spec-k1
     status: normative
     text: 'Software framework/module specs: APIs, data model, invariants, compatibility, tests.'
-    എന്ത
+    ```
 - **term.profile.standard-k1** (kind: term)
   - label: standard-k1
   - Extra fields:
@@ -298,7 +298,7 @@
     label: standard-k1
     status: normative
     text: 'Normative standards and laws: MUST/SHOULD language, conformance and compliance focus.'
-    എന്ത
+    ```
 - **term.profile_id** (kind: term)
   - label: ProfileId
   - Extra fields:
@@ -308,7 +308,7 @@
     text: 'A stable identifier string for a doc_profile (e.g. ''software_spec-k1'').
 
       '
-    എന്ത
+    ```
 - **term.profile_rule** (kind: term)
   - label: ProfileRule
   - Extra fields:
@@ -319,8 +319,7 @@
       required properties, lint expectations, and rendering hints.
 
       '
-    എന്ത
-
+    ```
 ## Edges
 | from | to | type | id | attrs | metrics |
 | --- | --- | --- | --- | --- | --- |

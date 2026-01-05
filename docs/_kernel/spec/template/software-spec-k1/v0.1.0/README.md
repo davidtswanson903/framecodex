@@ -13,7 +13,7 @@
     text: 'TODO: Describe components and responsibilities. Prefer deterministic pipelines.
 
       '
-    എന്ത
+    ```
 - **clause.architecture.dataflow** (kind: clause)
   - label: dataflow
   - Extra fields:
@@ -23,7 +23,7 @@
     text: 'TODO: Describe the primary dataflow and controlflow. Include invariants at boundaries.
 
       '
-    എന്ത
+    ```
 - **clause.data_model.schemas** (kind: clause)
   - label: schemas
   - Extra fields:
@@ -33,7 +33,7 @@
     text: 'TODO: Define data structures and serialization rules.
 
       '
-    എന്ത
+    ```
 - **clause.goals.goals** (kind: clause)
   - label: goals
   - Extra fields:
@@ -43,7 +43,7 @@
     text: 'TODO: List goals as bullet points.
 
       '
-    എന്ത
+    ```
 - **clause.goals.nongoals** (kind: clause)
   - label: non-goals
   - Extra fields:
@@ -53,7 +53,7 @@
     text: 'TODO: List non-goals (things intentionally not supported).
 
       '
-    എന്ത
+    ```
 - **clause.interfaces.api_contract** (kind: clause)
   - label: api-contract
   - Extra fields:
@@ -63,7 +63,7 @@
     text: 'TODO: Define your public API/protocols. Link to property.api_surface.
 
       '
-    എന്ത
+    ```
 - **clause.invariants.list** (kind: clause)
   - label: invariants
   - Extra fields:
@@ -73,7 +73,7 @@
     text: 'TODO: List invariants. Each invariant should be testable.
 
       '
-    എന്ത
+    ```
 - **clause.overview.problem** (kind: clause)
   - label: problem
   - Extra fields:
@@ -83,7 +83,7 @@
     text: 'TODO: What problem does this framework solve? What constraints matter?
 
       '
-    എന്ത
+    ```
 - **clause.overview.scope** (kind: clause)
   - label: scope
   - Extra fields:
@@ -93,7 +93,7 @@
     text: 'TODO: Define scope boundaries. Explicitly list out-of-scope items.
 
       '
-    എന്ത
+    ```
 - **clause.testing.strategy** (kind: clause)
   - label: testing-strategy
   - Extra fields:
@@ -103,7 +103,7 @@
     text: 'TODO: Define unit, integration, property-based tests, and golden fixtures.
 
       '
-    എന്ത
+    ```
 - **clause.versioning.policy** (kind: clause)
   - label: versioning
   - Extra fields:
@@ -113,7 +113,7 @@
     text: 'TODO: Define versioning scheme, compatibility guarantees, and deprecation policy.
 
       '
-    എന്ത
+    ```
 - **example.hello_world** (kind: example)
   - label: hello_world
   - Extra fields:
@@ -123,7 +123,7 @@
     text: 'TODO: Provide a minimal end-to-end example.
 
       '
-    എന്ത
+    ```
 - **property.api_surface** (kind: property)
   - label: api_surface
   - Extra fields:
@@ -133,7 +133,7 @@
     events: []
     label: api_surface
     status: normative
-    എന്ത
+    ```
 - **property.compat** (kind: property)
   - label: compat
   - Extra fields:
@@ -143,7 +143,7 @@
     label: compat
     semver: true
     status: normative
-    എന്ത
+    ```
 - **property.invariants** (kind: property)
   - label: invariants
   - Extra fields:
@@ -151,7 +151,7 @@
     invariants: []
     label: invariants
     status: normative
-    എന്ത
+    ```
 - **property.threat_model** (kind: property)
   - label: threat_model
   - Extra fields:
@@ -160,7 +160,7 @@
     label: threat_model
     mitigations: []
     status: informative
-    എന്ത
+    ```
 - **ref.spec.docprofiles-k1** (kind: spec_ref)
   - label: DocProfiles K1
   - Extra fields:
@@ -168,7 +168,7 @@
     label: DocProfiles K1
     status: informative
     target_graph_id: spec://_kernel/docs/docprofiles-k1
-    എന്ത
+    ```
 - **ref.spec.gf0-k1** (kind: spec_ref)
   - label: GraphFrame GF0
   - Extra fields:
@@ -176,7 +176,7 @@
     label: GraphFrame GF0
     status: informative
     target_graph_id: spec://_kernel/gf/gf0-k1
-    എന്ത
+    ```
 - **ref.spec.specframe-k1** (kind: spec_ref)
   - label: SpecFrame K1
   - Extra fields:
@@ -184,84 +184,84 @@
     label: SpecFrame K1
     status: informative
     target_graph_id: spec://_kernel/spec/specframe-k1
-    എന്ത
+    ```
 - **section.1.overview** (kind: section)
   - Extra fields:
     ```yml
     order: 1
     status: normative
     title: Overview
-    എന്ത
+    ```
 - **section.10.versioning** (kind: section)
   - Extra fields:
     ```yml
     order: 10
     status: normative
     title: Versioning and Compatibility
-    എന്ത
+    ```
 - **section.11.examples** (kind: section)
   - Extra fields:
     ```yml
     order: 11
     status: informative
     title: Examples
-    എന്ത
+    ```
 - **section.2.goals** (kind: section)
   - Extra fields:
     ```yml
     order: 2
     status: normative
     title: Goals and Non-goals
-    എന്ത
+    ```
 - **section.3.definitions** (kind: section)
   - Extra fields:
     ```yml
     order: 3
     status: normative
     title: Definitions
-    എന്ത
+    ```
 - **section.4.architecture** (kind: section)
   - Extra fields:
     ```yml
     order: 4
     status: normative
     title: Architecture
-    എന്ത
+    ```
 - **section.5.interfaces** (kind: section)
   - Extra fields:
     ```yml
     order: 5
     status: normative
     title: Interfaces
-    എന്ത
+    ```
 - **section.6.data_model** (kind: section)
   - Extra fields:
     ```yml
     order: 6
     status: normative
     title: Data Model
-    എന്ത
+    ```
 - **section.7.invariants** (kind: section)
   - Extra fields:
     ```yml
     order: 7
     status: normative
     title: Invariants
-    എന്ത
+    ```
 - **section.8.security** (kind: section)
   - Extra fields:
     ```yml
     order: 8
     status: informative
     title: Security and Abuse Cases
-    എന്ത
+    ```
 - **section.9.testing** (kind: section)
   - Extra fields:
     ```yml
     order: 9
     status: normative
     title: Testing and Verification
-    എന്ത
+    ```
 - **spec://_kernel/template/software-spec-k1** (kind: spec)
   - Extra fields:
     ```yml
@@ -273,7 +273,7 @@
 
       '
     title: Software Spec Template — K1
-    എന്ത
+    ```
 - **term.interface** (kind: term)
   - label: Interface
   - Extra fields:
@@ -281,7 +281,7 @@
     label: Interface
     status: normative
     text: 'TODO: define interface: API surface, protocol, or boundary contract.'
-    എന്ത
+    ```
 - **term.kernel** (kind: term)
   - label: Kernel
   - Extra fields:
@@ -289,7 +289,7 @@
     label: Kernel
     status: normative
     text: 'TODO: define kernel: pure transform or constrained component, per your framework.'
-    എന്ത
+    ```
 - **term.module** (kind: term)
   - label: Module
   - Extra fields:
@@ -297,8 +297,7 @@
     label: Module
     status: normative
     text: 'TODO: define what counts as a module in this system.'
-    എന്ത
-
+    ```
 ## Edges
 | from | to | type | id | attrs | metrics |
 | --- | --- | --- | --- | --- | --- |

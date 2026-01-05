@@ -14,7 +14,7 @@
       \ : RenderStatus.\nIt SHOULD provide:\n  - template_id : node id of a template node in the\
       \ same RenderFrame.\nIt MAY provide:\n  - pipeline : ordered list of transform node ids\
       \ to apply to the emitted text.\n"
-    എന്ത
+    ```
 - **clause.attrs.plan** (kind: clause)
   - label: Attributes for render_plan nodes
   - Extra fields:
@@ -26,7 +26,7 @@
       It MAY also provide:\n  - format_hint : string tag (e.g. 'markdown', 'latex', 'text'),\n\
       \  - applies_to_doc_profile : string tag used by tooling,\n  - on_missing_field : 'empty'\
       \ | 'error' (default: 'empty').\n"
-    എന്ത
+    ```
 - **clause.attrs.product** (kind: clause)
   - label: Attributes for render_product nodes
   - Extra fields:
@@ -38,7 +38,7 @@
       \ 'string'),\n  - output_path : string (required if output_kind=='file'),\n  - source_root_id\
       \ : string (parent graph node id) selecting a render root,\n  - resolution_mode : 'first_match'\
       \ | 'merge' (default: 'first_match').\n"
-    എന്ത
+    ```
 - **clause.attrs.required** (kind: clause)
   - label: Required attributes per node kind
   - Extra fields:
@@ -50,7 +50,7 @@
       \ profile\n  - render_product : label, status\n  - render_rule    : label, status\n  - selector\
       \       : label, status\n  - emitter        : label, status\n  - template       : label,\
       \ status, body\n  - transform      : label, status, op\n"
-    എന്ത
+    ```
 - **clause.attrs.selector** (kind: clause)
   - label: Attributes for selector nodes
   - Extra fields:
@@ -60,7 +60,7 @@
     text: "A node with kind=='selector' MUST provide:\n  - label  : short selector name,\n  -\
       \ status : RenderStatus.\nIt SHOULD provide:\n  - predicates : ordered list of RenderPredicate\
       \ strings.\nSelector predicate syntax is implementation-defined but MUST be deterministic.\n"
-    എന്ത
+    ```
 - **clause.attrs.template** (kind: clause)
   - label: Attributes for template nodes
   - Extra fields:
@@ -71,7 +71,7 @@
       \ status : RenderStatus,\n  - body   : template text.\nTemplates MAY contain placeholders.\
       \ Placeholder syntax is implementation-defined, but MUST be deterministic and MUST define\
       \ behavior for missing fields (see render_plan.on_missing_field).\n"
-    എന്ത
+    ```
 - **clause.attrs.transform** (kind: clause)
   - label: Attributes for transform nodes
   - Extra fields:
@@ -81,7 +81,7 @@
     text: "A node with kind=='transform' MUST provide:\n  - label  : short transform name,\n \
       \ - status : RenderStatus,\n  - op     : string naming a pure text transform operation.\n\
       It MAY provide:\n  - args : ordered list of string args (interpretation is op-specific).\n"
-    എന്ത
+    ```
 - **clause.edge_types.allowed** (kind: clause)
   - label: Allowed edge types
   - Extra fields:
@@ -92,7 +92,7 @@
       Unknown edge types MUST be treated as hard validation failures.
 
       '
-    എന്ത
+    ```
 - **clause.integration.attach** (kind: clause)
   - label: Attaching RenderFrames
   - Extra fields:
@@ -103,7 +103,7 @@
       MAY also store RenderFrames as standalone GF0 files and attach them at build time.
 
       '
-    എന്ത
+    ```
 - **clause.integration.precedence** (kind: clause)
   - label: Precedence and overrides
   - Extra fields:
@@ -115,7 +115,7 @@
       If both exist, explicit overrides SHOULD take precedence.
 
       '
-    എന്ത
+    ```
 - **clause.model.definition** (kind: clause)
   - label: Definition
   - Extra fields:
@@ -125,7 +125,7 @@
     text: "A RenderFrame is any GF0 graph that satisfies:\n  (1) It is a valid GraphFrameK0 (graph_id/version/attrs/nodes/edges/meta\
       \ present in canonical form);\n  (2) It contains exactly one root node with id==graph_id,\
       \ kind=='render_plan';\n  (3) That root node has profile=='renderframe-k1'.\n"
-    എന്ത
+    ```
 - **clause.model.determinism** (kind: clause)
   - label: Determinism
   - Extra fields:
@@ -138,7 +138,7 @@
       of node IDs.
 
       '
-    എന്ത
+    ```
 - **clause.model.rule_resolution** (kind: clause)
   - label: Rule resolution
   - Extra fields:
@@ -150,7 +150,7 @@
       a different explicit resolution mode (e.g. ''merge'').
 
       '
-    എന്ത
+    ```
 - **clause.model.scoping** (kind: clause)
   - label: Scoping into parent graphs
   - Extra fields:
@@ -162,7 +162,7 @@
       parent_node_id, source_root_id) or via explicit edge types with documented semantics.
 
       '
-    എന്ത
+    ```
 - **clause.node_kinds.allowed** (kind: clause)
   - label: Allowed node kinds
   - Extra fields:
@@ -173,7 +173,7 @@
       Unknown or misspelled kinds MUST be treated as hard validation failures.
 
       '
-    എന്ത
+    ```
 - **clause.overview.intent** (kind: clause)
   - label: Intent
   - Extra fields:
@@ -185,7 +185,7 @@
       core semantics are purely text-based.
 
       '
-    എന്ത
+    ```
 - **clause.overview.meta_usage** (kind: clause)
   - label: RenderFrames are MetaGraphs
   - Extra fields:
@@ -197,7 +197,7 @@
       and indexes without changing the primary frame.
 
       '
-    എന്ത
+    ```
 - **clause.validation.contains_tree** (kind: clause)
   - label: Contains edges form a tree
   - Extra fields:
@@ -208,7 +208,7 @@
       the render_plan node. Cycles or multiple parents via ''contains'' are hard validation failures.
 
       '
-    എന്ത
+    ```
 - **clause.validation.edge_integrity** (kind: clause)
   - label: Edge integrity
   - Extra fields:
@@ -219,7 +219,7 @@
       are hard validation failures.
 
       '
-    എന്ത
+    ```
 - **clause.validation.reference_targets** (kind: clause)
   - label: Reference targets
   - Extra fields:
@@ -232,7 +232,7 @@
       an emitter pipeline, the referenced node MUST exist and have kind==''transform''.
 
       '
-    എന്ത
+    ```
 - **clause.validation.root** (kind: clause)
   - label: Root plan node
   - Extra fields:
@@ -241,7 +241,7 @@
     status: normative
     text: "Each RenderFrame MUST contain exactly one node with:\n  - id == graph_id,\n  - kind\
       \ == 'render_plan',\n  - profile == 'renderframe-k1'.\n"
-    എന്ത
+    ```
 - **example.minimal_renderframe** (kind: example)
   - label: minimal_renderframe
   - Extra fields:
@@ -267,7 +267,7 @@
       contains\" }\n    - { from: \"product.main\", to: \"rule.any\", type: \"contains\" }\n \
       \   - { from: \"rule.any\", to: \"sel.any\", type: \"selects\" }\n    - { from: \"rule.any\"\
       , to: \"emit.default\", type: \"emits\" }\n  meta: []\n"
-    എന്ത
+    ```
 - **property.renderframe.edge_types** (kind: property)
   - label: Allowed RenderFrame edge types
   - Extra fields:
@@ -281,7 +281,7 @@
     - overrides
     label: Allowed RenderFrame edge types
     status: normative
-    എന്ത
+    ```
 - **property.renderframe.node_kinds** (kind: property)
   - label: Allowed RenderFrame node kinds
   - Extra fields:
@@ -296,7 +296,7 @@
     - template
     - transform
     status: normative
-    എന്ത
+    ```
 - **property.renderframe.status_enum** (kind: property)
   - label: RenderStatus enum
   - Extra fields:
@@ -307,7 +307,7 @@
     - normative
     - informative
     - experimental
-    എന്ത
+    ```
 - **ref.spec.gf0-k1** (kind: spec_ref)
   - label: GraphFrame K0 (GF0)
   - Extra fields:
@@ -315,7 +315,7 @@
     label: GraphFrame K0 (GF0)
     status: informative
     target_graph_id: spec://_kernel/gf/gf0-k1
-    എന്ത
+    ```
 - **ref.spec.specframe-k1** (kind: spec_ref)
   - label: SpecFrame K1
   - Extra fields:
@@ -323,63 +323,63 @@
     label: SpecFrame K1
     status: informative
     target_graph_id: spec://_kernel/spec/specframe-k1
-    എന്ത
+    ```
 - **section.1.overview** (kind: section)
   - Extra fields:
     ```yml
     order: 1
     status: normative
     title: Overview
-    എന്ത
+    ```
 - **section.2.model** (kind: section)
   - Extra fields:
     ```yml
     order: 2
     status: normative
     title: Model
-    എന്ത
+    ```
 - **section.3.node_kinds** (kind: section)
   - Extra fields:
     ```yml
     order: 3
     status: normative
     title: RenderFrame Node Kinds
-    എന്ത
+    ```
 - **section.4.edge_types** (kind: section)
   - Extra fields:
     ```yml
     order: 4
     status: normative
     title: RenderFrame Edge Types
-    എന്ത
+    ```
 - **section.5.attributes** (kind: section)
   - Extra fields:
     ```yml
     order: 5
     status: normative
     title: Required Attributes
-    എന്ത
+    ```
 - **section.6.validation** (kind: section)
   - Extra fields:
     ```yml
     order: 6
     status: normative
     title: Validation Invariants
-    എന്ത
+    ```
 - **section.7.integration** (kind: section)
   - Extra fields:
     ```yml
     order: 7
     status: informative
     title: Integration and Usage
-    എന്ത
+    ```
 - **section.8.examples** (kind: section)
   - Extra fields:
     ```yml
     order: 8
     status: informative
     title: Examples
-    എന്ത
+    ```
 - **spec://_kernel/render/renderframe-k1** (kind: spec)
   - Extra fields:
     ```yml
@@ -391,7 +391,7 @@
 
       '
     title: RenderFrame K1 — Text Rendering Plan MetaGraph Profile
-    എന്ത
+    ```
 - **term.emitter** (kind: term)
   - label: Emitter
   - Extra fields:
@@ -401,7 +401,7 @@
     text: 'An emitter produces text by applying a template and optional transforms.
 
       '
-    എന്ത
+    ```
 - **term.render_plan** (kind: term)
   - label: RenderPlan
   - Extra fields:
@@ -412,7 +412,7 @@
       one or more render products.
 
       '
-    എന്ത
+    ```
 - **term.render_predicate** (kind: term)
   - label: RenderPredicate
   - Extra fields:
@@ -423,7 +423,7 @@
       list (implementation-defined, but must be deterministic).
 
       '
-    എന്ത
+    ```
 - **term.render_product** (kind: term)
   - label: RenderProduct
   - Extra fields:
@@ -434,7 +434,7 @@
       are made of ordered rules.
 
       '
-    എന്ത
+    ```
 - **term.render_rule** (kind: term)
   - label: RenderRule
   - Extra fields:
@@ -445,7 +445,7 @@
       how a source node is rendered to text.
 
       '
-    എന്ത
+    ```
 - **term.renderframe_k1** (kind: term)
   - label: RenderFrameK1
   - Extra fields:
@@ -456,7 +456,7 @@
       meta list. Its root node has kind=''render_plan'' and profile=''renderframe-k1''.
 
       '
-    എന്ത
+    ```
 - **term.selector** (kind: term)
   - label: Selector
   - Extra fields:
@@ -467,7 +467,7 @@
       are intentionally simple and deterministic.
 
       '
-    എന്ത
+    ```
 - **term.template** (kind: term)
   - label: Template
   - Extra fields:
@@ -478,7 +478,7 @@
       missing fields MUST be handled by an explicit policy.
 
       '
-    എന്ത
+    ```
 - **term.transform** (kind: term)
   - label: Transform
   - Extra fields:
@@ -488,8 +488,7 @@
     text: 'A pure text-to-text transform (escape, indent, wrap, join, etc.) referenced by emitters.
 
       '
-    എന്ത
-
+    ```
 ## Edges
 | from | to | type | id | attrs | metrics |
 | --- | --- | --- | --- | --- | --- |

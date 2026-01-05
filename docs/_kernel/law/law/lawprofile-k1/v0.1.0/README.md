@@ -10,7 +10,7 @@
     ```yml
     label: LawProfile root
     text: A LawProfile is a GF0 graph whose root node has id==graph_id, kind=='law_profile', profile=='lawprofile-k1'.
-    എന്ത
+    ```
 - **law://_kernel/law/lawprofile-k1** (kind: law)
   - Extra fields:
     ```yml
@@ -20,7 +20,7 @@
     status: normative
     summary: Defines how profiles bind parameters and (optionally) override permitted rule parameters.
     title: LawProfile K1 — Parameterization over LawDocs
-    എന്ത
+    ```
 - **rule.profile_binding** (kind: rule)
   - label: Profiles bind parameters deterministically
   - Extra fields:
@@ -31,7 +31,7 @@
       explicit keys. Implementations MUST resolve bindings by key lexicographic order.
 
       '
-    എന്ത
+    ```
 - **rule.profile_no_weakening** (kind: rule)
   - label: Profiles must not weaken laws
   - Extra fields:
@@ -42,8 +42,7 @@
       explicitly grants that override via a declared parameter.
 
       '
-    എന്ത
-
+    ```
 ## Edges
 | from | to | type | id | attrs | metrics |
 | --- | --- | --- | --- | --- | --- |

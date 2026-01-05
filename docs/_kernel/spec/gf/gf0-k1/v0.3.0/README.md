@@ -14,7 +14,7 @@
       ensures deterministic ordering and stable serialization across implementations.
 
       '
-    എന്ത
+    ```
 - **clause.attrk0.structure** (kind: clause)
   - label: AttrK0 Structure
   - Extra fields:
@@ -24,7 +24,7 @@
     text: "AttrK0 MUST at least contain:\n  - key: non-empty string;\n  - value: string (UTF-8).\n\
       It MAY contain:\n  - vtype: optional string naming the logical type (e.g. \"string\", \"\
       int\", \"target_ref\");\n  - desc: optional description string.\n"
-    എന്ത
+    ```
 - **clause.edgek0.fields** (kind: clause)
   - label: EdgeK0 Fields
   - Extra fields:
@@ -37,7 +37,7 @@
       \  - attrs: optional list of AttrK0;\n  - metrics: optional list of MetricK0.\nGF0 does\
       \ not constrain the set of EdgeK0.type values beyond non-empty strings; higher- level specs\
       \ MUST define allowed edge types where needed.\n"
-    എന്ത
+    ```
 - **clause.edgek0.integrity** (kind: clause)
   - label: Edge Integrity (Structural)
   - Extra fields:
@@ -48,7 +48,7 @@
       Edges that reference missing nodes violate structural integrity.
 
       '
-    എന്ത
+    ```
 - **clause.extension.canon_mapping** (kind: clause)
   - label: Mapping to canon.Graph
   - Extra fields:
@@ -60,7 +60,7 @@
       When such a mapping exists, its semantics SHOULD be specified in a separate SpecFrame.
 
       '
-    എന്ത
+    ```
 - **clause.extension.specialization** (kind: clause)
   - label: Specialization via NodeK0.kind and EdgeK0.type
   - Extra fields:
@@ -72,7 +72,7 @@
       graph structure. GF0 remains the single canonical graph schema.
 
       '
-    എന്ത
+    ```
 - **clause.graphframe.attrs** (kind: clause)
   - label: Graph-level attributes
   - Extra fields:
@@ -85,7 +85,7 @@
       and edges. Duplicate keys are allowed and order is significant (list semantics).
 
       '
-    എന്ത
+    ```
 - **clause.graphframe.fields** (kind: clause)
   - label: GraphFrameK0 Fields
   - Extra fields:
@@ -99,7 +99,7 @@
       \  - meta: list of MetaGraph values (GraphFrameK0 instances), possibly empty.\nThese fields\
       \ MUST be present in the canonical form. Empty lists MUST be encoded as [] and MUST NOT\
       \ be encoded as null or omitted.\n"
-    എന്ത
+    ```
 - **clause.graphframe.identity** (kind: clause)
   - label: Graph Identity
   - Extra fields:
@@ -111,7 +111,7 @@
       but use distinct version values.
 
       '
-    എന്ത
+    ```
 - **clause.meta.fractal** (kind: clause)
   - label: Fractal Meta Graphs
   - Extra fields:
@@ -124,7 +124,7 @@
       the primary frame.
 
       '
-    എന്ത
+    ```
 - **clause.meta.scoping** (kind: clause)
   - label: MetaGraph Scoping
   - Extra fields:
@@ -136,7 +136,7 @@
       (e.g. parent_node_id) or well-defined edge types with explicit semantics.
 
       '
-    എന്ത
+    ```
 - **clause.meta.usage** (kind: clause)
   - label: Examples of Meta Usage
   - Extra fields:
@@ -148,7 +148,7 @@
       rather than overloading it.
 
       '
-    എന്ത
+    ```
 - **clause.metrick0.structure** (kind: clause)
   - label: MetricK0 Structure
   - Extra fields:
@@ -157,7 +157,7 @@
     status: normative
     text: "MetricK0 MUST at least contain:\n  - name: non-empty string;\n  - value: numeric value\
       \ (e.g. float64).\nIt MAY contain:\n  - unit: optional string;\n  - desc: optional description.\n"
-    എന്ത
+    ```
 - **clause.nodek0.attrs_metrics** (kind: clause)
   - label: Node Attributes and Metrics
   - Extra fields:
@@ -169,7 +169,7 @@
       keys is delegated to higher-level specs (SpecFrame, TaskFrame, etc.).
 
       '
-    എന്ത
+    ```
 - **clause.nodek0.fields** (kind: clause)
   - label: NodeK0 Fields
   - Extra fields:
@@ -181,7 +181,7 @@
       \  - label: optional human-readable string;\n  - attrs: optional list of AttrK0;\n  - metrics:\
       \ optional list of MetricK0.\nThe set of allowed NodeK0.kind values is not constrained by\
       \ GF0; higher-level specs (SpecFrame, TaskFrame, etc.) MUST define their own allowed kinds.\n"
-    എന്ത
+    ```
 - **clause.validation.attrs_backcompat** (kind: clause)
   - label: Back-compat for legacy frames missing attrs
   - Extra fields:
@@ -193,7 +193,7 @@
       canonical form.
 
       '
-    എന്ത
+    ```
 - **clause.validation.edge_integrity** (kind: clause)
   - label: Edge Integrity (Validation Rule)
   - Extra fields:
@@ -205,7 +205,7 @@
       validation failure.
 
       '
-    എന്ത
+    ```
 - **clause.validation.graph_id_version** (kind: clause)
   - label: Graph ID and Version Non-Empty
   - Extra fields:
@@ -216,7 +216,7 @@
       MUST be rejected.
 
       '
-    എന്ത
+    ```
 - **clause.validation.meta_recursion** (kind: clause)
   - label: Meta Recursion
   - Extra fields:
@@ -228,7 +228,7 @@
       via references) and MAY impose a maximum meta depth.
 
       '
-    എന്ത
+    ```
 - **clause.validation.node_id_uniqueness** (kind: clause)
   - label: Node ID Uniqueness
   - Extra fields:
@@ -239,7 +239,7 @@
       cause validation failure.
 
       '
-    എന്ത
+    ```
 - **ref.spec.canon-k1** (kind: spec_ref)
   - label: Canon graph mapping spec
   - Extra fields:
@@ -247,49 +247,49 @@
     label: Canon graph mapping spec
     status: informative
     target_graph_id: spec://_kernel/canon/canon-k1
-    എന്ത
+    ```
 - **section.1.overview** (kind: section)
   - Extra fields:
     ```yml
     status: normative
     title: Overview
-    എന്ത
+    ```
 - **section.2.structure** (kind: section)
   - Extra fields:
     ```yml
     status: normative
     title: GraphFrame Structure
-    എന്ത
+    ```
 - **section.3.nodes** (kind: section)
   - Extra fields:
     ```yml
     status: normative
     title: NodeK0 Structure
-    എന്ത
+    ```
 - **section.4.edges** (kind: section)
   - Extra fields:
     ```yml
     status: normative
     title: EdgeK0 Structure
-    എന്ത
+    ```
 - **section.5.meta** (kind: section)
   - Extra fields:
     ```yml
     status: normative
     title: Fractal Meta Graphs
-    എന്ത
+    ```
 - **section.6.invariants** (kind: section)
   - Extra fields:
     ```yml
     status: normative
     title: Invariants and Validation
-    എന്ത
+    ```
 - **section.7.extension** (kind: section)
   - Extra fields:
     ```yml
     status: informative
     title: Extension and Specialization
-    എന്ത
+    ```
 - **spec://_kernel/gf/gf0-k1** (kind: spec)
   - Extra fields:
     ```yml
@@ -302,7 +302,7 @@
 
       '
     title: GraphFrame K0 — Canonical Fractal Graph Schema
-    എന്ത
+    ```
 - **term.attr_k0** (kind: term)
   - label: AttrK0
   - Extra fields:
@@ -313,7 +313,7 @@
       a deterministic slice.
 
       '
-    എന്ത
+    ```
 - **term.edge_k0** (kind: term)
   - label: EdgeK0
   - Extra fields:
@@ -324,7 +324,7 @@
       and attrs/metrics. from/to refer to NodeK0 IDs in the same frame.
 
       '
-    എന്ത
+    ```
 - **term.graphframe_k0** (kind: term)
   - label: GraphFrameK0
   - Extra fields:
@@ -335,7 +335,7 @@
       where nodes and edges follow NodeK0 and EdgeK0, and meta is a list of sub-GraphFrameK0 instances.
 
       '
-    എന്ത
+    ```
 - **term.meta_graph** (kind: term)
   - label: MetaGraph
   - Extra fields:
@@ -346,7 +346,7 @@
       and can carry auxiliary structure or views without changing the primary frame.
 
       '
-    എന്ത
+    ```
 - **term.metric_k0** (kind: term)
   - label: MetricK0
   - Extra fields:
@@ -357,7 +357,7 @@
       deterministic slice.
 
       '
-    എന്ത
+    ```
 - **term.node_k0** (kind: term)
   - label: NodeK0
   - Extra fields:
@@ -368,8 +368,7 @@
       slices. Node IDs are unique within a given GraphFrameK0.
 
       '
-    എന്ത
-
+    ```
 ## Edges
 | from | to | type | id | attrs | metrics |
 | --- | --- | --- | --- | --- | --- |
