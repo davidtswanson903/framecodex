@@ -40,6 +40,12 @@ fi
 
 # Copilot instruction file (strict autogen; must match generator output)
 "$repo_root/tools/gen_copilot_instructions/run"
+if git -C "$repo_root" diff --exit-code -- .github/copilot-instructions.md >/dev/null; then
+  :
+else
+  echo "ERROR: .github/copilot-instructions.md is out of date; run tools/gen_copilot_instructions/run and commit the result." >&2
+  exit 1
+fi
 
 # Emit deterministic JSON report
 {
