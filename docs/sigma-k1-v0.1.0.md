@@ -14,15 +14,15 @@ This document gives a domain-agnostic, minimal formal specification of Systemics
 **Alphabet** _(normative)_
 
 - `U`: Universe of artifacts.
-- `\\mathbb{V}`: Valuation space (any measurable space; commonly \\mathbb{R}^k \\times \\mathbb{B}^m).
-- `\\mathbf{2}`: Decision space \\mathbf{2} = {0,1}.
-- `\\Pi`: Frames (benign contexts).
+- `\\\\mathbb{V}`: Valuation space (any measurable space; commonly $\\\\mathbb{R}^k \\\\times \\\\mathbb{B}^m$).
+- `\\\\mathbf{2}`: Decision space $\\\\mathbf{2} = \\\\{0,1\\\\}.$
+- `\\\\Pi`: Frames (benign contexts).
 - `P\_n`: Probes (benign perturbations).
-- `\\Theta`: Floors/thresholds (partially ordered set).
-- `\\beta`: Invariance budgets (tolerances in a poset/lattice).
+- `\\\\Theta`: Floors/thresholds (partially ordered set).
+- `\\\\beta`: Invariance budgets (tolerances in a poset/lattice).
 - `C`: Capacity budgets (bits/time/energy constraints).
-- `\\Gamma`: Envelope/meta (versions, seeds, numeric modes, commits).
-- `\\mathcal{R}`: Records (canonical map \\to bytes; hash/ledger optional).
+- `\\\\Gamma`: Envelope/meta (versions, seeds, numeric modes, commits).
+- `\\\\mathcal{R}`: Records (canonical map $\\\\to$ bytes; hash/ledger optional).
 
 ## Definition: Systemic Kernel
 <a id="section-3-kernel-706b1977"></a>
