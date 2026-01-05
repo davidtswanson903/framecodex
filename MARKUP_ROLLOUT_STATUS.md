@@ -212,24 +212,51 @@
 
 ## 🔄 NEXT STEPS (Future Sessions)
 
-1. Continue with **DocLicense-K1** and **LawProfile-K1** (high-priority law specs)
-2. Apply markup to **FrameMeta-K1** and **Simple Markdown Renderer K1**
-3. Batch remaining domain-specific specs systematically
-4. Final verification:
-   - Run `tools/render_docs/run` for full doc regeneration
+1. **RepoLaw-K1 markup** (requires manual approach to avoid YAML formatting issues)
+   - Run `tools/render_docs/run` for full doc regeneration (all 10 completed frames)
    - Run `tools/no_diff/run` for byte-for-byte reproducibility confirmation
-   - Verify git log shows all commits
-5. Create final rollout summary commit
-  - Type: Domain specs
-  - Total candidates: ~100+
+   - Verify git log shows all commits with atomic changes
 
-- **RepoLaw-K1** (`law://repo/governance/repo-law-k1 v0.1.0`)
-  - Type: Repository governance law
-  - Candidates: ~40+ nodes
+2. **Continue with remaining high-priority frames**
+   - Focus on domain-specific specs (Systemics family)
+   - InlineMarkup-K1 self-markup (already has partial text_format usage)
 
-- **InlineMarkup-K1** (`law://_kernel/law/text/inline-markup-k1 v0.1.0`)
-  - Type: Meta (this spec itself!)
-  - Candidates: ~20+ nodes
+3. **Final verification**
+   - Full `tools/render_docs/run` pass
+   - Full `tools/no_diff/run` reproducibility check
+   - Create final rollout summary commit
+
+## 📝 ARCHITECTURAL NOTES
+
+### Why text.format is Essential
+- **Determinism**: Eliminates ambiguous CommonMark parsing across renderers
+- **Safety**: Validates against raw HTML injection in documentation outputs
+- **Clarity**: Explicitly signals intent for single-paragraph vs. multi-paragraph markup
+- **Composition**: Enables uniform rendering across Markdown, LaTeX, and other targets via DocIR
+
+### Markup Patterns Applied
+1. **Backticks for identifiers**: Field names, type names, code literals
+   - Example: `graph_id`, `NodeK0`, `contains`, `md-inline`
+
+2. **Bold for normative keywords**: MUST, MUST NOT, SHOULD, MAY, **NOT** plain text
+   - Example: `**MUST** be present`
+
+3. **Code fencing for examples**: Use ` ```language ` block format
+   - Example: YAML configs, Python code, Markdown output shapes
+
+4. **md-block for structured content**: Use when lists, multiple paragraphs, or code blocks needed
+   - Default to md-block for clause text fields
+
+5. **md-inline for atomic statements**: Single constraint or definition
+   - Use only when text is truly single paragraph
+
+### Quality Assurance Checklist
+- ✅ All changes pass `tools/validate_inline_markup/run.py`
+- ✅ All changes pass `tools/semantic_invariants/run.py` (only safe field changes)
+- ✅ All changes pass `tools/enforce_repo_law/run`
+- ✅ Commits are atomic (one logical change per commit)
+- ✅ Working tree is clean after each commit
+- ✅ Git history is linear (no rebases during rollout)
 
 ## 🔍 VERIFICATION GATES
 
