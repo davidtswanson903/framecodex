@@ -1,7 +1,7 @@
 # spec://domains/systemics/sigma-k1
 - version: 0.1.0
-- nodes: 28
-- edges: 27
+- nodes: 30
+- edges: 29
 - meta: 0
 ## Nodes
 - **clause.a1** (kind: clause)
@@ -20,8 +20,8 @@
     ```yml
     label: Σ-A2 Posting / Records-only
     status: normative
-    text: 'For any run on u∈U, the record κ∈R includes (v(u), Θ, β, C, Π, P_n, Γ), and the decision
-      depends only on posted data: χ*(u;κ)=χ(v(u),Θ,β).
+    text: 'For any run on u ∈ U, the record κ ∈ R contains (v(u), Θ, β, C, Π, P_n, Γ), and the
+      decision is determined with no dependence on unposted data: χ*(u; κ) = χ(v(u), Θ, β).
 
       '
     ```
@@ -31,8 +31,10 @@
     ```yml
     label: Σ-A3 Benign invariance
     status: normative
-    text: 'Under benign frame/probe variations (π,p)∈Π×P_n producing v_{π,p}(u), if worst-case
-      wobble W(u) is within β then decisions are invariant across those variations.
+    text: 'Let (π, p) ∈ Π × P_n act on the measurement/evaluation pathway to yield v_{π,p}(u).
+      Define worst-case wobble relative to a baseline (π0, p0) by: W(u) := sup_{(π,p)} w(v_{π,p}(u),
+      v_{π0,p0}(u)). If W(u) ⪯ β then χ(v_{π,p}(u), Θ, β) = χ(v_{π0,p0}(u), Θ, β) for all benign
+      (π,p).
 
       '
     ```
@@ -42,8 +44,9 @@
     ```yml
     label: Σ-A4 Minimal sufficiency under capacity
     status: normative
-    text: 'Among valuations that preserve decisions under posted (Θ,β), v is minimal with respect
-      to capacity cost subject to C.
+    text: 'Among valuations preserving decisions under posted (Θ, β), v is minimal with respect
+      to capacity cost subject to C: for all v'', (χ ∘ v'' = χ ∘ v) ⇒ cost(v'') ⪰ cost(v), subject
+      to C.
 
       '
     ```
@@ -53,8 +56,8 @@
     ```yml
     label: Σ-A5 Reflexive reproducibility
     status: normative
-    text: 'There exists an independently realized valuation v'' (different numeric route/implementation)
-      such that χ(v(u),Θ,β)=χ(v''(u),Θ,β), with both posted in κ (self-warrant).
+    text: 'There exists an admissible, independently realized valuation v'' (different numeric
+      route/implementation) such that χ(v(u), Θ, β) = χ(v''(u), Θ, β), with both posted in κ (self-warrant).
 
       '
     ```
@@ -64,7 +67,7 @@
     ```yml
     label: Σ-A6 Determinism & idempotence
     status: normative
-    text: 'For fixed (v(u),Θ,β), χ yields a unique decision and is idempotent under re-evaluation.
+    text: 'For fixed (v(u), Θ, β), the decision χ is unique and idempotent under re-evaluation.
 
       '
     ```
@@ -74,8 +77,9 @@
     ```yml
     label: Σ-A7 Monotonicity
     status: normative
-    text: 'Tightening floors or budgets cannot rescue a failure by hidden dependence: tightening
-      cannot create a pass that relies on unposted slack.
+    text: 'Tightening floors or budgets cannot rescue a failure by hidden dependence. For θ ⪯
+      θ'' and β'' ⪯ β, any pass at (θ'', β'') must be explainable using only posted record data;
+      tightening must not create a pass whose justification depends on unposted slack.
 
       '
     ```
@@ -85,7 +89,7 @@
     ```yml
     label: Σ-A8 Isomorphism invariance
     status: normative
-    text: 'If a frame induces a structure-preserving isomorphism of representation, decisions
+    text: 'If a frame π induces a structure-preserving isomorphism on representation, decisions
       are invariant.
 
       '
@@ -107,10 +111,10 @@
     ```yml
     label: Σ-lawful record checklist
     status: normative
-    text: 'A record κ∈R is Σ-lawful iff it includes: (1) contract (Θ,β,C,Π,P_n,Γ and guards),
-      (2) valuation v(u) (decision-relevant coords), (3) decision χ(v(u),Θ,β) with reasons, (4)
-      invariance evidence (wobble metrics + worst-case (π,p)), (5) reflexive warrant (v''(u) and
-      agreement), (6) canonicalization bytes/digest and optional chaining root.
+    text: 'A record κ ∈ R is Σ-lawful iff it includes: (1) contract (Θ, β, C, Π, P_n, Γ and guards),
+      (2) valuation v(u) (decision-relevant coords), (3) decision χ(v(u), Θ, β) with reasons,
+      (4) invariance evidence (wobble metrics + worst-case (π,p)), (5) reflexive warrant (v''(u)
+      and agreement), (6) canonicalization: canonical bytes, digest d, and optional chain root.
 
       '
     ```
@@ -120,8 +124,9 @@
     ```yml
     label: Wobble and orderings
     status: normative
-    text: 'Σ assumes a divergence / wobble metric w: V×V→R_{≥0} on decision-relevant coordinates,
-      and partial orders expressing tightening floors, tightening budgets, and shrinking capacity.
+    text: 'Σ assumes a divergence / wobble metric w: V × V → R_{≥0} on decision-relevant coordinates.
+      Orders are written as: θ ⪯ θ'' meaning tightening floors; β'' ⪯ β meaning tightening budgets;
+      and C'' ⪯ C meaning shrinking capacity.
 
       '
     ```
@@ -131,8 +136,23 @@
     ```yml
     label: Morphism preservation
     status: normative
-    text: 'Morphisms preserve valuation/decision structure (up to φ mappings) and map contract
-      parameters monotonically, preserving Σ-A1..Σ-A7.
+    text: 'Morphisms preserve valuation/decision structure by commuting with v and χ: v'' ∘ φ_U
+      = φ_V ∘ v and χ'' ∘ (φ_V × id) = χ. They also map contract parameters monotonically, preserving
+      Σ-A1..Σ-A7.
+
+      '
+    ```
+- **clause.notes** (kind: clause)
+  - label: Notes
+  - Extra fields:
+    ```yml
+    label: Notes
+    status: informative
+    text: 'This specification does not fix what v measures, what χ decides, or how w is computed.
+      It only requires posting, invariance under benign variation, minimal sufficiency under capacity,
+      and reflexive reproducibility. Evidence Systemics is one instantiation where v encodes evidence
+      gauges; other instances (Control, Protocol, Risk, Learning, etc.) keep the same Σ contract
+      while choosing different v, Θ, β.
 
       '
     ```
@@ -156,7 +176,7 @@
     symbols:
     - desc: universe of artifacts
       sym: U
-    - desc: valuation space (measurable space)
+    - desc: valuation space (measurable space; commonly R^k × B^m)
       sym: V
     - desc: decision space {0,1}
       sym: '2'
@@ -164,11 +184,11 @@
       sym: Π
     - desc: probes / benign perturbations
       sym: P_n
-    - desc: floors/thresholds (poset)
+    - desc: floors/thresholds (partially ordered set)
       sym: Θ
-    - desc: invariance budgets (tolerances)
+    - desc: invariance budgets (tolerances in a poset/lattice)
       sym: β
-    - desc: capacity budgets (bits/time/energy)
+    - desc: capacity budgets (bits/time/energy constraints)
       sym: C
     - desc: envelope/meta (versions, seeds, numeric modes, commits)
       sym: Γ
@@ -255,6 +275,13 @@
     status: informative
     title: Instantiation Recipe (Domain-Agnostic)
     ```
+- **section.9.notes** (kind: section)
+  - Extra fields:
+    ```yml
+    order: 9
+    status: informative
+    title: Notes
+    ```
 - **spec://domains/systemics/sigma-k1** (kind: spec)
   - attrs:
     | key | value | vtype | desc |
@@ -282,8 +309,8 @@
     ```yml
     label: 'Morphism F: Σ → Σ'''
     status: normative
-    summary: 'A morphism is a pair (φ_U, φ_V) preserving valuation/decision structure and mapping
-      contracts monotonically so that Σ axioms remain satisfied.
+    summary: 'A morphism F: Σ → Σ'' is a pair (φ_U, φ_V) with v'' ∘ φ_U = φ_V ∘ v and χ'' ∘ (φ_V
+      × id) = χ, that also maps contracts monotonically so that Σ axioms remain satisfied.
 
       '
     ```
@@ -293,8 +320,8 @@
     ```yml
     label: Systemic Kernel
     status: normative
-    summary: 'A systemic kernel is K^Σ_μ = (v, χ, Π, P_n, Θ, β, C, Γ) where v:U→V is a valuation
-      map and χ:V×Θ×β→2 is a decision gate.
+    summary: 'A systemic kernel is the tuple: K^Σ_μ := (v, χ, Π, P_n, Θ, β, C, Γ), where v: U
+      → V and χ: V × Θ × β → 2.
 
       '
     ```
@@ -317,6 +344,7 @@
 | section.7.morphisms | clause.morphism.eq | contains |  |  |  |
 | section.7.morphisms | term.morphism | contains |  |  |  |
 | section.8.recipe | clause.recipe | contains |  |  |  |
+| section.9.notes | clause.notes | contains |  |  |  |
 | spec://domains/systemics/sigma-k1 | ref.gf0 | depends_on |  |  |  |
 | spec://domains/systemics/sigma-k1 | ref.sigma.composition | refers_to |  |  |  |
 | spec://domains/systemics/sigma-k1 | ref.specframe | depends_on |  |  |  |
@@ -328,6 +356,7 @@
 | spec://domains/systemics/sigma-k1 | section.6.conformance | contains |  |  |  |
 | spec://domains/systemics/sigma-k1 | section.7.morphisms | contains |  |  |  |
 | spec://domains/systemics/sigma-k1 | section.8.recipe | contains |  |  |  |
+| spec://domains/systemics/sigma-k1 | section.9.notes | contains |  |  |  |
 
 ## Contains Tree
 - spec://domains/systemics/sigma-k1
@@ -355,3 +384,5 @@
     - term.morphism
   - section.8.recipe
     - clause.recipe
+  - section.9.notes
+    - clause.notes

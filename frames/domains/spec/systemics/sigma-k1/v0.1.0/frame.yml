@@ -69,13 +69,13 @@ nodes:
     label: "Alphabet"
     symbols:
       - { sym: "U", desc: "universe of artifacts" }
-      - { sym: "V", desc: "valuation space (measurable space)" }
-      - { sym: "2", desc: "decision space {0,1}" }
+      - { sym: "V", desc: "valuation space (any measurable space; commonly R^k × B^m)" }
+      - { sym: "2", desc: "decision space 2 := {0,1}" }
       - { sym: "Π", desc: "frames / benign contexts" }
       - { sym: "P_n", desc: "probes / benign perturbations" }
-      - { sym: "Θ", desc: "floors/thresholds (poset)" }
-      - { sym: "β", desc: "invariance budgets (tolerances)" }
-      - { sym: "C", desc: "capacity budgets (bits/time/energy)" }
+      - { sym: "Θ", desc: "floors/thresholds (partially ordered set)" }
+      - { sym: "β", desc: "invariance budgets (tolerances in a poset/lattice)" }
+      - { sym: "C", desc: "capacity budgets (bits/time/energy constraints)" }
       - { sym: "Γ", desc: "envelope/meta (versions, seeds, numeric modes, commits)" }
       - { sym: "R", desc: "records (canonical map → bytes; hash/ledger optional)" }
 
@@ -90,8 +90,9 @@ nodes:
     status: "normative"
     label: "Systemic Kernel"
     summary: >
-      A systemic kernel is K^Σ_μ = (v, χ, Π, P_n, Θ, β, C, Γ) where v:U→V is a valuation map
-      and χ:V×Θ×β→2 is a decision gate.
+      A systemic kernel is the tuple:
+      K^Σ_μ := (v, χ, Π, P_n, Θ, β, C, Γ),
+      where v: U → V and χ: V × Θ × β → 2.
 
   - id: "section.4.metrics_orders"
     kind: "section"
@@ -104,8 +105,8 @@ nodes:
     status: "normative"
     label: "Wobble and orderings"
     text: >
-      Σ assumes a divergence / wobble metric w: V×V→R_{≥0} on decision-relevant coordinates,
-      and partial orders expressing tightening floors, tightening budgets, and shrinking capacity.
+      Σ assumes a divergence ("wobble") w: V × V → R_{≥0} on decision-relevant coordinates.
+      Orders: θ ⪯ θ' means tightening floors; β' ⪯ β means tightening budgets; C' ⪯ C means shrinking capacity.
 
   - id: "section.5.axioms"
     kind: "section"
@@ -118,62 +119,65 @@ nodes:
     status: "normative"
     label: "Σ-A1 Well-typedness"
     text: >
-      All maps are well-defined (measurable/continuous as needed); χ is total on V×Θ×β.
+      All maps are measurable/continuous as needed; χ is total on V × Θ × β.
 
   - id: "clause.a2"
     kind: "clause"
     status: "normative"
     label: "Σ-A2 Posting / Records-only"
     text: >
-      For any run on u∈U, the record κ∈R includes (v(u), Θ, β, C, Π, P_n, Γ), and the decision
-      depends only on posted data: χ*(u;κ)=χ(v(u),Θ,β).
+      For any run on u ∈ U, the record κ ∈ R contains (v(u), Θ, β, C, Π, P_n, Γ), and the decision equals
+      χ*(u; κ) = χ(v(u), Θ, β), with no dependence on unposted data.
 
   - id: "clause.a3"
     kind: "clause"
     status: "normative"
     label: "Σ-A3 Benign invariance"
     text: >
-      Under benign frame/probe variations (π,p)∈Π×P_n producing v_{π,p}(u), if worst-case wobble
-      W(u) is within β then decisions are invariant across those variations.
+      Let (π,p) ∈ Π × P_n act on the measurement/evaluation pathway to yield v_{π,p}(u). Define
+      W(u) := sup_{(π,p)} w(v_{π,p}(u), v_{π0,p0}(u)).
+      If W(u) ⪯ β then for all benign (π,p),
+      χ(v_{π,p}(u), Θ, β) = χ(v_{π0,p0}(u), Θ, β).
 
   - id: "clause.a4"
     kind: "clause"
     status: "normative"
     label: "Σ-A4 Minimal sufficiency under capacity"
     text: >
-      Among valuations that preserve decisions under posted (Θ,β), v is minimal with respect to
-      capacity cost subject to C.
+      Among valuations preserving decisions under posted (Θ, β), v is minimal w.r.t. capacity cost
+      subject to C:
+      for all v', (χ ∘ v' = χ ∘ v) ⇒ cost(v') ⪰ cost(v), subject to C.
 
   - id: "clause.a5"
     kind: "clause"
     status: "normative"
     label: "Σ-A5 Reflexive reproducibility"
     text: >
-      There exists an independently realized valuation v' (different numeric route/implementation)
-      such that χ(v(u),Θ,β)=χ(v'(u),Θ,β), with both posted in κ (self-warrant).
+      There exists an admissible, independently realized v' (different numeric/route) such that
+      χ(v(u), Θ, β) = χ(v'(u), Θ, β), with both posted in κ (self-warrant).
 
   - id: "clause.a6"
     kind: "clause"
     status: "normative"
     label: "Σ-A6 Determinism & idempotence"
     text: >
-      For fixed (v(u),Θ,β), χ yields a unique decision and is idempotent under re-evaluation.
+      For fixed (v(u), Θ, β), the decision χ is unique and idempotent under re-evaluation.
 
   - id: "clause.a7"
     kind: "clause"
     status: "normative"
     label: "Σ-A7 Monotonicity"
     text: >
-      Tightening floors or budgets cannot rescue a failure by hidden dependence: tightening cannot
-      create a pass that relies on unposted slack.
+      Tightening floors or budgets cannot rescue a failure by hidden dependence. For θ ⪯ θ' and β' ⪯ β,
+      χ(v, θ, β) = 1 implies χ(v, θ', β') ∈ {0,1} with no hidden rescue: tightening must not create a pass
+      whose justification depends on data not posted in the record.
 
   - id: "clause.a8"
     kind: "clause"
     status: "normative"
     label: "Σ-A8 Isomorphism invariance"
     text: >
-      If a frame induces a structure-preserving isomorphism of representation, decisions are
-      invariant.
+      If a frame π induces a structure-preserving isomorphism on representation, decisions are invariant.
 
   - id: "section.6.conformance"
     kind: "section"
@@ -186,10 +190,10 @@ nodes:
     status: "normative"
     label: "Σ-lawful record checklist"
     text: >
-      A record κ∈R is Σ-lawful iff it includes: (1) contract (Θ,β,C,Π,P_n,Γ and guards),
-      (2) valuation v(u) (decision-relevant coords), (3) decision χ(v(u),Θ,β) with reasons,
+      A record κ ∈ R is Σ-lawful iff it includes: (1) contract (Θ, β, C, Π, P_n, Γ and guards),
+      (2) valuation v(u) (decision-relevant coords), (3) decision χ(v(u), Θ, β) with reasons,
       (4) invariance evidence (wobble metrics + worst-case (π,p)), (5) reflexive warrant (v'(u)
-      and agreement), (6) canonicalization bytes/digest and optional chaining root.
+      and agreement), (6) canonicalization: canonical bytes, digest d, and optional chain root.
 
   - id: "section.7.morphisms"
     kind: "section"
@@ -202,16 +206,20 @@ nodes:
     status: "normative"
     label: "Morphism F: Σ → Σ'"
     summary: >
-      A morphism is a pair (φ_U, φ_V) preserving valuation/decision structure and mapping contracts
-      monotonically so that Σ axioms remain satisfied.
+      A morphism F: Σ → Σ' is a pair (φ_U, φ_V) such that the following commutation laws hold:
+      v' ∘ φ_U = φ_V ∘ v,
+      and χ' ∘ (φ_V × id) = χ.
+      A morphism also maps contracts monotonically so that Σ axioms remain satisfied.
 
   - id: "clause.morphism.eq"
     kind: "clause"
     status: "normative"
     label: "Morphism preservation"
     text: >
-      Morphisms preserve valuation/decision structure (up to φ mappings) and map contract parameters
-      monotonically, preserving Σ-A1..Σ-A7.
+      A morphism preserves valuation and decision structure by satisfying:
+      v' ∘ φ_U = φ_V ∘ v,
+      χ' ∘ (φ_V × id) = χ.
+      It also maps contract parameters monotonically and preserves Σ-A1..Σ-A7.
 
   - id: "section.8.recipe"
     kind: "section"
@@ -226,6 +234,23 @@ nodes:
     text: >
       Choose U,V,v,χ; post Θ,β,C,Π,P_n,Γ and wobble metric w; establish Σ-A1..Σ-A7 by construction/tests;
       emit lawful κ and optionally chain pages into books.
+
+  - id: "section.9.notes"
+    kind: "section"
+    status: "informative"
+    title: "Notes"
+    order: 9
+
+  - id: "clause.notes"
+    kind: "clause"
+    status: "informative"
+    label: "Notes"
+    text: >
+      This specification does not fix what v measures, what χ decides, or how w is computed.
+      It only requires posting, invariance under benign variation, minimal sufficiency under capacity,
+      and reflexive reproducibility. Evidence Systemics is one instantiation where v encodes evidence
+      gauges; other instances (Control, Protocol, Risk, Learning, etc.) keep the same Σ contract while
+      choosing different v, Θ, β.
 
 edges:
   - { from: "spec://domains/systemics/sigma-k1", to: "ref.specframe", type: "depends_on" }
@@ -263,5 +288,8 @@ edges:
 
   - { from: "spec://domains/systemics/sigma-k1", to: "section.8.recipe", type: "contains" }
   - { from: "section.8.recipe", to: "clause.recipe", type: "contains" }
+
+  - { from: "spec://domains/systemics/sigma-k1", to: "section.9.notes", type: "contains" }
+  - { from: "section.9.notes", to: "clause.notes", type: "contains" }
 
 meta: []
