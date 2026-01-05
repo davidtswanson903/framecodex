@@ -414,7 +414,7 @@ def to_docir(g: Dict[str, Any], src_bytes: bytes) -> Dict[str, Any]:
                         "anchor": anchors[n.id],
                         "text_format": fmt,
                         "body": body,
-                        "body_markup": to_markup(body, text_format=fmt) if body else None,
+                        "body_markup": (to_markup(body, text_format=fmt) if (body and fmt.startswith("md-")) else None),
                         "pub_tex_inline": pub_tex,
                     }
                 )
@@ -469,7 +469,7 @@ def to_docir(g: Dict[str, Any], src_bytes: bytes) -> Dict[str, Any]:
                             "anchor": anchors[n.id],
                             "text_format": node_fmt or "plain",
                             "body": body,
-                            "body_markup": to_markup(body, text_format=node_fmt or "plain") if body else None,
+                            "body_markup": (to_markup(body, text_format=node_fmt or "plain") if (body and (node_fmt or "plain").startswith("md-")) else None),
                         }
                     )
                 elif n.kind == "clause":
@@ -483,7 +483,7 @@ def to_docir(g: Dict[str, Any], src_bytes: bytes) -> Dict[str, Any]:
                             "anchor": anchors[n.id],
                             "text_format": fmt,
                             "body": body,
-                            "body_markup": to_markup(body, text_format=fmt) if body else None,
+                            "body_markup": (to_markup(body, text_format=fmt) if (body and fmt.startswith("md-")) else None),
                         }
                     )
                 elif n.kind == "paragraph":
@@ -495,7 +495,7 @@ def to_docir(g: Dict[str, Any], src_bytes: bytes) -> Dict[str, Any]:
                             "anchor": anchors[n.id],
                             "text_format": fmt,
                             "text": body,
-                            "body_markup": to_markup(body, text_format=fmt) if body else None,
+                            "body_markup": (to_markup(body, text_format=fmt) if (body and fmt.startswith("md-")) else None),
                         }
                     )
                 elif n.kind == "reference":
