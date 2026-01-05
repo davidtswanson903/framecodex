@@ -29,7 +29,7 @@
 
 **Systemic Kernel** _(normative)_
 
-A systemic kernel is the tuple: K^Σ_μ := (v, χ, Π, P_n, Θ, β, C, Γ), where v: U → V and χ: V × Θ × β → 2.
+A systemic kernel is the tuple: K^Σ*μ := (v, χ, Π, P*n, Θ, β, C, Γ), where v: U → V and χ: V × Θ × β → 2.
 
 ## Metrics & Order
 <a id="section-4-metrics-orders-c4fd82d3"></a>
@@ -85,7 +85,7 @@ A record κ ∈ R is Σ-lawful iff it includes: (1) contract (Θ, β, C, Π, P_n
 
 **Morphism F: Σ → Σ'** _(normative)_
 
-A morphism F: Σ → Σ' is a pair (φ_U, φ_V) such that the following commutation laws hold: v' ∘ φ_U = φ_V ∘ v, and χ' ∘ (φ_V × id) = χ. A morphism also maps contracts monotonically so that Σ axioms remain satisfied.
+A morphism F: Σ → Σ' is a pair (φ*U, φ*V) such that the following commutation laws hold: v' ∘ φ*U = φ*V ∘ v, and χ' ∘ (φ_V × id) = χ. A morphism also maps contracts monotonically so that Σ axioms remain satisfied.
 
 **Morphism preservation** _(normative)_
 

@@ -100,6 +100,8 @@ nodes:
       A systemic kernel is the tuple:
       K^Σ_μ := (v, χ, Π, P_n, Θ, β, C, Γ),
       where v: U → V and χ: V × Θ × β → 2.
+    attrs:
+      - { key: "text.format", value: "md-block" }
 
   - id: "section.4.metrics_orders"
     kind: "section"
@@ -114,6 +116,8 @@ nodes:
     text: >
       Σ assumes a divergence ("wobble") w: V × V → R_{≥0} on decision-relevant coordinates.
       Orders: θ ⪯ θ' means tightening floors; β' ⪯ β means tightening budgets; C' ⪯ C means shrinking capacity.
+    attrs:
+      - { key: "text.format", value: "md-block" }
 
   - id: "section.5.axioms"
     kind: "section"
@@ -127,6 +131,8 @@ nodes:
     label: "Σ-A1 Well-typedness"
     text: >
       All maps are measurable/continuous as needed; χ is total on V × Θ × β.
+    attrs:
+      - { key: "text.format", value: "md-inline" }
 
   - id: "clause.a2"
     kind: "clause"
@@ -135,6 +141,8 @@ nodes:
     text: >
       For any run on u ∈ U, the record κ ∈ R contains (v(u), Θ, β, C, Π, P_n, Γ), and the decision equals
       χ*(u; κ) = χ(v(u), Θ, β), with no dependence on unposted data.
+    attrs:
+      - { key: "text.format", value: "md-block" }
 
   - id: "clause.a3"
     kind: "clause"
@@ -145,6 +153,8 @@ nodes:
       W(u) := sup_{(π,p)} w(v_{π,p}(u), v_{π0,p0}(u)).
       If W(u) ⪯ β then for all benign (π,p),
       χ(v_{π,p}(u), Θ, β) = χ(v_{π0,p0}(u), Θ, β).
+    attrs:
+      - { key: "text.format", value: "md-block" }
 
   - id: "clause.a4"
     kind: "clause"
@@ -154,6 +164,8 @@ nodes:
       Among valuations preserving decisions under posted (Θ, β), v is minimal w.r.t. capacity cost
       subject to C:
       for all v', (χ ∘ v' = χ ∘ v) ⇒ cost(v') ⪰ cost(v), subject to C.
+    attrs:
+      - { key: "text.format", value: "md-block" }
 
   - id: "clause.a5"
     kind: "clause"
@@ -162,6 +174,8 @@ nodes:
     text: >
       There exists an admissible, independently realized v' (different numeric/route) such that
       χ(v(u), Θ, β) = χ(v'(u), Θ, β), with both posted in κ (self-warrant).
+    attrs:
+      - { key: "text.format", value: "md-block" }
 
   - id: "clause.a6"
     kind: "clause"
@@ -169,6 +183,8 @@ nodes:
     label: "Σ-A6 Determinism & idempotence"
     text: >
       For fixed (v(u), Θ, β), the decision χ is unique and idempotent under re-evaluation.
+    attrs:
+      - { key: "text.format", value: "md-inline" }
 
   - id: "clause.a7"
     kind: "clause"
@@ -178,6 +194,8 @@ nodes:
       Tightening floors or budgets cannot rescue a failure by hidden dependence. For θ ⪯ θ' and β' ⪯ β,
       χ(v, θ, β) = 1 implies χ(v, θ', β') ∈ {0,1} with no hidden rescue: tightening must not create a pass
       whose justification depends on data not posted in the record.
+    attrs:
+      - { key: "text.format", value: "md-block" }
 
   - id: "clause.a8"
     kind: "clause"
@@ -185,6 +203,8 @@ nodes:
     label: "Σ-A8 Isomorphism invariance"
     text: >
       If a frame π induces a structure-preserving isomorphism on representation, decisions are invariant.
+    attrs:
+      - { key: "text.format", value: "md-inline" }
 
   - id: "section.6.conformance"
     kind: "section"
@@ -201,6 +221,8 @@ nodes:
       (2) valuation v(u) (decision-relevant coords), (3) decision χ(v(u), Θ, β) with reasons,
       (4) invariance evidence (wobble metrics + worst-case (π,p)), (5) reflexive warrant (v'(u)
       and agreement), (6) canonicalization: canonical bytes, digest d, and optional chain root.
+    attrs:
+      - { key: "text.format", value: "md-block" }
 
   - id: "section.7.morphisms"
     kind: "section"
@@ -217,6 +239,8 @@ nodes:
       v' ∘ φ_U = φ_V ∘ v,
       and χ' ∘ (φ_V × id) = χ.
       A morphism also maps contracts monotonically so that Σ axioms remain satisfied.
+    attrs:
+      - { key: "text.format", value: "md-block" }
 
   - id: "clause.morphism.eq"
     kind: "clause"
@@ -227,6 +251,8 @@ nodes:
       v' ∘ φ_U = φ_V ∘ v,
       χ' ∘ (φ_V × id) = χ.
       It also maps contract parameters monotonically and preserves Σ-A1..Σ-A7.
+    attrs:
+      - { key: "text.format", value: "md-block" }
 
   - id: "section.8.recipe"
     kind: "section"
@@ -241,6 +267,8 @@ nodes:
     text: >
       Choose U,V,v,χ; post Θ,β,C,Π,P_n,Γ and wobble metric w; establish Σ-A1..Σ-A7 by construction/tests;
       emit lawful κ and optionally chain pages into books.
+    attrs:
+      - { key: "text.format", value: "md-block" }
 
   - id: "section.9.notes"
     kind: "section"
@@ -258,6 +286,8 @@ nodes:
       and reflexive reproducibility. Evidence Systemics is one instantiation where v encodes evidence
       gauges; other instances (Control, Protocol, Risk, Learning, etc.) keep the same Σ contract while
       choosing different v, Θ, β.
+    attrs:
+      - { key: "text.format", value: "md-block" }
 
 edges:
   - { from: "spec://domains/systemics/sigma-k1", to: "ref.specframe", type: "depends_on" }

@@ -80,6 +80,8 @@ nodes:
       v2 is defined from u and the upstream decision by:
       v2(u) = f(u, χ1(v1(u), Θ1, β1)),
       then f MUST be included in posted data so downstream decisions remain records-only.
+    attrs:
+      - { key: "text.format", value: "md-block" }
 
   - id: "clause.serial.monotone_combine"
     kind: "clause"
@@ -89,6 +91,8 @@ nodes:
       The composite kernel K2 ∘ K1 is lawful only if (Σ-A1 … Σ-A7) hold for the composite and if the
       combined contracts (Θ, β, C) are formed via a monotone operator ⊕ (domain-chosen), i.e. tightening
       in any component must not rely on hidden slack.
+    attrs:
+      - { key: "text.format", value: "md-block" }
 
   - id: "section.3.parallel"
     kind: "section"
@@ -104,6 +108,8 @@ nodes:
       For parallel/product composition K1 ⊗ K2, both kernels evaluate and decisions are aggregated via a
       posted combinator comb: 2 × 2 → 2 (e.g., AND/OR). The choice of comb MUST be posted as part of the
       record/contract.
+    attrs:
+      - { key: "text.format", value: "md-block" }
 
   - id: "clause.parallel.monotone_contracts"
     kind: "clause"
@@ -112,6 +118,8 @@ nodes:
     text: >
       Floors and budgets for parallel composition MUST be combined monotonically (tightening cannot
       rely on hidden slack).
+    attrs:
+      - { key: "text.format", value: "md-inline" }
 
   - id: "section.4.temporal"
     kind: "section"
@@ -126,6 +134,8 @@ nodes:
     text: >
       A page is a lawful record κ for one window. A book is an ordered sequence of pages; optionally, pages
       may be hash-chained. Chaining preserves replay and does not alter decisions.
+    attrs:
+      - { key: "text.format", value: "md-block" }
 
   - id: "section.5.invariants"
     kind: "section"

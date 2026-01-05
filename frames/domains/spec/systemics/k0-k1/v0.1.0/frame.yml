@@ -49,6 +49,8 @@ nodes:
     summary: >
       A kernel is a tuple K=(S,I,O,B,E,F) with admissible transitions
       (s_in, i, b_in, s_out, o, b_out, e) ∈ F.
+    attrs:
+      - { key: "text.format", value: "md-block" }
 
   - id: "property.kernel.fields"
     kind: "property"
@@ -83,6 +85,8 @@ nodes:
     text: >
       Each kernel application emits a receipt e ∈ E sufficient to later reconstruct
       and audit the transition.
+    attrs:
+      - { key: "text.format", value: "md-inline" }
 
   - id: "clause.k2.replayability"
     kind: "clause"
@@ -98,6 +102,8 @@ nodes:
     label: "K3 Budgeted behavior"
     text: >
       Transitions respect budgets: b_out ⪯ b_in for a well-founded preorder ⪯ on B.
+    attrs:
+      - { key: "text.format", value: "md-inline" }
 
   - id: "clause.k4.composability"
     kind: "clause"

@@ -6,7 +6,7 @@
 
 **Kernel** _(normative)_
 
-A kernel is a tuple K=(S,I,O,B,E,F) with admissible transitions (s_in, i, b_in, s_out, o, b_out, e) ∈ F.
+A kernel is a tuple K=(S,I,O,B,E,F) with admissible transitions (s*in, i, b*in, s*out, o, b*out, e) ∈ F.
 
 **Kernel Tuple Fields** _(normative)_
 
