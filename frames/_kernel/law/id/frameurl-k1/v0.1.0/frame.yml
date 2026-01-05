@@ -436,18 +436,29 @@ nodes:
     status: "informative"
     label: "Canonical FrameURL"
     text: |
-      law://repo/governance/repo-k1
-      spec://_kernel/gf/gf0-k1
-      render://repo/docs/default
+      Examples of valid canonical FrameURLs:
+        - `law://repo/governance/repo-k1`
+        - `spec://_kernel/gf/gf0-k1`
+        - `render://repo/docs/default`
+    attrs:
+      - key: "text.format"
+        value: "md-block"
 
   - id: "ex.2.path_projection"
     kind: "example"
     status: "informative"
     label: "Projected path"
     text: |
+      Projection of a FrameURL to filesystem path:
+      
+      ```
       graph_id:  law://repo/governance/repo-k1
       version:   1.0.0
       path:      frames/repo/law/governance/repo-k1/v1.0.0/frame.yml
+      ```
+    attrs:
+      - key: "text.format"
+        value: "md-block"
 
 edges:
   - { from: "law://_kernel/id/frameurl-k1", to: "title.0", type: "contains" }
