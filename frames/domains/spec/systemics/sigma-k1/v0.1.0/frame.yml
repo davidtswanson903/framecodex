@@ -79,15 +79,15 @@ nodes:
     label: "Alphabet"
     symbols:
       - { sym: "U", desc: "Universe of artifacts." }
-      - { sym: '\mathbb{V}', desc: 'Valuation space (any measurable space; commonly \mathbb{R}^k \times \mathbb{B}^m).' }
-      - { sym: '\mathbf{2}', desc: 'Decision space \mathbf{2} = {0,1}.' }
-      - { sym: '\Pi', desc: 'Frames (benign contexts).' }
+      - { sym: '\\mathbb{V}', desc: 'Valuation space (any measurable space; commonly $\\mathbb{R}^k \\times \\mathbb{B}^m$).' }
+      - { sym: '\\mathbf{2}', desc: 'Decision space $\\mathbf{2} = \\{0,1\\}.$' }
+      - { sym: '\\Pi', desc: 'Frames (benign contexts).' }
       - { sym: "P_n", desc: "Probes (benign perturbations)." }
-      - { sym: '\Theta', desc: 'Floors/thresholds (partially ordered set).' }
-      - { sym: '\beta', desc: 'Invariance budgets (tolerances in a poset/lattice).' }
+      - { sym: '\\Theta', desc: 'Floors/thresholds (partially ordered set).' }
+      - { sym: '\\beta', desc: 'Invariance budgets (tolerances in a poset/lattice).' }
       - { sym: "C", desc: "Capacity budgets (bits/time/energy constraints)." }
-      - { sym: '\Gamma', desc: 'Envelope/meta (versions, seeds, numeric modes, commits).' }
-      - { sym: '\mathcal{R}', desc: 'Records (canonical map \to bytes; hash/ledger optional).' }
+      - { sym: '\\Gamma', desc: 'Envelope/meta (versions, seeds, numeric modes, commits).' }
+      - { sym: '\\mathcal{R}', desc: 'Records (canonical map $\\to$ bytes; hash/ledger optional).' }
     attrs:
       - { key: "text.format", value: "tex-block" }
 

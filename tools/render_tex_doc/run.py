@@ -169,48 +169,6 @@ def render_inline_markup_k1_tex(ast: Dict[str, Any]) -> List[str]:
     return out
 
 
-def _wrap_tex_macros_in_math(text: str) -> str:
-    """Wrap TeX macros in a text string with $...$ math delimiters.
-    
-    Heuristic: if text contains backslash commands like \mathbb{}, \times, etc.,
-    wrap it in math mode. This is conservative and may over-wrap.
-    """
-    if not text or "\\" not in text:
-        return text
-    
-    # Check if text looks like it has TeX macros
-    if re.search(r"\\(mathbb|mathbf|mathcal|mathrm|mathnormal|alpha|beta|gamma|Gamma|delta|Delta|theta|Theta|lambda|Lambda|sigma|Sigma|pi|Pi|rho|tau|phi|chi|psi|omega|Omega|times|to|mapsto|in|notin|preceq|succeq|le|ge|subset|supset|cap|cup|otimes|oplus|cdot|div|infty|partial|nabla|int|sum|prod|lim)", text):
-        return "$" + text + "$"
-    
-    return text
-
-
-def _render_inline_block_or_plain(value: Any) -> str:
-    """Render a field that can be either plain text or InlineMarkup-K1 AST."""
-
-    if isinstance(value, dict) and value.get("kind") == "inline-markup-k1":
-        # InlineMarkup-K1 may produce multiple paragraphs; join with newlines.
-        return "\n".join(render_inline_markup_k1_tex(value)).rstrip("\n")
-    if isinstance(value, str):
-        return tex_escape(value)
-    return ""
-
-
-def _is_tex_passthrough(fmt: Any) -> bool:
-    return fmt in ("tex-inline", "tex-block")
-
-
-def _passthrough_block_text(b: Dict[str, Any]) -> str:
-    t = b.get("type")
-    if t == "paragraph":
-        return str(b.get("text", ""))
-    if t in ("definition", "clause"):
-        return str(b.get("body", ""))
-    if t == "heading":
-        return str(b.get("title", ""))
-    return str(b.get("text", "") or b.get("body", "") or b.get("title", ""))
-
-
 def render_body_tex(b: Dict[str, Any]) -> List[str]:
     # TeX passthrough: emit body verbatim.
     if _is_tex_passthrough(b.get("text_format")):
@@ -344,10 +302,9 @@ def render_block(b: Dict[str, Any]) -> List[str]:
 
                 # In tex-* mode treat symbol fields as raw TeX.
                 if _is_tex_passthrough(b.get("text_format")):
-                    sym_math = sym_raw
-                    desc_raw = str(s.get("desc", "") or "")
-                    # If desc contains TeX macros, wrap in math mode where needed
-                    desc_rendered = _wrap_tex_macros_in_math(desc_raw)
+                    # YAML/JSON escaping can yield doubled backslashes; normalize for TeX output.
+                    sym_math = sym_raw.replace("\\\\", "\\")
+                    desc_rendered = str(s.get("desc", "") or "").replace("\\\\", "\\")
                 else:
                     sym_math = normalize_tex_unicode(sym_raw)
                     # Prefer markup-aware descriptions when present.
@@ -431,6 +388,31 @@ def render_tex(docir: Dict[str, Any]) -> str:
 
     # Deterministic whitespace.
     return "\n".join(ln.rstrip() for ln in lines).rstrip() + "\n"
+
+
+def _render_inline_block_or_plain(value: Any) -> str:
+    """Render a field that can be either plain text or InlineMarkup-K1 AST."""
+
+    if isinstance(value, dict) and value.get("kind") == "inline-markup-k1":
+        return "\n".join(render_inline_markup_k1_tex(value)).rstrip("\n")
+    if isinstance(value, str):
+        return tex_escape(value)
+    return ""
+
+
+def _is_tex_passthrough(fmt: Any) -> bool:
+    return fmt in ("tex-inline", "tex-block")
+
+
+def _passthrough_block_text(b: Dict[str, Any]) -> str:
+    t = b.get("type")
+    if t == "paragraph":
+        return str(b.get("text", ""))
+    if t in ("definition", "clause"):
+        return str(b.get("body", ""))
+    if t == "heading":
+        return str(b.get("title", ""))
+    return str(b.get("text", "") or b.get("body", "") or b.get("title", ""))
 
 
 def main() -> None:
