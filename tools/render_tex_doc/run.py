@@ -25,32 +25,32 @@ from typing import Any, Dict, List
 # This is intentionally small and conservative (repo determinism + stability).
 _UNICODE_TO_TEX = {
     # Greek (uppercase)
-    "Σ": r"\\Sigma",
-    "Π": r"\\Pi",
-    "Θ": r"\\Theta",
-    "Γ": r"\\Gamma",
-    "Δ": r"\\Delta",
-    "Λ": r"\\Lambda",
-    "Ω": r"\\Omega",
+    "Σ": r"\Sigma",
+    "Π": r"\Pi",
+    "Θ": r"\Theta",
+    "Γ": r"\Gamma",
+    "Δ": r"\Delta",
+    "Λ": r"\Lambda",
+    "Ω": r"\Omega",
     # Greek (lowercase)
-    "β": r"\\beta",
-    "χ": r"\\chi",
-    "π": r"\\pi",
-    "θ": r"\\theta",
-    "γ": r"\\gamma",
-    "δ": r"\\delta",
-    "λ": r"\\lambda",
-    "ω": r"\\omega",
+    "β": r"\beta",
+    "χ": r"\chi",
+    "π": r"\pi",
+    "θ": r"\theta",
+    "γ": r"\gamma",
+    "δ": r"\delta",
+    "λ": r"\lambda",
+    "ω": r"\omega",
     # Operators / relations
-    "→": r"\\to",
-    "↦": r"\\mapsto",
-    "×": r"\\times",
-    "∘": r"\\circ",
-    "≤": r"\\le",
-    "≥": r"\\ge",
-    "≼": r"\\preceq",
-    "⪯": r"\\preceq",
-    "∈": r"\\in",
+    "→": r"\to",
+    "↦": r"\mapsto",
+    "×": r"\times",
+    "∘": r"\circ",
+    "≤": r"\le",
+    "≥": r"\ge",
+    "≼": r"\preceq",
+    "⪯": r"\preceq",
+    "∈": r"\in",
 }
 
 # Minimal pattern lift for R_{≥0} -> \mathbb{R}_{\ge 0}.
@@ -69,6 +69,7 @@ def normalize_tex_unicode(s: str) -> str:
         return ""
 
     # Specific, deterministic rewrite(s) first.
+    # Use escaped backslashes in the replacement so `re` doesn't treat `\m` as an escape.
     s = _R_GE0_RE.sub(r"\\mathbb{R}_{\\ge 0}", s)
 
     # Character-by-character rewrite for stable behavior.
@@ -148,9 +149,10 @@ def render_inline_markup_k1_tex(ast: Dict[str, Any]) -> List[str]:
         t = b.get("t")
         if t == "code_fence":
             code = str(b.get("code") or "")
-            out.append(r"\begin{verbatim}")
+            # Use fancyvrb for better control and to avoid edge cases with verbatim.
+            out.append(r"\begin{Verbatim}[commandchars=\\\{\},fontsize=\\small]")
             out.extend(code.split("\n"))
-            out.append(r"\end{verbatim}")
+            out.append(r"\end{Verbatim}")
             out.append("")
         elif t == "paragraph":
             out.append(render_inline_nodes_tex(b.get("c") or []))
@@ -159,6 +161,17 @@ def render_inline_markup_k1_tex(ast: Dict[str, Any]) -> List[str]:
             out.append(tex_escape(f"[unhandled:{t}]"))
             out.append("")
     return out
+
+
+def _render_inline_block_or_plain(value: Any) -> str:
+    """Render a field that can be either plain text or InlineMarkup-K1 AST."""
+
+    if isinstance(value, dict) and value.get("kind") == "inline-markup-k1":
+        # InlineMarkup-K1 may produce multiple paragraphs; join with newlines.
+        return "\n".join(render_inline_markup_k1_tex(value)).rstrip("\n")
+    if isinstance(value, str):
+        return tex_escape(value)
+    return ""
 
 
 def render_body_tex(b: Dict[str, Any]) -> List[str]:
@@ -174,22 +187,23 @@ def render_preamble(title: str) -> List[str]:
     # Title should be treated as plain text (no TeX macro injection).
     t = tex_escape(title or "Document")
     return [
-        r"\documentclass[11pt]{article}",
-        r"\usepackage[T1]{fontenc}",
-        r"\usepackage[utf8]{inputenc}",
-        r"\usepackage{lmodern}",
-        r"\usepackage{hyperref}",
-        r"\usepackage{geometry}",
-        r"\usepackage{amsmath}",
-        r"\usepackage{amssymb}",
-        r"\geometry{margin=1in}",
+        r"\\documentclass[11pt]{article}",
+        r"\\usepackage[T1]{fontenc}",
+        r"\\usepackage[utf8]{inputenc}",
+        r"\\usepackage{lmodern}",
+        r"\\usepackage{hyperref}",
+        r"\\usepackage{geometry}",
+        r"\\usepackage{amsmath}",
+        r"\\usepackage{amssymb}",
+        r"\\usepackage{fancyvrb}",
+        r"\\geometry{margin=1in}",
         "",
-        rf"\title{{{t}}}",
-        r"\author{}",
-        r"\date{}",
+        rf"\\title{{{t}}}",
+        r"\\author{}",
+        r"\\date{}",
         "",
-        r"\begin{document}",
-        r"\maketitle",
+        r"\\begin{document}",
+        r"\\maketitle",
         "",
     ]
 
@@ -206,7 +220,7 @@ def render_block(b: Dict[str, Any]) -> List[str]:
             return [rf"\subsection*{{{title}}}", ""]
         if level == 3:
             return [rf"\subsubsection*{{{title}}}", ""]
-        return [rf"\paragraph*{{{title}}}", ""]
+        return [rf"\\paragraph*{{{title}}}", ""]
 
     if t == "paragraph":
         bm = b.get("body_markup")
@@ -226,34 +240,50 @@ def render_block(b: Dict[str, Any]) -> List[str]:
     if t == "property":
         label = tex_escape(str(b.get("label", "")))
         status = tex_escape(str(b.get("status", "")))
-        head = rf"\textbf{{{label}}}" + (rf" \emph{{({status})}}" if status else "")
+        head = rf"\\textbf{{{label}}}" + (rf" \\emph{{({status})}}" if status else "")
         out: List[str] = [head, ""]
+
+        # Optional property body text (often present when symbols need context).
+        body_markup = b.get("body_markup")
+        body = str(b.get("body", "")).strip()
+        if (isinstance(body_markup, dict) and body_markup.get("kind") == "inline-markup-k1") or body:
+            out.extend(render_body_tex(b))
+
         symbols = b.get("symbols") or []
         if symbols:
-            out.append(r"\begin{itemize}")
+            out.append(r"\\begin{itemize}")
             for s in symbols:
                 sym_raw = str(s.get("sym", ""))
                 sym_math = normalize_tex_unicode(sym_raw)
-                desc = tex_escape(str(s.get("desc", "")))
+
+                # Prefer markup-aware descriptions when present.
+                desc_rendered = _render_inline_block_or_plain(s.get("desc_markup") or s.get("desc"))
                 if sym_math:
-                    out.append(rf"  \item \({sym_math}\): {desc}")
+                    out.append(rf"  \\item \\({sym_math}\\): {desc_rendered}")
                 else:
-                    out.append(rf"  \item {desc}")
-            out.append(r"\end{itemize}")
+                    out.append(rf"  \\item {desc_rendered}")
+            out.append(r"\\end{itemize}")
             out.append("")
         return out
 
+    if t == "math_block":
+        # DocIR may emit display math explicitly.
+        expr = normalize_tex_unicode(str(b.get("text", "") or b.get("expr", "") or "").strip())
+        if not expr:
+            return [""]
+        return [r"\\[", expr, r"\\]", ""]
+
     if t == "list_item":
         txt = tex_escape(str(b.get("text", "")))
-        return [rf"\item {txt}"]
+        return [rf"\\item {txt}"]
 
     if t == "note":
         kind = tex_escape(str(b.get("kind", "note")))
         txt = tex_escape(str(b.get("text", "")))
-        return [rf"\begin{{quote}}\textbf{{{kind}}}: {txt}\end{{quote}}", ""]
+        return [rf"\\begin{{quote}}\\textbf{{{kind}}}: {txt}\\end{{quote}}", ""]
 
     return [
-        rf"\begin{{quote}}\textbf{{unhandled block}}: {tex_escape(str(t))}\end{{quote}}",
+        rf"\\begin{{quote}}\\textbf{{unhandled block}}: {tex_escape(str(t))}\\end{{quote}}",
         "",
     ]
 

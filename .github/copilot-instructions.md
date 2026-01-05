@@ -1568,68 +1568,68 @@ from __future__ import annotations
 
 import argparse
 import json
+import re
 from pathlib import Path
 from typing import Any, Dict, List
 
 
-def read_json(path: Path) -> Dict[str, Any]:
-    return json.loads(path.read_text(encoding="utf-8"))
+# Deterministic normalization for common unicode math symbols to TeX.
+# This is intentionally small and conservative (repo determinism + stability).
+_UNICODE_TO_TEX = {
+    # Greek (uppercase)
+    "Σ": r"\Sigma",
+    "Π": r"\Pi",
+    "Θ": r"\Theta",
+    "Γ": r"\Gamma",
+    "Δ": r"\Delta",
+    "Λ": r"\Lambda",
+    "Ω": r"\Omega",
+    # Greek (lowercase)
+    "β": r"\beta",
+    "χ": r"\chi",
+    "π": r"\pi",
+    "θ": r"\theta",
+    "γ": r"\gamma",
+    "δ": r"\delta",
+    "λ": r"\lambda",
+    "ω": r"\omega",
+    # Operators / relations
+    "→": r"\to",
+    "↦": r"\mapsto",
+    "×": r"\times",
+    "∘": r"\circ",
+    "≤": r"\le",
+    "≥": r"\ge",
+    "≼": r"\preceq",
+    "⪯": r"\preceq",
+    "∈": r"\in",
+}
+
+# Minimal pattern lift for R_{≥0} -> \mathbb{R}_{\ge 0}.
+# Keep this tight to avoid surprising conversions.
+_R_GE0_RE = re.compile(r"R_\{\s*≥\s*0\s*\}")
 
 
-def tex_escape(s: str) -> str:
-    # Minimal escaping for plain text fields.
-    return (
-        s.replace("\\", r"\textbackslash{}")
-        .replace("{", r"\{")
-        .replace("}", r"\}")
-        .replace("$", r"\$")
-        .replace("&", r"\&")
-        .replace("#", r"\#")
-        .replace("%", r"\%")
-        .replace("_", r"\_")
-        .replace("~", r"\textasciitilde{}")
-        .replace("^", r"\textasciicircum{}")
-    )
+def normalize_tex_unicode(s: str) -> str:
+    """Normalize common Unicode math glyphs into TeX macros.
 
+    NOTE: This does not add math-mode delimiters; callers decide whether
+    the string is emitted into text mode or math mode.
+    """
 
-def render_inline_nodes_tex(nodes: List[Dict[str, Any]]) -> str:
+    if not s:
+        return ""
+
+    # Specific, deterministic rewrite(s) first.
+    # Use escaped backslashes in the replacement so `re` doesn't treat `\m` as an escape.
+    s = _R_GE0_RE.sub(r"\\mathbb{R}_{\\ge 0}", s)
+
+    # Character-by-character rewrite for stable behavior.
     out: List[str] = []
-    for n in nodes:
-        if not isinstance(n, dict):
-            continue
-        t = n.get("t")
-        if t == "text":
-            out.append(tex_escape(str(n.get("s", ""))))
-        elif t == "emph":
-            out.append(r"\emph{" + render_inline_nodes_tex(n.get("c") or []) + "}")
-        elif t == "strong":
-            out.append(r"\textbf{" + render_inline_nodes_tex(n.get("c") or []) + "}")
-        elif t == "code":
-            out.append(r"\texttt{" + tex_escape(str(n.get("s", ""))) + "}")
-        elif t == "math":
-            out.append("$" + str(n.get("s", "")) + "$")
-        elif t == "link":
-            out.append(r"\href{" + tex_escape(str(n.get("url", ""))) + "}{" + render_inline_nodes_tex(n.get("c") or []) + "}")
-        else:
-            out.append(tex_escape(str(n.get("s", ""))))
-    return "".join(out)
-
-
-def render_inline_markup_k1_tex(ast: Dict[str, Any]) -> List[str]:
-    out: List[str] = []
-    blocks = ast.get("blocks") or []
-    for b in blocks:
-        if not isinstance(b, dict):
-            continue
-        t = b.get("t")
-        if t == "code_fence":
-            code = str(b.get("code") or "")
-            out.append(r"\begin{verbatim}")
-            out.extend(code.split("\n"))
-            out.append(r"\end{verbatim}")
-            out.append("")
-        elif t == "paragraph":
-            out.append(render_inline_nodes_tex(b.get("c") or []))
+    for ch in s:
+        rep = _UNICODE_TO_TEX.get(ch)
+        if rep is None:
+            out.append(ch)
 ```
 
 #### tools/run_with_timeout
