@@ -4,6 +4,9 @@
 \usepackage{lmodern}
 \usepackage{hyperref}
 \usepackage{geometry}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{fancyvrb}
 \geometry{margin=1in}
 
 \title{Systemics Σ — Minimal Specification (K1)}
@@ -24,16 +27,16 @@
 \textbf{Alphabet} \emph{(normative)}
 
 \begin{itemize}
-  \item \texttt{U}: universe of artifacts
-  \item \texttt{V}: valuation space (any measurable space; commonly R\textasciicircum{}k × B\textasciicircum{}m)
-  \item \texttt{2}: decision space 2 := \{0,1\}
-  \item \texttt{Π}: frames / benign contexts
-  \item \texttt{P\_n}: probes / benign perturbations
-  \item \texttt{Θ}: floors/thresholds (partially ordered set)
-  \item \texttt{β}: invariance budgets (tolerances in a poset/lattice)
-  \item \texttt{C}: capacity budgets (bits/time/energy constraints)
-  \item \texttt{Γ}: envelope/meta (versions, seeds, numeric modes, commits)
-  \item \texttt{R}: records (canonical map → bytes; hash/ledger optional)
+  \item \(U\): universe of artifacts
+  \item \(V\): valuation space (any measurable space; commonly R\textasciicircum{}k × B\textasciicircum{}m)
+  \item \(2\): decision space 2 := \{0,1\}
+  \item \(\Pi\): frames / benign contexts
+  \item \(P_n\): probes / benign perturbations
+  \item \(\Theta\): floors/thresholds (partially ordered set)
+  \item \(\beta\): invariance budgets (tolerances in a poset/lattice)
+  \item \(C\): capacity budgets (bits/time/energy constraints)
+  \item \(\Gamma\): envelope/meta (versions, seeds, numeric modes, commits)
+  \item \(R\): records (canonical map → bytes; hash/ledger optional)
 \end{itemize}
 
 \subsection*{Definition: Systemic Kernel}
