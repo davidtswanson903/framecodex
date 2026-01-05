@@ -1,14 +1,14 @@
 {
-  "commit": "c664c7b51fd18d6724f50a2b541697c657aaba78",
+  "commit": "caa49c32c74a2f99b43446527986a4d82a723917",
   "inputs": {
     "frame_path": "frames/domains/spec/systemics/sigma-composition-k1/v0.1.0/frame.yml",
     "frame_sha256": "89afb09252b6625b83fc70856c6251ffb50ae58c7b50981244b41744deb1392e"
   },
   "outputs": {
     "main_tex_path": "pub/systemics/sigma-composition-k1/v0.1.0/src/main.tex",
-    "main_tex_sha256": "8ccddb05b53df423f3be8a586328ce5caca19517cf7881b73518114f204a6708",
+    "main_tex_sha256": "6f95d7a96afbef43e1afddc61012eb15108666d092c19d6ee1af88a69f9bc5eb",
     "pdf_path": "pub/systemics/sigma-composition-k1/v0.1.0/out/sigma-composition-k1-v0.1.0.pdf",
-    "pdf_sha256": "6ada9ad7eed6077fe4ee6f8fc2f1c40973b233341517f887bedebb3a82bcc2fb"
+    "pdf_sha256": "7a0a6768cfe803d26aaca53d4a3da972f1b79992174b0b31637413b7b5959aa9"
   },
   "tooling": {
     "pub_build_pdf": "0.1.0",
