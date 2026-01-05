@@ -102,6 +102,19 @@ nodes:
       where $v: U \\to V$ and $\\chi: V \\times \\Theta \\times \\beta \\to 2$.
     attrs:
       - { key: "text.format", value: "md-block" }
+      -
+        key: "pub.tex.summary"
+        vtype: "json"
+        value: >
+          {"kind":"pub-tex-inline-v0","nodes":[
+            {"t":"text","s":"A systemic kernel is the tuple: "},
+            {"t":"math","s":"K^{\\Sigma}_{\\mu} := (v,\\chi,\\Pi,P_n,\\Theta,\\beta,C,\\Gamma)"},
+            {"t":"text","s":", where "},
+            {"t":"math","s":"v: U \\to V"},
+            {"t":"text","s":" and "},
+            {"t":"math","s":"\\chi: V \\times \\Theta \\times \\beta \\to 2"},
+            {"t":"text","s":"."}
+          ]}
 
   - id: "section.4.metrics_orders"
     kind: "section"
@@ -119,6 +132,22 @@ nodes:
       $C' \\preceq C$ means shrinking capacity.
     attrs:
       - { key: "text.format", value: "md-block" }
+      -
+        key: "pub.tex.text"
+        vtype: "json"
+        value: >
+          {"kind":"pub-tex-inline-v0","nodes":[
+            {"t":"math","s":"\\Sigma"},
+            {"t":"text","s":" assumes a divergence (\"wobble\") "},
+            {"t":"math","s":"w: V \\times V \\to \\mathbb{R}_{\\ge 0}"},
+            {"t":"text","s":" on decision-relevant coordinates. Orders: "},
+            {"t":"math","s":"\\Theta \\preceq \\Theta'"},
+            {"t":"text","s":" means tightening floors; "},
+            {"t":"math","s":"\\beta' \\preceq \\beta"},
+            {"t":"text","s":" means tightening budgets; "},
+            {"t":"math","s":"C' \\preceq C"},
+            {"t":"text","s":" means shrinking capacity."}
+          ]}
 
   - id: "section.5.axioms"
     kind: "section"

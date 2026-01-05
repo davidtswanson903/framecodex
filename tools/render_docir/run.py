@@ -93,6 +93,18 @@ def find_attr_json(attrs: Any, key: str) -> Optional[Any]:
         return None
 
 
+def find_attr_json_strict(attrs: Any, key: str) -> Optional[Any]:
+    """Parse JSON from an attr value. Returns None on any failure."""
+
+    v = find_attr(attrs, key)
+    if v is None:
+        return None
+    try:
+        return json.loads(v)
+    except Exception:
+        return None
+
+
 @dataclass(frozen=True)
 class Node:
     id: str
@@ -216,6 +228,25 @@ def to_markup(value: str, *, text_format: str) -> Optional[Dict[str, Any]]:
     }
 
 
+def _pub_tex_inline_from_node(n: Node, *, field: str) -> Optional[Dict[str, Any]]:
+    """Return publication TeX inline IR attached to a node.
+
+    Option A convention:
+      - attr key: `pub.tex.<field>` where field in {"summary","text","body"}
+      - value: JSON encoding of {"kind":"pub-tex-inline-v0","nodes":[...]}
+
+    We do not validate deeply here; renderer may validate further.
+    """
+
+    if not n.attrs:
+        return None
+    k = f"pub.tex.{field}"
+    v = find_attr_json_strict(n.attrs, k)
+    if isinstance(v, dict) and v.get("kind") == "pub-tex-inline-v0":
+        return v
+    return None
+
+
 def to_docir(g: Dict[str, Any], src_bytes: bytes) -> Dict[str, Any]:
     nodes = parse_nodes(g)
     root_id, children_map = build_spine(g, nodes)
@@ -291,6 +322,7 @@ def to_docir(g: Dict[str, Any], src_bytes: bytes) -> Dict[str, Any]:
             elif n.kind == "paragraph":
                 body = norm_text(n.text or "")
                 fmt = node_fmt if node_fmt != "plain" else "md-block"
+                pub_tex = _pub_tex_inline_from_node(n, field="text")
                 blocks.append(
                     {
                         "type": "paragraph",
@@ -298,6 +330,7 @@ def to_docir(g: Dict[str, Any], src_bytes: bytes) -> Dict[str, Any]:
                         "text_format": fmt,
                         "text": body,
                         "body_markup": to_markup(body, text_format=fmt) if body else None,
+                        "pub_tex_inline": pub_tex,
                     }
                 )
             elif n.kind == "reference":
@@ -316,6 +349,7 @@ def to_docir(g: Dict[str, Any], src_bytes: bytes) -> Dict[str, Any]:
                 )
             elif n.kind == "term":
                 body = norm_text(n.summary or "")
+                pub_tex = _pub_tex_inline_from_node(n, field="summary")
                 blocks.append(
                     {
                         "type": "definition",
@@ -325,12 +359,14 @@ def to_docir(g: Dict[str, Any], src_bytes: bytes) -> Dict[str, Any]:
                         "text_format": node_fmt or "plain",
                         "body": body,
                         "body_markup": to_markup(body, text_format=node_fmt or "plain") if body else None,
+                        "pub_tex_inline": pub_tex,
                     }
                 )
             elif n.kind == "clause":
                 body = norm_text(n.text or "")
                 # Default clauses to md-block unless explicit override.
                 fmt = node_fmt if node_fmt != "plain" else "md-block"
+                pub_tex = _pub_tex_inline_from_node(n, field="text")
                 blocks.append(
                     {
                         "type": "clause",
@@ -340,6 +376,7 @@ def to_docir(g: Dict[str, Any], src_bytes: bytes) -> Dict[str, Any]:
                         "text_format": fmt,
                         "body": body,
                         "body_markup": to_markup(body, text_format=fmt) if body else None,
+                        "pub_tex_inline": pub_tex,
                     }
                 )
             elif n.kind == "property":

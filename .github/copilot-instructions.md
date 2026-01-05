@@ -32,6 +32,7 @@ Generated documentation and publication artifacts MUST be reproducible.
 - `render_docs`: `tools/render_docs/run`
 - `render_latex_spec`: `tools/render_latex_spec/run`
 - `render_md_doc`: `tools/render_md_doc/run`
+- `render_pub_tex`: `tools/render_pub_tex/run.py`
 - `render_simple_md`: `tools/render_simple_md/run`
 - `render_tex_doc`: `tools/render_tex_doc/run`
 - `run_with_timeout`: `tools/run_with_timeout/run`
@@ -1459,6 +1460,92 @@ def render_inline_nodes_md(nodes: List[Dict[str, Any]]) -> str:
         else:
             out.append(str(n.get("s", "")))
     return "".join(out)
+```
+
+#### tools/render_pub_tex
+Source: `tools/render_pub_tex/run.py`
+
+```
+#!/usr/bin/env python3
+"""Render DocIR JSON to a deterministic LaTeX bundle using PubTeX Inline IR.
+
+This renderer is intended for publication-grade TeX output.
+
+Key idea (Option A): frames may attach a publication-specific inline IR via attrs
+(e.g. `pub.tex.summary`, `pub.tex.text`) that is carried into DocIR as
+`pub_tex_inline` and preferred over InlineMarkup-K1.
+
+Input:
+- DocIR JSON (tools/render_docir/run.py output)
+
+Output:
+- a directory containing `main.tex`
+
+Determinism:
+- stable ordering (comes from DocIR)
+- no timestamps
+- conservative escaping
+
+Security/safety:
+- PubTeX IR is treated as *data*, not raw TeX injection. We only accept a
+  constrained set of inline nodes.
+"""
+
+from __future__ import annotations
+
+import argparse
+import json
+import re
+from pathlib import Path
+from typing import Any, Dict, List, Optional
+
+
+# Minimal TeX escaping for text segments.
+_LATEX_SPECIALS = {
+    "\\": r"\textbackslash{}",
+    "{": r"\{",
+    "}": r"\}",
+    "$": r"\$",
+    "&": r"\&",
+    "#": r"\#",
+    "%": r"\%",
+    "_": r"\_",
+    "~": r"\textasciitilde{}",
+    "^": r"\textasciicircum{}",
+}
+
+
+def tex_escape(s: str) -> str:
+    return "".join(_LATEX_SPECIALS.get(ch, ch) for ch in s)
+
+
+# Strongly disallow obvious raw-TeX injection in math strings.
+# (This is intentionally conservative; expand only with policy.)
+_FORBIDDEN_TEX_RE = re.compile(r"\\(input|include|write|openout|read|usepackage|catcode|def|edef|gdef)\b")
+
+
+def validate_math_tex(s: str) -> None:
+    if _FORBIDDEN_TEX_RE.search(s or ""):
+        raise ValueError("PubTeXIR: forbidden control sequence in math segment")
+
+
+def read_json(path: Path) -> Dict[str, Any]:
+    return json.loads(path.read_text(encoding="utf-8"))
+
+
+def render_tex_inline(nodes: List[Dict[str, Any]]) -> str:
+    """Render constrained publication inline nodes."""
+
+    out: List[str] = []
+    for n in nodes:
+        if not isinstance(n, dict):
+            continue
+        t = n.get("t")
+        if t == "text":
+            out.append(tex_escape(str(n.get("s", ""))))
+        elif t == "math":
+            s = str(n.get("s", ""))
+            validate_math_tex(s)
 ```
 
 #### tools/render_simple_md
