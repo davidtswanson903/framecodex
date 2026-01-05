@@ -16,8 +16,70 @@ from __future__ import annotations
 
 import argparse
 import json
+import re
 from pathlib import Path
 from typing import Any, Dict, List
+
+
+# Deterministic normalization for common unicode math symbols to TeX.
+# This is intentionally small and conservative (repo determinism + stability).
+_UNICODE_TO_TEX = {
+    # Greek (uppercase)
+    "Σ": r"\\Sigma",
+    "Π": r"\\Pi",
+    "Θ": r"\\Theta",
+    "Γ": r"\\Gamma",
+    "Δ": r"\\Delta",
+    "Λ": r"\\Lambda",
+    "Ω": r"\\Omega",
+    # Greek (lowercase)
+    "β": r"\\beta",
+    "χ": r"\\chi",
+    "π": r"\\pi",
+    "θ": r"\\theta",
+    "γ": r"\\gamma",
+    "δ": r"\\delta",
+    "λ": r"\\lambda",
+    "ω": r"\\omega",
+    # Operators / relations
+    "→": r"\\to",
+    "↦": r"\\mapsto",
+    "×": r"\\times",
+    "∘": r"\\circ",
+    "≤": r"\\le",
+    "≥": r"\\ge",
+    "≼": r"\\preceq",
+    "⪯": r"\\preceq",
+    "∈": r"\\in",
+}
+
+# Minimal pattern lift for R_{≥0} -> \mathbb{R}_{\ge 0}.
+# Keep this tight to avoid surprising conversions.
+_R_GE0_RE = re.compile(r"R_\{\s*≥\s*0\s*\}")
+
+
+def normalize_tex_unicode(s: str) -> str:
+    """Normalize common Unicode math glyphs into TeX macros.
+
+    NOTE: This does not add math-mode delimiters; callers decide whether
+    the string is emitted into text mode or math mode.
+    """
+
+    if not s:
+        return ""
+
+    # Specific, deterministic rewrite(s) first.
+    s = _R_GE0_RE.sub(r"\\mathbb{R}_{\\ge 0}", s)
+
+    # Character-by-character rewrite for stable behavior.
+    out: List[str] = []
+    for ch in s:
+        rep = _UNICODE_TO_TEX.get(ch)
+        if rep is None:
+            out.append(ch)
+        else:
+            out.append(rep)
+    return "".join(out)
 
 
 def read_json(path: Path) -> Dict[str, Any]:
@@ -26,6 +88,7 @@ def read_json(path: Path) -> Dict[str, Any]:
 
 def tex_escape(s: str) -> str:
     # Minimal escaping for plain text fields.
+    # IMPORTANT: do not inject TeX macros here; escaping will corrupt them.
     return (
         s.replace("\\", r"\textbackslash{}")
         .replace("{", r"\{")
@@ -38,6 +101,17 @@ def tex_escape(s: str) -> str:
         .replace("~", r"\textasciitilde{}")
         .replace("^", r"\textasciicircum{}")
     )
+
+
+def tex_escape_with_unicode_norm(s: str) -> str:
+    """Escape plain text after normalizing unicode into TeX macros.
+
+    This is ONLY safe when the resulting string is emitted into a TeX context
+    that expects commands (typically math mode), or when the caller trusts that
+    macros are desired.
+    """
+
+    return tex_escape(normalize_tex_unicode(s))
 
 
 def render_inline_nodes_tex(nodes: List[Dict[str, Any]]) -> str:
@@ -55,9 +129,11 @@ def render_inline_nodes_tex(nodes: List[Dict[str, Any]]) -> str:
         elif t == "code":
             out.append(r"\texttt{" + tex_escape(str(n.get("s", ""))) + "}")
         elif t == "math":
-            out.append("$" + str(n.get("s", "")) + "$")
+            out.append("$" + normalize_tex_unicode(str(n.get("s", ""))) + "$")
         elif t == "link":
-            out.append(r"\href{" + tex_escape(str(n.get("url", ""))) + "}{" + render_inline_nodes_tex(n.get("c") or []) + "}")
+            out.append(
+                r"\href{" + tex_escape(str(n.get("url", ""))) + "}{" + render_inline_nodes_tex(n.get("c") or []) + "}"
+            )
         else:
             out.append(tex_escape(str(n.get("s", ""))))
     return "".join(out)
@@ -95,6 +171,7 @@ def render_body_tex(b: Dict[str, Any]) -> List[str]:
 
 
 def render_preamble(title: str) -> List[str]:
+    # Title should be treated as plain text (no TeX macro injection).
     t = tex_escape(title or "Document")
     return [
         r"\documentclass[11pt]{article}",
@@ -103,6 +180,8 @@ def render_preamble(title: str) -> List[str]:
         r"\usepackage{lmodern}",
         r"\usepackage{hyperref}",
         r"\usepackage{geometry}",
+        r"\usepackage{amsmath}",
+        r"\usepackage{amssymb}",
         r"\geometry{margin=1in}",
         "",
         rf"\title{{{t}}}",
@@ -153,9 +232,13 @@ def render_block(b: Dict[str, Any]) -> List[str]:
         if symbols:
             out.append(r"\begin{itemize}")
             for s in symbols:
-                sym = tex_escape(str(s.get("sym", "")))
+                sym_raw = str(s.get("sym", ""))
+                sym_math = normalize_tex_unicode(sym_raw)
                 desc = tex_escape(str(s.get("desc", "")))
-                out.append(rf"  \item \texttt{{{sym}}}: {desc}")
+                if sym_math:
+                    out.append(rf"  \item \({sym_math}\): {desc}")
+                else:
+                    out.append(rf"  \item {desc}")
             out.append(r"\end{itemize}")
             out.append("")
         return out
