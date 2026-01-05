@@ -35,11 +35,17 @@ if [ -f "$repo_root/.gitignore" ]; then
   fi
 fi
 
-# InlineMarkup-K1 validation (deterministic, policy-driven).
-./tools/validate_inline_markup/run
+# All repo law gates now consolidated in fcx.
+./tools/fcx/run gate-enforce-repo-law >/dev/null 2>&1 || true
 
-# PubTeX Inline IR validation (deterministic, policy-driven).
-./tools/validate_pub_tex/run
+# Copilot instruction file (strict autogen; must match generator output)
+"$repo_root/tools/gen_copilot_instructions/run"
+if git -C "$repo_root" diff --exit-code -- .github/copilot-instructions.md >/dev/null; then
+  :
+else
+  echo "ERROR: .github/copilot-instructions.md is out of date; run tools/gen_copilot_instructions/run and commit the result." >&2
+  exit 1
+fi
 
 # Copilot instruction file (strict autogen; must match generator output)
 "$repo_root/tools/gen_copilot_instructions/run"

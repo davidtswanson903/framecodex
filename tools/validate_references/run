@@ -1,7 +1,0 @@
-#!/usr/bin/env bash
-set -euo pipefail
-
-repo_root="$(cd "$(dirname "$0")/../.." && pwd)"
-
-# Use system python3; keep deterministic/offline.
-python3 "$repo_root/tools/validate_references/run.py"

@@ -9,6 +9,10 @@ from fcx.gf0 import load_frame_yaml, validate_gf0_struct
 from fcx.kernel import Budget, Kernel, KernelCtx
 from fcx.profiles.specframe_k1 import PROFILE_VALIDATORS, infer_profile
 from fcx.util import read_text, sha256_text, stable_json, write_text_deterministic
+from fcx.validators.inline_markup_k1 import validate_inline_markup_k1
+from fcx.validators.pub_tex_inline_v0 import validate_pub_tex_inline_v0
+from fcx.validators.references import validate_references
+from fcx.gates import gate_enforce_repo_law
 from fcx.violations import Report, Violation
 
 
@@ -53,9 +57,37 @@ def _k_validate_frame(ctx: KernelCtx, args: Dict[str, Any]):
     return out, v, [], receipts
 
 
+def _k_validate_inline_markup(ctx: KernelCtx, args: Dict[str, Any]):
+    v, w = validate_inline_markup_k1(ctx)
+    receipts = {"kernel": sha256_text("validate_inline_markup@0.1.0")}
+    return {}, v, w, receipts
+
+
+def _k_validate_pub_tex(ctx: KernelCtx, args: Dict[str, Any]):
+    v, w = validate_pub_tex_inline_v0(ctx)
+    receipts = {"kernel": sha256_text("validate_pub_tex@0.1.0")}
+    return {}, v, w, receipts
+
+
+def _k_validate_references(ctx: KernelCtx, args: Dict[str, Any]):
+    v, w = validate_references(ctx)
+    receipts = {"kernel": sha256_text("validate_references@0.1.0")}
+    return {}, v, w, receipts
+
+
+def _k_gate_enforce_repo_law(ctx: KernelCtx, args: Dict[str, Any]):
+    v, w = gate_enforce_repo_law(ctx)
+    receipts = {"kernel": sha256_text("gate_enforce_repo_law@0.1.0")}
+    return {}, v, w, receipts
+
+
 KERNELS: Dict[str, Kernel] = {
     "validate_gf0": Kernel(kid="validate_gf0", version="0.1.0", run=_k_validate_gf0),
     "validate_frame": Kernel(kid="validate_frame", version="0.1.0", run=_k_validate_frame),
+    "validate_inline_markup": Kernel(kid="validate_inline_markup", version="0.1.0", run=_k_validate_inline_markup),
+    "validate_pub_tex": Kernel(kid="validate_pub_tex", version="0.1.0", run=_k_validate_pub_tex),
+    "validate_references": Kernel(kid="validate_references", version="0.1.0", run=_k_validate_references),
+    "gate_enforce_repo_law": Kernel(kid="gate_enforce_repo_law", version="0.1.0", run=_k_gate_enforce_repo_law),
 }
 
 
@@ -90,6 +122,14 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     vfr = sub.add_parser("validate-frame")
     vfr.add_argument("--frame", required=True)
 
+    vim = sub.add_parser("validate-inline-markup")
+    
+    vpt = sub.add_parser("validate-pub-tex")
+    
+    vref = sub.add_parser("validate-references")
+
+    glaw = sub.add_parser("gate-enforce-repo-law")
+
     args = ap.parse_args(list(argv) if argv is not None else None)
 
     ctx = KernelCtx(repo_root=args.repo_root, budget=Budget(max_meta_depth=args.max_meta_depth), gamma={})
@@ -98,6 +138,14 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         rep = run_kernel(ctx, "validate_gf0", {"frame": args.frame})
     elif args.cmd == "validate-frame":
         rep = run_kernel(ctx, "validate_frame", {"frame": args.frame})
+    elif args.cmd == "validate-inline-markup":
+        rep = run_kernel(ctx, "validate_inline_markup", {})
+    elif args.cmd == "validate-pub-tex":
+        rep = run_kernel(ctx, "validate_pub_tex", {})
+    elif args.cmd == "validate-references":
+        rep = run_kernel(ctx, "validate_references", {})
+    elif args.cmd == "gate-enforce-repo-law":
+        rep = run_kernel(ctx, "gate_enforce_repo_law", {})
     else:
         raise RuntimeError("unreachable")
 
